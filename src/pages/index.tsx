@@ -9,6 +9,10 @@ type Data = {
   site: {
     siteMetadata: {
       title: string
+      author: {
+        name: string
+        repo: string
+      }
     }
   }
   allMarkdownRemark: {
@@ -32,13 +36,13 @@ type Data = {
   }
 }
 
-const BlogIndex = ({ data, location }: PageProps<Data>) => {
+const BlogIndex = ({ data }: PageProps<Data>) => {
   let [shown, setShown] = useState({roles: false, projects: false})
-  const siteTitle = data.site.siteMetadata.title
+  const metadata = data.site.siteMetadata
   const posts = data.allMarkdownRemark.edges
 
   return (
-    <Layout location={location} title={siteTitle}>
+    <Layout metadata={metadata}>
       <SEO title="All posts" />
       <span>Options |</span>
       <small><label htmlFor="roles"> Show all Roles </label>
@@ -78,6 +82,10 @@ export const pageQuery = graphql`
     site {
       siteMetadata {
         title
+        author {
+          name
+          repo
+        }
       }
     }
     allMarkdownRemark(filter: {frontmatter: {type: {eq: "organization"}}} , sort: { fields: [frontmatter___enddate], order: DESC }) {

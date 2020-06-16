@@ -3,7 +3,8 @@ module.exports = {
     title: `${process.env.AUTHOR}`,
     author: {
       name: `${process.env.AUTHOR}`,
-      summary: `${process.env.SUMMARY_AUTHOR}`
+      summary: `${process.env.SUMMARY_AUTHOR}`,
+      repo: `https://github.com/PaulBeaudet/cv-template`
     },
     description: `${process.env.DESCRIPTION_AUTHOR}`,
     social: {

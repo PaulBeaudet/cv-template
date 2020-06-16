@@ -1,7 +1,8 @@
 import React from "react"
 import { Link } from "gatsby"
 
-const Layout = ({ location, title, children }) => {
+const Layout = ({ metadata, children }) => {
+  const {author, title} = metadata
   const header = (
     <>
       <h3
@@ -38,7 +39,7 @@ const Layout = ({ location, title, children }) => {
       <main>{children}</main>
       <hr style={{marginTop:40,}}></hr>
       <footer>
-        © {new Date().getFullYear()} Paul Beaudet | Site built with Gatsby
+        © {new Date().getFullYear()} {author.name} | <a href={author.repo}>Site </a>built with Gatsby
       </footer>
     </div>
   )
