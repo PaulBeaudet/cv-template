@@ -47,7 +47,7 @@
   "main": "n/a",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/paulbeaudet/cvtemplate.git"
+    "url": "git+https://github.com/paulbeaudet/cv-template.git"
   },
   "scripts": {
     "build": "gatsby build",
