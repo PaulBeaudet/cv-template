@@ -60,7 +60,7 @@ module.exports = {
         background_color: `#ffffff`,
         theme_color: `#663399`,
         display: `minimal-ui`,
-        icon: `content/assets/profile-pic.jpg`
+        icon: `${process.env.PROFILE_PIC_LOCATION}`
       }
     },
     `gatsby-plugin-react-helmet`,

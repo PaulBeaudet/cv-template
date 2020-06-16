@@ -1,14 +1,15 @@
 {
-  "name": "paul.deabute.com",
+  "name": "cv_template",
   "private": true,
-  "description": "Paul's personal site",
+  "description": "template for a cv built with Gatsby",
   "version": "0.1.0",
-  "author": "Paul Beaudet <inof8or@gmail.com>",
+  "author": "Paul Beaudet",
   "bugs": {
     "url": "https://contactpaul.deabute.com"
   },
   "dependencies": {
     "gatsby": "^2.22.15",
+    "gatsby-cli": "^2.12.45",
     "gatsby-image": "^2.4.5",
     "gatsby-plugin-feed": "^2.5.3",
     "gatsby-plugin-manifest": "^2.4.9",
@@ -38,7 +39,7 @@
   "devDependencies": {
     "prettier": "2.0.5"
   },
-  "homepage": "https://paul.deabute.come",
+  "homepage": "https://paul.deabute.com",
   "keywords": [
     "gatsby"
   ],
@@ -46,7 +47,7 @@
   "main": "n/a",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gatsbyjs/gatsby-starter-blog.git"
+    "url": "git+https://github.com/paulbeaudet/cvtemplate.git"
   },
   "scripts": {
     "build": "gatsby build",
