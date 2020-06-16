@@ -6,7 +6,8 @@ import AccordionFold from "./accordionFold"
 const ListFold = ({list, organization, showAll, listType}) => {
   const [showingItems, setShowingItems] = useState(list.split(", ").map((item)=>{return{name: item, vis: false}}))
   let [lastShowAll, setLastShowAll] = useState(showAll)
-  const toggleItem = (targetItem) => {
+  // Action for toggling an item's visibility on button press  
+  const toggleItem = (targetItem: string) => {
     setShowingItems(showingItems.map((lastItem)=>{
       if(lastItem.name === targetItem){
         return {name: targetItem, vis: !lastItem.vis}
@@ -15,15 +16,17 @@ const ListFold = ({list, organization, showAll, listType}) => {
       }
     }))
   }
+  // Determine if show all state has changed on render
   if(showAll !== lastShowAll){
     setShowingItems(showingItems.map((item)=>{return {name: item.name, vis: showAll ? true : false}}))
     setLastShowAll(showAll)
   }
-  // filter: {frontmatter: {type: {eq: "role"}}}, 
+  // Determine if list is populated with meaningful data
+  const hasItems = showingItems.length && showingItems[0].name ? true : false
+  // query everything markdown, because this is a static site generated on build not dynamically at run time
   const data = useStaticQuery(graphql`
       query {
         allMarkdownRemark(
-          
           sort: { fields: [frontmatter___enddate], order: DESC }
         ) {
           edges {
@@ -46,10 +49,10 @@ const ListFold = ({list, organization, showAll, listType}) => {
       }
     `
   )
-  const sections = data.allMarkdownRemark.edges
+  const sections = data.allMarkdownRemark.edges // shorthand edges
   return (
     <>
-      {!showAll &&
+      {!showAll && hasItems && // so long as show all is unchecked & meaningful data exist
         <small>
           <span>{listType}: </span>
           {showingItems.map((item)=>{
