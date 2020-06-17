@@ -70,4 +70,5 @@ yarn-error.log
 
 # Personal env vars
 personal.sh
+myTemplate.sh
 .vscode

@@ -1,17 +1,19 @@
 #!/bin/bash
 
 # turns out post type isn't all that nessisary
-posttype="cv" #default post type
+posttype="organizations" #default post type
+dest="content"
+[ -z ${CV_POST_DEST+x} ] || dest=$CV_POST_DEST
+echo $dest
 
 # first argument is name of post
 if [ "$1" ]; then
   postcat="$1"
   sectiontype="organization"
   [ "$2" ] && postcat="$2" && sectiontype="role"
-  [ -f content/$posttype/$postcat/$1.md ] && echo "post exist" && exit 0
-  mkdir -p "content/$posttype/$postcat"
-  # cp src/templates/pageTemplate.md content/$posttype/$postcat/$1.md
-  fileToMake=content/$posttype/$postcat/$1.md
+  [ -f $dest/$posttype/$postcat/$1.md ] && echo "post exist" && exit 0
+  mkdir -p "$dest/$posttype/$postcat"
+  fileToMake=$dest/$posttype/$postcat/$1.md
   touch $fileToMake
   primerole=""
   [ $sectiontype == "role" ] && primerole=$1
@@ -28,5 +30,10 @@ if [ "$1" ]; then
   echo "skillslearned: \"\"" >> $fileToMake
   echo "skillsused: \"\"" >> $fileToMake
   echo "---" >> $fileToMake 
-  code content/$posttype/$postcat/$1.md
+  code $dest/$posttype/$postcat/$1.md
 fi
+
+
+
+
+

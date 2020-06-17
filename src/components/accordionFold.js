@@ -4,7 +4,7 @@ import { Link } from "gatsby"
 import Trifold from "./trifold"
 
 const AccordionFold = ({title, slug, frontmatter, html}) => {
-  const {enddate, roles, startdate, summary} = frontmatter;
+  const {enddate, startdate, summary} = frontmatter;
   const endTxt = enddate === "Invalid date" ? " " : " to " + enddate + " "
 
   return (
@@ -16,7 +16,7 @@ const AccordionFold = ({title, slug, frontmatter, html}) => {
             marginBottom: 0,
           }}
         >
-          <Link style={{ boxShadow: `none` }} to={slug}>{roles.split(",")[0]}</Link>
+          <Link style={{ boxShadow: `none` }} to={slug}>{title}</Link>
         </h5>  
       </header>
       <small>{startdate + endTxt}</small>

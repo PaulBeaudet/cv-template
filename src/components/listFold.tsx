@@ -39,6 +39,7 @@ const ListFold = ({list, organization, showAll, listType}) => {
                 type
                 organization
                 roles
+                projects
                 startdate(formatString: "MMMM DD, YYYY")
                 enddate(formatString: "MMMM DD, YYYY")
                 summary
