@@ -4,24 +4,46 @@
 posttype="organizations" #default post type
 dest="content"
 [ -z ${CV_POST_DEST+x} ] || dest=$CV_POST_DEST
-echo $dest
 
-# first argument is name of post
+lastIFS=$IFS
+IFS=" "
+
+# first argument is name of post and possibly folder
 if [ "$1" ]; then
-  postcat="$1"
+  org="$1"
+  filepostname=""
+  foldername=""
   sectiontype="organization"
-  [ "$2" ] && postcat="$2" && sectiontype="role"
-  [ -f $dest/$posttype/$postcat/$1.md ] && echo "post exist" && exit 0
+  read -r -a postnameArray <<< $1
+  for element in "${postnameArray[@]}"
+  do
+    lowerEl=`echo "$element" | tr '[:upper:]' '[:lower:]'`
+    filepostname="$filepostname$lowerEl"
+  done
+  postcat="$filepostname"
+  if [ "$2" ]; then
+    org="$2"
+    read -r -a postorgArray <<< $2
+    for el in "${postorgArray[@]}"
+    do
+      lowerE=`echo "$el" | tr '[:upper:]' '[:lower:]'`
+      foldername="$foldername$lowerE"
+    done
+    postcat="$foldername"
+    sectiontype="role"
+  fi
+  echo "Going to make file $foldername/$filepostname.md"
+  [ -f $dest/$posttype/$postcat/$filepostname.md ] && echo "post exist" && exit 0
   mkdir -p "$dest/$posttype/$postcat"
-  fileToMake=$dest/$posttype/$postcat/$1.md
+  fileToMake=$dest/$posttype/$postcat/$filepostname.md
   touch $fileToMake
   primerole=""
   [ $sectiontype == "role" ] && primerole=$1
   echo "---" >> $fileToMake
-  echo "organization: \"$postcat\"" >> $fileToMake
+  echo "organization: \"$org\"" >> $fileToMake
   echo "type: \"$sectiontype\"" >> $fileToMake
   echo "fields: \"\"" >> $fileToMake
-  echo "orgtype: \"corporation\"" >> $fileToMake
+  echo "orgtype: \"Sole Proprietorship\"" >> $fileToMake
   echo "startdate: \"2013-09-12\"" >> $fileToMake
   echo "enddate: \"\"" >> $fileToMake
   echo "summary: \"\"" >> $fileToMake
@@ -30,10 +52,10 @@ if [ "$1" ]; then
   echo "skillslearned: \"\"" >> $fileToMake
   echo "skillsused: \"\"" >> $fileToMake
   echo "---" >> $fileToMake 
-  code $dest/$posttype/$postcat/$1.md
+  code $dest/$posttype/$postcat/$filepostname.md
 fi
 
-
+IFS=$lastIFS
 
 
 

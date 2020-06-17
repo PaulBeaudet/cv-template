@@ -81,7 +81,7 @@ const ListFold = ({list, organization, showAll, listType}) => {
           name = node.frontmatter[listType].split(",")[0]
         }
         const org  = node.frontmatter.organization
-        if(org === organization && node.frontmatter.type !== "organization"){
+        if(org === organization && node.frontmatter.type === listType.slice(0, -1)){
           if (showingItems.filter(item => item.name === name && item.vis).length){
             return (
               <AccordionFold
