@@ -10,11 +10,10 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
   const pageTitle = type === 'role' ? roles.split(',') : organization
   const {html} = data.markdownRemark
   const endTxt = enddate === "Invalid date" ? " " : " to " + enddate + " "
-  const siteTitle = data.site.siteMetadata.title
   const { previous, next, readingTime } = pageContext
 
   return (
-    <Layout location={location} title={siteTitle}>
+    <Layout metadata={data.site.siteMetadata}>
       <SEO
         title={pageTitle}
         description={summary}
@@ -84,6 +83,10 @@ export const pageQuery = graphql`
     site {
       siteMetadata {
         title
+        author {
+          name
+          repo
+        }
       }
     }
     markdownRemark(fields: { slug: { eq: $slug } }) {

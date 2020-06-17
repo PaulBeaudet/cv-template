@@ -4,11 +4,9 @@ import { graphql } from "gatsby"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 
-const NotFoundPage = ({ data, location }) => {
-  const siteTitle = data.site.siteMetadata.title
-
+const NotFoundPage = ({ data }) => {
   return (
-    <Layout location={location} title={siteTitle}>
+    <Layout metadata={data.site.siteMetadata}>
       <SEO title="404: Not Found" />
       <h1>Not Found</h1>
       <p>You just hit a route that doesn&#39;t exist... oh noes.</p>
@@ -23,6 +21,10 @@ export const pageQuery = graphql`
     site {
       siteMetadata {
         title
+        author {
+          name
+          repo
+        }
       }
     }
   }
