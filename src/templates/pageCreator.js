@@ -5,8 +5,9 @@ import Layout from "../components/layout"
 import SEO from "../components/seo"
 
 const BlogPostTemplate = ({ data, pageContext }) => {
-  const {organization, summary, startdate, enddate, roles, type } = data.markdownRemark.frontmatter
-  const pageTitle = type === 'role' ? roles.split(',')[0] : organization
+  const {organization, summary, startdate, enddate, roles, type, projects } = data.markdownRemark.frontmatter
+  let pageTitle = type === 'role' ? roles.split(', ')[0] : organization
+  pageTitle = type === 'project' ? projects.split(', ')[0] : pageTitle
   const {html} = data.markdownRemark
   const endTxt = enddate === "Invalid date" ? " " : " to " + enddate + " "
   const { previous, next, readingTime } = pageContext
@@ -97,6 +98,7 @@ export const pageQuery = graphql`
         enddate(formatString: "MMMM DD, YYYY")
         summary
         roles
+        projects
         type
       }
     }
