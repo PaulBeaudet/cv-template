@@ -4,9 +4,9 @@ import { Link, graphql } from "gatsby"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 
-const BlogPostTemplate = ({ data, pageContext, location }) => {
+const BlogPostTemplate = ({ data, pageContext }) => {
   const {organization, summary, startdate, enddate, roles, type } = data.markdownRemark.frontmatter
-  const pageTitle = type === 'role' ? roles.split(',') : organization
+  const pageTitle = type === 'role' ? roles.split(',')[0] : organization
   const {html} = data.markdownRemark
   const endTxt = enddate === "Invalid date" ? " " : " to " + enddate + " "
   const { previous, next, readingTime } = pageContext
