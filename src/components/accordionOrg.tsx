@@ -14,14 +14,12 @@ const AccordionOrg = ({title, slug, frontmatter, html, shown}) => {
       </h5>
       <small style={{marginLeft: 0}}>{startdate + endTxt} </small>
       <Trifold html={html} summary={summary} />
-      {/* <br/> */}
       <ListFold 
         list={roles}
         organization={organization}
         showAll={shown.roles}
         listType="roles"
       />
-      {/* <br/> */}
       <ListFold 
         list={projects}
         organization={organization}

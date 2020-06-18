@@ -12,7 +12,7 @@ const AccordionFold = ({title, slug, frontmatter, html}) => {
       <header>
         <h5
           style={{
-            marginTop: 0,
+            marginTop: ".2rem",
             marginBottom: 0,
           }}
         >
