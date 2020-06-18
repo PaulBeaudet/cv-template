@@ -3,7 +3,6 @@ import { Link, graphql } from "gatsby"
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
-import { rhythm, scale } from "../utils/typography"
 
 const BlogPostTemplate = ({ data, pageContext, location }) => {
   const {organization, summary, startdate, enddate, roles, type } = data.markdownRemark.frontmatter
@@ -22,7 +21,7 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
         <header>
           <h1
             style={{
-              marginTop: rhythm(1),
+              marginTop: 20,
               marginBottom: 0,
             }}
           >
@@ -30,9 +29,8 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
           </h1>
           <p
             style={{
-              ...scale(-1 / 5),
               display: `block`,
-              marginBottom: rhythm(1),
+              marginBottom: 20,
             }}
           >
             {startdate + endTxt} - {readingTime}
@@ -41,7 +39,7 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
         <section dangerouslySetInnerHTML={{ __html: html }} />
         <hr
           style={{
-            marginBottom: rhythm(1),
+            marginBottom: 20,
           }}
         />
       </article>
