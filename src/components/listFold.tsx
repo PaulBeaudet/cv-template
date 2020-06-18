@@ -27,7 +27,7 @@ const ListFold = ({list, organization, showAll, listType}) => {
   const data = useStaticQuery(graphql`
       query {
         allMarkdownRemark(
-          sort: { fields: [frontmatter___enddate], order: DESC }
+          sort: { fields: [frontmatter___startdate], order: DESC }
         ) {
           edges {
             node {
