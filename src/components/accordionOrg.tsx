@@ -9,19 +9,19 @@ const AccordionOrg = ({title, slug, frontmatter, html, shown}) => {
 
   return (
     <article key={slug}>
-      <h5 style={{ marginTop: "1rem", marginBottom: 0,}} >
+      <h5 style={{ marginTop: "0.5rem", marginBottom: 0,}} >
         <Link style={{ boxShadow: `none` }} to={slug}>{title}</Link>
       </h5>
       <small style={{marginLeft: 0}}>{startdate + endTxt} </small>
       <Trifold html={html} summary={summary} />
-      <br/>
+      {/* <br/> */}
       <ListFold 
         list={roles}
         organization={organization}
         showAll={shown.roles}
         listType="roles"
       />
-      <br/>
+      {/* <br/> */}
       <ListFold 
         list={projects}
         organization={organization}

@@ -52,10 +52,11 @@ const ListFold = ({list, organization, showAll, listType}) => {
   )
   const sections = data.allMarkdownRemark.edges // shorthand edges
   return (
-    <>
+    <div>
+      <span style={{marginLeft: ".5rem" }}>{listType}: </span>
       {!showAll && hasItems && // so long as show all is unchecked & meaningful data exist
         <small>
-          <span>{listType}: </span>
+          {/* <span>{listType}: </span> */}
           {showingItems.map((item)=>{
             return (
               <button 
@@ -95,7 +96,7 @@ const ListFold = ({list, organization, showAll, listType}) => {
           }
         }
       })}
-    </>
+    </div>
   )
 }
 
