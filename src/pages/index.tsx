@@ -12,6 +12,7 @@ type Data = {
       author: {
         name: string
         repo: string
+        contactLink: string
       }
     }
   }
@@ -85,6 +86,7 @@ export const pageQuery = graphql`
         author {
           name
           repo
+          contactLink
         }
       }
     }

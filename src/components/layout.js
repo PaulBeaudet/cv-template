@@ -5,11 +5,23 @@ const Layout = ({ metadata, children }) => {
   const {author, title} = metadata
   const header = (
     <>
+    <div style={{borderBottom: `2px solid black`}}>
+      <h3 style={{
+        fontFamily: `Montserrat, sans-serif`,
+        marginTop: 0,
+        marginBottom: 10,
+        display: `inline`,
+        float: `right`,
+        verticalAlign: `top`,
+      }}>
+        <a href={author.contactLink}>Contact</a>
+      </h3>
       <h3
         style={{
           fontFamily: `Montserrat, sans-serif`,
           marginTop: 10,
           marginBottom: 10,
+          display: `inline`
         }}
       >
         <Link
@@ -22,7 +34,8 @@ const Layout = ({ metadata, children }) => {
           {title}
         </Link>
       </h3>
-      <hr></hr>
+    </div>
+    {/* <hr></hr> */}
     </>
   )
   
