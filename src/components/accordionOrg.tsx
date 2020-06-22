@@ -35,7 +35,7 @@ const AccordionOrg = ({title, slug, frontmatter, html, shown}) => {
       {skillslearned && <ListFold
         list={skillslearned}
         organization={organization}
-        listType="skillslearned"
+        listType="Skills Learned"
         showAll={false}
       />}
     </article>
