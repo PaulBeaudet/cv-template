@@ -6,16 +6,6 @@ const Layout = ({ metadata, children }) => {
   const header = (
     <>
     <div style={{borderBottom: `2px solid black`}}>
-      <h3 style={{
-        fontFamily: `Montserrat, sans-serif`,
-        marginTop: 0,
-        marginBottom: 10,
-        display: `inline`,
-        float: `right`,
-        verticalAlign: `top`,
-      }}>
-        <a href={author.contactLink}>Contact</a>
-      </h3>
       <h3
         style={{
           fontFamily: `Montserrat, sans-serif`,
@@ -34,8 +24,16 @@ const Layout = ({ metadata, children }) => {
           {title}
         </Link>
       </h3>
+      <h3 style={{
+        fontFamily: `Montserrat, sans-serif`,
+        marginTop: 0,
+        marginBottom: 10,
+        display: `inline`,
+        float: `right`,
+      }}>
+        <a href={author.contactLink}>Contact</a>
+      </h3>
     </div>
-    {/* <hr></hr> */}
     </>
   )
   
