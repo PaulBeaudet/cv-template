@@ -4,7 +4,7 @@ import Trifold from "./trifold"
 import ListFold from "./listFold"
 
 const AccordionOrg = ({title, slug, frontmatter, html, shown}) => {
-  const {enddate, roles, startdate, summary, organization, projects} = frontmatter;
+  const {enddate, roles, startdate, summary, organization, projects, skillslearned, skillsused} = frontmatter;
   const endTxt = enddate === "Invalid date" ? " " : " to " + enddate + " "
 
   return (
@@ -18,14 +18,26 @@ const AccordionOrg = ({title, slug, frontmatter, html, shown}) => {
         list={roles}
         organization={organization}
         showAll={shown.roles}
-        listType="roles"
+        listType="Roles"
       />
       <ListFold 
         list={projects}
         organization={organization}
         showAll={shown.projects}
-        listType="projects"
+        listType="Projects"
       />
+      {skillsused && <ListFold
+        list={skillsused}
+        organization={organization}
+        listType="Skills Used"
+        showAll={false}
+      />}
+      {skillslearned && <ListFold
+        list={skillslearned}
+        organization={organization}
+        listType="skillslearned"
+        showAll={false}
+      />}
     </article>
   )
 }

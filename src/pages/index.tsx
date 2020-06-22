@@ -27,6 +27,8 @@ type Data = {
           summary: string
           roles: string
           type: string
+          skillsused: string
+          skillslearned: string
         }
         fields: {
           slug: string
@@ -105,6 +107,8 @@ export const pageQuery = graphql`
             startdate(formatString: "MMMM DD, YYYY")
             enddate(formatString: "MMMM DD, YYYY")
             summary
+            skillsused
+            skillslearned
           }
         }
       }

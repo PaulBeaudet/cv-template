@@ -16,6 +16,8 @@ const ListFold = ({list, organization, showAll, listType}) => {
       }
     }))
   }
+  // make sure list type follows frontmatter name convention, remove spaces / convert to lower case
+  const frontMProp = listType.replace(/\s/g, '').toLowerCase()
   // Determine if show all state has changed on render
   if(showAll !== lastShowAll){
     setShowingItems(showingItems.map((item)=>{return {name: item.name, vis: showAll ? true : false}}))
@@ -77,11 +79,12 @@ const ListFold = ({list, organization, showAll, listType}) => {
       }
       {sections.map(({ node }) => {
         let name = "Invalid Name"
-        if(node.frontmatter[listType]){
-          name = node.frontmatter[listType].split(",")[0]
+        if(node.frontmatter[frontMProp]){
+          name = node.frontmatter[frontMProp].split(",")[0]
         }
         const org  = node.frontmatter.organization
-        if(org === organization && node.frontmatter.type === listType.slice(0, -1)){
+        // Be sure this is correct org of parent and type of fold element minus plural
+        if(org === organization && node.frontmatter.type === frontMProp.replace(/s$/, "")){
           if (showingItems.filter(item => item.name === name && item.vis).length){
             return (
               <AccordionFold
