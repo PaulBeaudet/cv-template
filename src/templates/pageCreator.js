@@ -13,7 +13,7 @@ const BlogPostTemplate = ({ data, pageContext }) => {
   const { previous, next, readingTime } = pageContext
 
   return (
-    <Layout metadata={data.site.siteMetadata}>
+    <Layout>
       <SEO
         title={pageTitle}
         description={summary}
@@ -79,16 +79,6 @@ export default BlogPostTemplate
 
 export const pageQuery = graphql`
   query BlogPostBySlug($slug: String!) {
-    site {
-      siteMetadata {
-        title
-        author {
-          name
-          repo
-          contactLink
-        }
-      }
-    }
     markdownRemark(fields: { slug: { eq: $slug } }) {
       id
       excerpt(pruneLength: 160)

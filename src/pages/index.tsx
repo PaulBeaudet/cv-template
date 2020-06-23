@@ -6,16 +6,6 @@ import SEO from "../components/seo"
 import AccordionOrg from "../components/accordionOrg"
 
 type Data = {
-  site: {
-    siteMetadata: {
-      title: string
-      author: {
-        name: string
-        repo: string
-        contactLink: string
-      }
-    }
-  }
   allMarkdownRemark: {
     edges: {
       node: {
@@ -41,11 +31,10 @@ type Data = {
 
 const BlogIndex = ({ data }: PageProps<Data>) => {
   let [shown, setShown] = useState({roles: false, projects: false})
-  const metadata = data.site.siteMetadata
   const posts = data.allMarkdownRemark.edges
 
   return (
-    <Layout metadata={metadata}>
+    <Layout>
       <SEO title="All posts" />
       <span>Options |</span>
       <small><label htmlFor="roles"> Show all Roles </label>
@@ -82,16 +71,6 @@ export default BlogIndex
 
 export const pageQuery = graphql`
   query {
-    site {
-      siteMetadata {
-        title
-        author {
-          name
-          repo
-          contactLink
-        }
-      }
-    }
     allMarkdownRemark(filter: {frontmatter: {type: {eq: "organization"}}} , sort: { fields: [frontmatter___enddate], order: DESC }) {
       edges {
         node {

@@ -1,17 +1,50 @@
 import React from "react"
-import { Link } from "gatsby"
+import { Link, useStaticQuery, graphql} from "gatsby"
+import Image from "gatsby-image"
 
-const Layout = ({ metadata, children }) => {
-  const {author, title} = metadata
+const Layout = ({ children }) => {
+  const data = useStaticQuery(graphql`
+    query {
+      avatar: file(absolutePath: { regex: "/profile-pic.jpg/" }) {
+        childImageSharp {
+          fixed(width: 50, height: 50) {
+            ...GatsbyImageSharpFixed
+          }
+        }
+      }
+      site {
+        siteMetadata {
+          title
+          author {
+            name
+            repo
+            contactLink
+          }
+        }
+      }
+    }
+  `)
+  const {author, title} = data.site.siteMetadata
   const header = (
     <>
     <div style={{borderBottom: `2px solid black`}}>
-      <h3
+      <Image
+        fixed={data.avatar.childImageSharp.fixed}
+        alt={author.name}
+        style={{
+          marginRight: 5,
+          marginBottom: 0,
+          minWidth: 50,
+          borderRadius: `100%`,
+        }}
+        imgStyle={{
+          borderRadius: `50%`,
+        }}
+      />
+      <h1
         style={{
           fontFamily: `Montserrat, sans-serif`,
-          marginTop: 10,
-          marginBottom: 10,
-          display: `inline`
+          display: `inline`,
         }}
       >
         <Link
@@ -23,11 +56,10 @@ const Layout = ({ metadata, children }) => {
         >
           {title}
         </Link>
-      </h3>
+      </h1>
       <h3 style={{
         fontFamily: `Montserrat, sans-serif`,
-        marginTop: 0,
-        marginBottom: 10,
+        marginTop: `2rem`,
         display: `inline`,
         float: `right`,
       }}>
@@ -47,6 +79,7 @@ const Layout = ({ metadata, children }) => {
       }}
     >
       <header>{header}</header>
+      
       <main>{children}</main>
       <hr style={{marginTop:40,}}></hr>
       <footer>
