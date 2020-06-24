@@ -28,11 +28,9 @@ const Trifold = ({html, summary, show}) => {
   const foldContents = (foldNumber: number) => {
     if (foldNumber) {
       return (
-        <section>
-          <p dangerouslySetInnerHTML={{
-            __html: foldNumber === 2 ? html : summary
-          }}></p>
-        </section>
+        <p style={{marginTop: ".2rem", marginBottom: ".2rem"}} dangerouslySetInnerHTML={{
+          __html: foldNumber === 2 ? html : summary
+        }}></p>
       )
     } else {return null}
   }

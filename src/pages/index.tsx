@@ -30,7 +30,7 @@ type Data = {
 }
 
 const BlogIndex = ({ data }: PageProps<Data>) => {
-  const infoSel = "none" // none, summary, details
+  const infoSel = "summary" // none, summary, details
   const [shown, setShown] = useState({roles: false, projects: false, info: infoSel})
   const posts = data.allMarkdownRemark.edges
 

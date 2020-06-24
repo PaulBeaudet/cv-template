@@ -39,12 +39,14 @@ const AccordionFold = ({title, slug, frontmatter, html, show}) => {
   const hasRepos = typeof repoMatch !== "undefined" && repoMatch.node.url ? true : false
 
   return (
-    <article style={{marginLeft: "1rem",}} key={slug}>
+    
+    <article style={{marginLeft: "1.5rem",}} key={slug}>
       <header>
         <div>
           <h5
             style={{
               marginTop: ".2rem",
+              marginRight: ".2rem",
               marginBottom: 0,
               display: `inline`
             }}
@@ -53,9 +55,9 @@ const AccordionFold = ({title, slug, frontmatter, html, show}) => {
           </h5> 
           {hasRepos && <small style={{display: `inline`}}><span>: </span><a href={repoMatch.node.url}>github</a></small>}
         </div>
+        <small>{startdate + endTxt}</small>
+        <Trifold html={html} summary={summary} show={show}/>
       </header>
-      <small>{startdate + endTxt}</small>
-      <Trifold html={html} summary={summary} show={show}/>
     </article>
   )
 }

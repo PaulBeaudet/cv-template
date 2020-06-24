@@ -88,7 +88,7 @@ const ListFold = ({list, organization, showAll, listType, show}) => {
   
   return (
     <div>
-      {hasItems && <span style={{marginLeft: ".5rem" }}>{listType}: </span>}
+      {hasItems && <span style={{marginLeft: ".75rem" }}>{listType}: </span>}
       {!showAll && hasItems && // so long as show all is unchecked & meaningful data exist
         <small>
           {showingItems.map((item)=>{
