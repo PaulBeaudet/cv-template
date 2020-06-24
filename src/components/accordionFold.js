@@ -37,7 +37,6 @@ const AccordionFold = ({title, slug, frontmatter, html}) => {
     node.node.name.toLowerCase().replace(/_/g, ' ') === title.toLowerCase()
   )[0]
   const hasRepos = typeof repoMatch !== "undefined" && repoMatch.node.url ? true : false
-  repoMatch ? console.log(repoMatch.node.url) : console.log("no dice")
 
   return (
     <article style={{marginLeft: "1rem",}} key={slug}>
