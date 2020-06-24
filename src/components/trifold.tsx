@@ -1,48 +1,61 @@
-import React, {useState} from "react"
+import React, {useState, useEffect} from "react"
 
-const Trifold = ({html, summary}) => {
-  let [folded, setFold] = useState(0)
+const Trifold = ({html, summary, show}) => {
+  let globFold: number= 0 // Global fold type representation  
+  // convert fold name to number type
+  if (show !== "none"){globFold = show === "summary" ? 1 : 2}
+  // Which type state for this fold
+  let [folded, setFold] = useState(globFold)
+  // function for iterating through fold types
   const nextFold = () => {
     setFold(folded === 2 ? 0 : folded + 1) // 0 -> 1 -> 2 -> 0 -> 1 -> ect.
+  }
+  // Only change fold on parent's request when "show" changes
+  useEffect(()=>{setFold(globFold)}, [show])
+  // function to reverse number representation of fold types
+  const foldType = (foldNumber: number) => {
+    let type = ""
+    if(foldNumber === 0){ 
+      type = "summary"
+    } else if (foldNumber === 1){
+      type = "details"
+    } else if (foldNumber === 2){
+      type = "hide"
+    }
+    return type
+  }
+  // function that decides on contents to render based on type
+  const foldContents = (foldNumber: number) => {
+    if (foldNumber) {
+      return (
+        <section>
+          <p dangerouslySetInnerHTML={{
+            __html: foldNumber === 2 ? html : summary
+          }}></p>
+        </section>
+      )
+    } else {return null}
   }
 
   return (
     <>
-      <small><button 
-        onClick={()=>{nextFold()}}
-        style={{
-          border: "none",
-          padding: 0,
-          background: "none",
-          color: "#069",
-          textAlign: "right",
-          cursor: "pointer",
-          display: "inline-block",
-        }}
-      >
-        {(()=>{
-          let dialog = "show "
-          if(folded === 0){ 
-            dialog += "summary"
-          } else if (folded === 1){
-            dialog += "details"
-          } else if (folded === 2){
-            dialog = "hide"
-          }
-          return dialog
-        })()}
-      </button></small>
-      {(()=>{
-        if(folded){ 
-        return (
-          <section>
-            <p
-              dangerouslySetInnerHTML={{ 
-                __html: folded === 2 ? html : summary
-              }}></p>
-          </section>)
-        }
-      })()}
+      <small>
+        <button 
+          onClick={()=>{nextFold()}}
+          style={{
+            border: "none",
+            padding: 0,
+            background: "none",
+            color: "#069",
+            textAlign: "right",
+            cursor: "pointer",
+            display: "inline-block",
+          }}
+        >
+          {"show " + foldType(folded)}
+        </button>
+      </small>
+      {foldContents(folded)}
     </>
   )
 }

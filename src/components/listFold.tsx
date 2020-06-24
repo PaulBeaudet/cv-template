@@ -3,7 +3,7 @@ import {graphql, useStaticQuery} from "gatsby"
 
 import AccordionFold from "./accordionFold"
 
-const ListFold = ({list, organization, showAll, listType}) => {
+const ListFold = ({list, organization, showAll, listType, show}) => {
   const [showingItems, setShowingItems] = useState(list.split(", ").map((item)=>{return{name: item, vis: false, link: false}}))
   const [lastShowAll, setLastShowAll] = useState(showAll)
   const [linksPainted, setPaintedLinks] = useState(false) 
@@ -128,6 +128,7 @@ const ListFold = ({list, organization, showAll, listType}) => {
                 slug={node.fields.slug}
                 frontmatter={node.frontmatter}
                 html={node.html}
+                show={show}
               />
             )
           }

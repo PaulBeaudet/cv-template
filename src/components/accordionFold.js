@@ -3,7 +3,7 @@ import { Link, useStaticQuery, graphql } from "gatsby"
 
 import Trifold from "./trifold"
 
-const AccordionFold = ({title, slug, frontmatter, html}) => {
+const AccordionFold = ({title, slug, frontmatter, html, show}) => {
   const {enddate, startdate, summary} = frontmatter;
   const endTxt = enddate === "Invalid date" ? " " : " to " + enddate + " "
 
@@ -55,7 +55,7 @@ const AccordionFold = ({title, slug, frontmatter, html}) => {
         </div>
       </header>
       <small>{startdate + endTxt}</small>
-      <Trifold html={html} summary={summary}/>
+      <Trifold html={html} summary={summary} show={show}/>
     </article>
   )
 }

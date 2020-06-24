@@ -30,23 +30,34 @@ type Data = {
 }
 
 const BlogIndex = ({ data }: PageProps<Data>) => {
-  let [shown, setShown] = useState({roles: false, projects: false})
+  const infoSel = "none" // none, summary, details
+  const [shown, setShown] = useState({roles: false, projects: false, info: infoSel})
   const posts = data.allMarkdownRemark.edges
 
   return (
     <Layout>
       <SEO title="All posts" />
       <span>Options |</span>
-      <small><label htmlFor="roles"> Show all Roles </label>
-      <input type="checkbox" id="roles" name="roles" 
-        onChange={()=>{setShown({projects: shown.projects, roles: !shown.roles})}}
-        value={1} checked={shown.roles}
-      /></small>
-      <small><label htmlFor="projects"> Show all Projects </label>
-      <input type="checkbox" id="projects" name="projects" 
-        onChange={()=>{setShown({projects: !shown.projects, roles: shown.roles})}}
-        value={1} checked={shown.projects}
-      /></small>
+      <small>
+        <label htmlFor="roles"> Roles</label>
+        <input type="checkbox" id="roles" name="roles" 
+          onChange={()=>{setShown({projects: shown.projects, roles: !shown.roles, info: shown.info})}}
+          value={1} checked={shown.roles}
+        />
+        <label htmlFor="projects"> Projects</label>
+        <input type="checkbox" id="projects" name="projects" 
+          onChange={()=>{setShown({projects: !shown.projects, roles: shown.roles, info: shown.info})}}
+          value={1} checked={shown.projects}
+        />
+        <label htmlFor="descriptions"> Info</label>
+        <select id="descriptions" name="descriptions" defaultValue={infoSel} onChange={(event) => {
+          setShown({projects: shown.projects, roles: shown.roles, info: event.target.value})
+        }}>
+          <option value="summary">summary</option>
+          <option value="details">details</option>
+          <option value="none">none</option>
+        </select>
+      </small>
       {posts.map(({ node }) => {    
         const org = node.frontmatter.organization
         const postType = node.frontmatter.type || "organization"

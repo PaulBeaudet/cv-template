@@ -13,30 +13,34 @@ const AccordionOrg = ({title, slug, frontmatter, html, shown}) => {
         <Link style={{ boxShadow: `none` }} to={slug}>{title}</Link>
       </h5>
       <small style={{marginLeft: 0}}>{startdate + endTxt} </small>
-      <Trifold html={html} summary={summary} />
+      <Trifold html={html} summary={summary} show={shown.info}/>
       <ListFold 
         list={roles}
         organization={organization}
         showAll={shown.roles}
         listType="Roles"
+        show={shown.info}
       />
       <ListFold 
         list={projects}
         organization={organization}
         showAll={shown.projects}
         listType="Projects"
+        show={shown.info}
       />
       {skillsused && <ListFold
         list={skillsused}
         organization={organization}
         listType="Skills Used"
         showAll={false}
+        show={shown.info}
       />}
       {skillslearned && <ListFold
         list={skillslearned}
         organization={organization}
         listType="Skills Learned"
         showAll={false}
+        show={shown.info}
       />}
     </article>
   )
