@@ -3,13 +3,59 @@ import {graphql, useStaticQuery} from "gatsby"
 
 import AccordionFold from "./accordionFold"
 
-const ListFold = ({list, organization, showAll, listType, show}) => {
-  const [showingItems, setShowingItems] = useState(list.split(", ").map((item)=>{return{name: item, vis: false, link: false}}))
-  const [lastShowAll, setLastShowAll] = useState(showAll)
-  const [linksPainted, setPaintedLinks] = useState(false) 
+interface props {
+  list: string
+  organization: string
+  showAll: boolean
+  listType: string
+  show: string
+}
+
+interface showingItemType {
+  name: string
+  vis: boolean
+  link: boolean
+}
+
+type showArray = showingItemType[]
+
+interface data {
+  allMarkdownRemark: {
+    edges: {
+      node: {
+        fields: {
+          slug: string
+        }
+        html: string
+        frontmatter: {
+          type: string
+          organization: string
+          role: string
+          projects: string
+          startdate: string
+          enddate: string
+          link: string
+          summary: string
+        }
+      }
+    }[]
+  }
+}
+
+type nameFunc = (name: string) => void; {}
+type voidFuncFunc = (func: nameFunc) => void; {}
+
+const ListFold: React.FC<props> = ({list, organization, showAll, listType, show}) => {
+  const [showingItems, setShowingItems] = useState<Array<showingItemType>>(
+    list.split(", ").map((item:string):showingItemType=>{
+      return{name: item, vis: false, link: false}
+    })
+  )
+  const [lastShowAll, setLastShowAll] = useState<boolean>(showAll)
+  const [linksPainted, setPaintedLinks] = useState<boolean>(false) 
   // Action for toggling an item's visibility on button press  
-  const toggleItem = (targetItem: string) => {
-    setShowingItems(showingItems.map((lastItem)=>{
+  const toggleItem = (targetItem: string):void => {
+    setShowingItems(showingItems.map((lastItem: showingItemType)=>{
       if(lastItem.name === targetItem){
         return {name: targetItem, vis: !lastItem.vis, link: lastItem.link}
       } else {
@@ -18,16 +64,18 @@ const ListFold = ({list, organization, showAll, listType, show}) => {
     }))
   }
   // make sure list type follows frontmatter name convention, remove spaces / convert to lower case
-  const frontMProp = listType.replace(/\s/g, '').toLowerCase()
+  const frontMProp:string = listType.replace(/\s/g, '').toLowerCase()
   // Determine if show all state has changed on render
   if(showAll !== lastShowAll){
-    setShowingItems(showingItems.map((item)=>{return {name: item.name, link: item.link ,vis: showAll ? true : false}}))
+    setShowingItems(showingItems.map((item: showingItemType):showingItemType=> {
+      return {name: item.name, link: item.link ,vis: showAll ? true : false}
+    }))
     setLastShowAll(showAll)
   }
   // Determine if list is populated with meaningful data
-  const hasItems = showingItems.length && showingItems[0].name ? true : false
+  const hasItems:boolean = showingItems.length && showingItems[0].name ? true : false
   // query everything markdown, because this is a static site generated on build not dynamically at run time
-  const data = useStaticQuery(graphql`
+  const data:data = useStaticQuery(graphql`
       query {
         allMarkdownRemark(
           sort: { fields: [frontmatter___startdate], order: DESC }
@@ -56,13 +104,13 @@ const ListFold = ({list, organization, showAll, listType, show}) => {
   )
   const sections = data.allMarkdownRemark.edges // shorthand edges
   
-  const findCorrectSections = (onCorrectSection) => {
-    sections.map(({node}) => {
-      let name = "Invalid Name"
+  const findCorrectSections:voidFuncFunc = (onCorrectSection: nameFunc):void => {
+    sections.map(({node}):void => {
+      let name:string = "Invalid Name"
       if(node.frontmatter[frontMProp]){
         name = node.frontmatter[frontMProp].split(",")[0]
       }
-      const org  = node.frontmatter.organization
+      const org:string = node.frontmatter.organization
       // Be sure this is correct org of parent and type of fold element minus plural
       if(org === organization && node.frontmatter.type === frontMProp.replace(/s$/, "")){
         onCorrectSection(name)
@@ -71,7 +119,7 @@ const ListFold = ({list, organization, showAll, listType, show}) => {
   }
   if (!linksPainted) {
     const showColorLink = (nameArray: Array<string>) => {
-      let newShowingItems = showingItems.map((item)=>{
+      let newShowingItems:showArray = showingItems.map((item: showingItemType):showingItemType=>{
         const available = nameArray.filter(name => name === item.name )
         if (available.length){
           return {name: item.name, vis: item.vis, link: true}
@@ -82,7 +130,7 @@ const ListFold = ({list, organization, showAll, listType, show}) => {
       setShowingItems(newShowingItems)
     }
     const correctNames: Array<string> = []  // array of correct name strings associated with this fold
-    findCorrectSections((name: string) => {correctNames.push(name)})
+    findCorrectSections((name: string):void => {correctNames.push(name)})
     showColorLink(correctNames)
     setPaintedLinks(true)
   }
@@ -92,7 +140,7 @@ const ListFold = ({list, organization, showAll, listType, show}) => {
       {hasItems && <span style={{marginLeft: ".75rem" }}>{listType}: </span>}
       {!showAll && hasItems && // so long as show all is unchecked & meaningful data exist
         <small>
-          {showingItems.map((item)=>{
+          {showingItems.map((item: showingItemType):React.DetailedHTMLProps<any, any>=>{
             return (
               item.link // Given this is a link show a button vs span
               ? <button 
@@ -114,11 +162,11 @@ const ListFold = ({list, organization, showAll, listType, show}) => {
         </small>
       }
       {sections.map(({ node }) => {
-        let name = "Invalid Name"
+        let name:string = "Invalid Name"
         if(node.frontmatter[frontMProp]){
           name = node.frontmatter[frontMProp].split(",")[0]
         }
-        const org  = node.frontmatter.organization
+        const org:string = node.frontmatter.organization
         // Be sure this is correct org of parent and type of fold element minus plural
         if(org === organization && node.frontmatter.type === frontMProp.replace(/s$/, "")){
           if (showingItems.filter(item => item.name === name && item.vis).length){

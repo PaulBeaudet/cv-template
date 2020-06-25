@@ -1,6 +1,28 @@
 import React from "react"
 import { Link, useStaticQuery, graphql} from "gatsby"
-import Image from "gatsby-image"
+import Image, { FixedObject } from "gatsby-image"
+
+// :shrug:
+// type Data = {
+//   avatar: {
+//     childImageSharp: {
+//       fixed: {
+//         GatsbyImageSharpFixed: FixedObject | FixedObject[]
+//       }
+//     }
+//   }
+//   site: {
+//     siteMetadata: {
+//       title: string
+//       author: {
+//         name: string
+//         repo: string
+//         contactLink: string
+//       }
+//     }
+//   }
+// }
+
 
 const Layout = ({ children }) => {
   const data = useStaticQuery(graphql`
@@ -25,7 +47,7 @@ const Layout = ({ children }) => {
     }
   `)
   const {author, title} = data.site.siteMetadata
-  const header = (
+  const header: React.DetailedHTMLProps<any, any> = (
     <>
     <div style={{borderBottom: `2px solid black`}}>
       <Image
@@ -78,8 +100,7 @@ const Layout = ({ children }) => {
         padding: `0`,
       }}
     >
-      <header>{header}</header>
-      
+      <header>{header}</header>      
       <main>{children}</main>
       <hr style={{marginTop:40,}}></hr>
       <footer>
