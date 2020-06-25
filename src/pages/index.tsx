@@ -29,10 +29,16 @@ type Data = {
   }
 }
 
+interface showObj {
+  roles: boolean,
+  projects: boolean,
+  info: string,
+}
+
 const BlogIndex = ({ data }: PageProps<Data>) => {
-  const infoSel = "summary" // none, summary, details
-  const [shown, setShown] = useState({roles: false, projects: false, info: infoSel})
-  const posts = data.allMarkdownRemark.edges
+  const infoSel:string = "summary" // none, summary, details
+  const [shown, setShown] = useState<showObj>({roles: false, projects: false, info: infoSel})
+  const posts:Array<any> = data.allMarkdownRemark.edges // short cut edges
 
   return (
     <Layout>

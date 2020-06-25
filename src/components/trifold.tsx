@@ -7,13 +7,13 @@ const Trifold = ({html, summary, show}) => {
   // Which type state for this fold
   let [folded, setFold] = useState(globFold)
   // function for iterating through fold types
-  const nextFold = () => {
+  const nextFold = ():void => {
     setFold(folded === 2 ? 0 : folded + 1) // 0 -> 1 -> 2 -> 0 -> 1 -> ect.
   }
   // Only change fold on parent's request when "show" changes
-  useEffect(()=>{setFold(globFold)}, [show])
+  useEffect(():void=>{setFold(globFold)}, [show])
   // function to reverse number representation of fold types
-  const foldType = (foldNumber: number) => {
+  const foldType = (foldNumber: number):string => {
     let type = ""
     if(foldNumber === 0){ 
       type = "summary"
@@ -25,7 +25,7 @@ const Trifold = ({html, summary, show}) => {
     return type
   }
   // function that decides on contents to render based on type
-  const foldContents = (foldNumber: number) => {
+  const foldContents = (foldNumber: number):any => {
     if (foldNumber) {
       return (
         <p style={{marginTop: ".2rem", marginBottom: ".2rem"}} dangerouslySetInnerHTML={{

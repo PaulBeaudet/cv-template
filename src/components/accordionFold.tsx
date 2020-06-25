@@ -32,11 +32,11 @@ const AccordionFold = ({title, slug, frontmatter, html, show}) => {
       }
     `
   )
-  let hasRepos = false
-  let projectLinks = link.split(", ")
+  let hasRepos: boolean = false
+  let projectLinks: Array<string> = link.split(", ")
   projectLinks = projectLinks.filter( url => url ) // make sure each url is more than an empty string
   if(!projectLinks.length){
-    const repos = data.github.viewer.repositoriesContributedTo.edges.concat(data.github.viewer.repositories.edges)
+    const repos: Array<any> = data.github.viewer.repositoriesContributedTo.edges.concat(data.github.viewer.repositories.edges)
     const repoMatch = repos.filter(node =>
       node.node.name.toLowerCase().replace(/_/g, ' ') === title.toLowerCase()
     )[0]
@@ -44,9 +44,9 @@ const AccordionFold = ({title, slug, frontmatter, html, show}) => {
     if(hasRepos){projectLinks.push(repoMatch.node.url)}
   } else {hasRepos = true}
 
-  const createLink = (url)=> {
+  const createLink = (url:string ):any => {
     // maybe decern whether this is another type of link in future, they all github are now
-    return (<small style={{display: `inline`}}><span>: </span><a href={url}>github</a></small>)
+    return (<small key={url} style={{display: `inline`}}><span>: </span><a href={url}>github</a></small>)
   }
   
   return ( 
