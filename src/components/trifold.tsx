@@ -31,7 +31,7 @@ const Trifold: React.FC<props> = ({html, summary, show}) => {
     return type
   }
   // function that decides on contents to render based on type
-  const foldContents = (foldNumber: number):any => {
+  const foldContents = (foldNumber: number):React.DetailedHTMLProps<any, any> | null => {
     if (foldNumber) {
       return (
         <p style={{marginTop: ".2rem", marginBottom: ".2rem"}} dangerouslySetInnerHTML={{

@@ -3,7 +3,28 @@ import { Link } from "gatsby"
 import Trifold from "./trifold"
 import ListFold from "./listFold"
 
-const AccordionOrg = ({title, slug, frontmatter, html, shown}) => {
+interface props {
+  title: string
+  slug: string
+  frontmatter: {
+    enddate: string
+    roles: string
+    startdate: string
+    summary: string
+    organization: string
+    projects: string
+    skillslearned: string
+    skillsused: string
+  },
+  html: string
+  shown: {
+    roles: boolean
+    projects: boolean
+    info: string
+  }
+}
+
+const AccordionOrg: React.FC<props> = ({title, slug, frontmatter, html, shown}) => {
   const {enddate, roles, startdate, summary, organization, projects, skillslearned, skillsused} = frontmatter;
   const endTxt = enddate === "Invalid date" ? " " : " to " + enddate + " "
 
