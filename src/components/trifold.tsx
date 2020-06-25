@@ -1,11 +1,17 @@
 import React, {useState, useEffect} from "react"
 
-const Trifold = ({html, summary, show}) => {
+interface props {
+  html: string,
+  summary: string,
+  show: string,
+}
+
+const Trifold: React.FC<props> = ({html, summary, show}) => {
   let globFold: number= 0 // Global fold type representation  
   // convert fold name to number type
   if (show !== "none"){globFold = show === "summary" ? 1 : 2}
   // Which type state for this fold
-  let [folded, setFold] = useState(globFold)
+  let [folded, setFold] = useState<number>(globFold)
   // function for iterating through fold types
   const nextFold = ():void => {
     setFold(folded === 2 ? 0 : folded + 1) // 0 -> 1 -> 2 -> 0 -> 1 -> ect.
