@@ -2,30 +2,38 @@ import React from "react"
 import { Link, useStaticQuery, graphql} from "gatsby"
 import Image, { FixedObject } from "gatsby-image"
 
-// :shrug:
-// type Data = {
-//   avatar: {
-//     childImageSharp: {
-//       fixed: {
-//         GatsbyImageSharpFixed: FixedObject | FixedObject[]
-//       }
-//     }
-//   }
-//   site: {
-//     siteMetadata: {
-//       title: string
-//       author: {
-//         name: string
-//         repo: string
-//         contactLink: string
-//       }
-//     }
-//   }
-// }
+type Data = {
+  avatar: {
+    childImageSharp: {
+      fixed: {
+        height: number
+        src: string
+        originalName: string
+        srcSet: string
+        srcSetWebp: string
+        srcWebp: string
+        tracedSVG: string
+        width: number
+        base64: string
+        aspectRatio: string
+      }
+    }
+  }
+  site: {
+    siteMetadata: {
+      title: string
+      author: {
+        name: string
+        repo: string
+        contactLink: string
+      }
+    }
+  }
+}
 
-
+           // ...GatsbyImageSharpFixed
 const Layout = ({ children }) => {
-  const data = useStaticQuery(graphql`
+  const data:Data = useStaticQuery(graphql`
     query {
       avatar: file(absolutePath: { regex: "/profile-pic.jpg/" }) {
         childImageSharp {
