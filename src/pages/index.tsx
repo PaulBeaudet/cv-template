@@ -1,9 +1,10 @@
-import React, {useState} from "react"
+import React, { useState } from "react"
 import { PageProps, graphql } from "gatsby"
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import AccordionOrg from "../components/accordionOrg"
+import Dropdown from "../components/dropdown"
 
 type Data = {
   allMarkdownRemark: {
@@ -30,15 +31,29 @@ type Data = {
 }
 
 interface showObj {
-  roles: boolean,
-  projects: boolean,
-  info: string,
+  roles: boolean
+  projects: boolean
+  info: string
 }
 
 const BlogIndex = ({ data }: PageProps<Data>) => {
-  const infoSel:string = "summary" // none, summary, details
-  const [shown, setShown] = useState<showObj>({roles: false, projects: false, info: infoSel})
-  const posts:Array<any> = data.allMarkdownRemark.edges // short cut edges
+  const infoSel: string = "summary" // none, summary, details
+  const infoOptions: Array<string> = ["summary", "details", "none"]
+  const [shown, setShown] = useState<showObj>({
+    roles: false,
+    projects: false,
+    info: infoSel,
+  })
+
+  const posts: Array<any> = data.allMarkdownRemark.edges // short cut edges
+  console.log("render ", shown)
+  const makeChangeShownFunc = (type: string) => {
+    return (event: any): void => {
+      const shownC = { ...shown }
+      shownC[type] = event.target.value
+      setShown(shownC)
+    }
+  }
 
   return (
     <Layout>
@@ -46,33 +61,51 @@ const BlogIndex = ({ data }: PageProps<Data>) => {
       <span>Options |</span>
       <small>
         <label htmlFor="roles"> Roles</label>
-        <input type="checkbox" id="roles" name="roles" 
-          onChange={()=>{setShown({projects: shown.projects, roles: !shown.roles, info: shown.info})}}
-          value={1} checked={shown.roles}
+        <input
+          type="checkbox"
+          id="roles"
+          name="roles"
+          onChange={() => {
+            setShown({
+              projects: shown.projects,
+              roles: !shown.roles,
+              info: shown.info,
+            })
+          }}
+          value={1}
+          checked={shown.roles}
         />
         <label htmlFor="projects"> Projects</label>
-        <input type="checkbox" id="projects" name="projects" 
-          onChange={()=>{setShown({projects: !shown.projects, roles: shown.roles, info: shown.info})}}
-          value={1} checked={shown.projects}
+        <input
+          type="checkbox"
+          id="projects"
+          name="projects"
+          onChange={() => {
+            setShown({
+              projects: !shown.projects,
+              roles: shown.roles,
+              info: shown.info,
+            })
+          }}
+          value={1}
+          checked={shown.projects}
+        />
+        <Dropdown
+          options={infoOptions}
+          name="info"
+          onChange={makeChangeShownFunc("info")}
         />
         <label htmlFor="descriptions"> Info</label>
-        <select id="descriptions" name="descriptions" defaultValue={infoSel} onChange={(event) => {
-          setShown({projects: shown.projects, roles: shown.roles, info: event.target.value})
-        }}>
-          <option value="summary">summary</option>
-          <option value="details">details</option>
-          <option value="none">none</option>
-        </select>
       </small>
-      {posts.map(({ node }) => {    
+      {posts.map(({ node }) => {
         const org = node.frontmatter.organization
         const postType = node.frontmatter.type || "organization"
-        if(postType === "organization"){
+        if (postType === "organization") {
           return (
             <AccordionOrg
               key={node.fields.slug}
               title={node.frontmatter.organization}
-              slug={node.fields.slug} 
+              slug={node.fields.slug}
               frontmatter={node.frontmatter}
               html={node.html}
               shown={shown}
@@ -88,7 +121,10 @@ export default BlogIndex
 
 export const pageQuery = graphql`
   query {
-    allMarkdownRemark(filter: {frontmatter: {type: {eq: "organization"}}} , sort: { fields: [frontmatter___enddate], order: DESC }) {
+    allMarkdownRemark(
+      filter: { frontmatter: { type: { eq: "organization" } } }
+      sort: { fields: [frontmatter___enddate], order: DESC }
+    ) {
       edges {
         node {
           fields {
