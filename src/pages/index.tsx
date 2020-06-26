@@ -31,18 +31,18 @@ type Data = {
 }
 
 interface showObj {
-  roles: boolean
-  projects: boolean
+  roles: string
+  projects: string
   info: string
 }
 
 const BlogIndex = ({ data }: PageProps<Data>) => {
-  const infoSel: string = "summary" // none, summary, details
   const infoOptions: Array<string> = ["summary", "details", "none"]
+  const listFoldOptions: Array<string> = ["summary", "show all", "none"]
   const [shown, setShown] = useState<showObj>({
-    roles: false,
-    projects: false,
-    info: infoSel,
+    roles: listFoldOptions[0],
+    projects: listFoldOptions[0],
+    info: infoOptions[0],
   })
 
   const posts: Array<any> = data.allMarkdownRemark.edges // short cut edges
@@ -60,40 +60,20 @@ const BlogIndex = ({ data }: PageProps<Data>) => {
       <SEO title="All posts" />
       <span>Options |</span>
       <small>
-        <label htmlFor="roles"> Roles</label>
-        <input
-          type="checkbox"
-          id="roles"
+        <Dropdown
+          options={listFoldOptions}
           name="roles"
-          onChange={() => {
-            setShown({
-              projects: shown.projects,
-              roles: !shown.roles,
-              info: shown.info,
-            })
-          }}
-          value={1}
-          checked={shown.roles}
+          onChange={makeChangeShownFunc}
         />
-        <label htmlFor="projects"> Projects</label>
-        <input
-          type="checkbox"
-          id="projects"
+        <Dropdown
+          options={listFoldOptions}
           name="projects"
-          onChange={() => {
-            setShown({
-              projects: !shown.projects,
-              roles: shown.roles,
-              info: shown.info,
-            })
-          }}
-          value={1}
-          checked={shown.projects}
+          onChange={makeChangeShownFunc}
         />
         <Dropdown
           options={infoOptions}
           name="info"
-          onChange={makeChangeShownFunc("info")}
+          onChange={makeChangeShownFunc}
         />
         <label htmlFor="descriptions"> Info</label>
       </small>

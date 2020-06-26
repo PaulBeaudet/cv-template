@@ -15,54 +15,75 @@ interface props {
     projects: string
     skillslearned: string
     skillsused: string
-  },
+  }
   html: string
   shown: {
-    roles: boolean
-    projects: boolean
+    roles: string
+    projects: string
     info: string
   }
 }
 
-const AccordionOrg: React.FC<props> = ({title, slug, frontmatter, html, shown}) => {
-  const {enddate, roles, startdate, summary, organization, projects, skillslearned, skillsused} = frontmatter;
+const AccordionOrg: React.FC<props> = ({
+  title,
+  slug,
+  frontmatter,
+  html,
+  shown,
+}) => {
+  const {
+    enddate,
+    roles,
+    startdate,
+    summary,
+    organization,
+    projects,
+    skillslearned,
+    skillsused,
+  } = frontmatter
   const endTxt = enddate === "Invalid date" ? " " : " to " + enddate + " "
 
   return (
     <article key={slug}>
-      <h5 style={{ marginTop: "0.5rem", marginBottom: 0,}} >
-        <Link style={{ boxShadow: `none` }} to={slug}>{title}</Link>
+      <h5 style={{ marginTop: "0.5rem", marginBottom: 0 }}>
+        <Link style={{ boxShadow: `none` }} to={slug}>
+          {title}
+        </Link>
       </h5>
-      <small style={{marginLeft: 0}}>{startdate + endTxt} </small>
-      <Trifold html={html} summary={summary} show={shown.info}/>
-      <ListFold 
+      <small style={{ marginLeft: 0 }}>{startdate + endTxt} </small>
+      <Trifold html={html} summary={summary} show={shown.info} />
+      <ListFold
         list={roles}
         organization={organization}
-        showAll={shown.roles}
         listType="Roles"
         show={shown.info}
+        showObj={shown}
       />
-      <ListFold 
+      <ListFold
         list={projects}
         organization={organization}
-        showAll={shown.projects}
         listType="Projects"
         show={shown.info}
+        showObj={shown}
       />
-      {skillsused && <ListFold
-        list={skillsused}
-        organization={organization}
-        listType="Skills Used"
-        showAll={false}
-        show={shown.info}
-      />}
-      {skillslearned && <ListFold
-        list={skillslearned}
-        organization={organization}
-        listType="Skills Learned"
-        showAll={false}
-        show={shown.info}
-      />}
+      {skillsused && (
+        <ListFold
+          list={skillsused}
+          organization={organization}
+          listType="Skills Used"
+          show={shown.info}
+          showObj={shown}
+        />
+      )}
+      {skillslearned && (
+        <ListFold
+          list={skillslearned}
+          organization={organization}
+          listType="Skills Learned"
+          show={shown.info}
+          showObj={shown}
+        />
+      )}
     </article>
   )
 }

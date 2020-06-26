@@ -15,7 +15,7 @@ const Dropdown = ({ options, name, onChange }) => {
         defaultValue={options[0]}
         onChange={event => {
           console.log("trying to change")
-          onChange(event)
+          onChange(name)(event)
         }}
       >
         {options.map((item: string) => {

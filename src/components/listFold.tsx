@@ -6,9 +6,13 @@ import AccordionFold from "./accordionFold"
 interface props {
   list: string
   organization: string
-  showAll: boolean
   listType: string
   show: string
+  showObj: {
+    projects: string
+    roles: string
+    info: string
+  }
 }
 
 interface showingItemType {
@@ -52,10 +56,12 @@ type voidFuncFunc = (func: nameFunc) => void
 const ListFold: React.FC<props> = ({
   list,
   organization,
-  showAll,
   listType,
   show,
+  showObj,
 }) => {
+  // make sure list type follows frontmatter name convention, remove spaces / convert to lower case
+  const listProperty: string = listType.replace(/\s/g, "").toLowerCase()
   const [showingItems, setShowingItems] = useState<Array<showingItemType>>(
     list.split(", ").map(
       (item: string): showingItemType => {
@@ -63,7 +69,7 @@ const ListFold: React.FC<props> = ({
       }
     )
   )
-  const [lastShowAll, setLastShowAll] = useState<boolean>(showAll)
+  const [lastShowAll, setLastShowAll] = useState<string>(showObj[listProperty])
   const [linksPainted, setPaintedLinks] = useState<boolean>(false)
   // Action for toggling an item's visibility on button press
   const toggleItem = (targetItem: string): void => {
@@ -76,24 +82,25 @@ const ListFold: React.FC<props> = ({
       })
     )
   }
-  // make sure list type follows frontmatter name convention, remove spaces / convert to lower case
-  const frontMProp: string = listType.replace(/\s/g, "").toLowerCase()
+
   // Determine if show all state has changed on render
-  if (showAll !== lastShowAll) {
+  if (showObj[listProperty] !== lastShowAll) {
     setShowingItems(
       showingItems.map(
         (item: showingItemType): showingItemType => {
-          item.vis = showAll ? true : false
+          // show all might be dumb to hard code
+          item.vis = showObj[listProperty] === "show all" ? true : false
           return item
         }
       )
     )
-    setLastShowAll(showAll)
+    setLastShowAll(showObj[listProperty])
   }
   // Determine if list is populated with meaningful data
   const hasItems: boolean =
     showingItems.length && showingItems[0].name ? true : false
-  // query everything markdown, because this is a static site generated on build not dynamically at run time
+  // query everything markdown opposed to just what is needed
+  // this is a static site generated on build not dynamically at run time
   const data: data = useStaticQuery(graphql`
     query {
       allMarkdownRemark(
@@ -127,14 +134,14 @@ const ListFold: React.FC<props> = ({
   ): void => {
     sections.map(({ node }): void => {
       let name: string = "Invalid Name"
-      if (node.frontmatter[frontMProp]) {
-        name = node.frontmatter[frontMProp].split(",")[0]
+      if (node.frontmatter[listProperty]) {
+        name = node.frontmatter[listProperty].split(",")[0]
       }
       const org: string = node.frontmatter.organization
       // Be sure this is correct org of parent and type of fold element minus plural
       if (
         org === organization &&
-        node.frontmatter.type === frontMProp.replace(/s$/, "")
+        node.frontmatter.type === listProperty.replace(/s$/, "")
       ) {
         onCorrectSection(name)
       }
@@ -142,7 +149,7 @@ const ListFold: React.FC<props> = ({
   }
   if (!linksPainted) {
     const showColorLink = (nameArray: Array<string>) => {
-      let newShowingItems: showArray = showingItems.map(
+      const newShowingItems: showArray = showingItems.map(
         (item: showingItemType): showingItemType => {
           const available = nameArray.filter(name => name === item.name)
           if (available.length) {
@@ -160,11 +167,16 @@ const ListFold: React.FC<props> = ({
     showColorLink(correctNames)
     setPaintedLinks(true)
   }
-
+  const validShowState: boolean =
+    showObj[listProperty] === "summary" || showObj[listProperty] === "show all"
+      ? true
+      : false
   return (
     <div>
-      {hasItems && <span style={{ marginLeft: ".75rem" }}>{listType}: </span>}
-      {!showAll &&
+      {hasItems && validShowState && (
+        <span style={{ marginLeft: ".75rem" }}>{listType}: </span>
+      )}
+      {showObj[listProperty] === "summary" &&
       hasItems && ( // so long as show all is unchecked & meaningful data exist
           <small>
             {showingItems.map(
@@ -197,14 +209,14 @@ const ListFold: React.FC<props> = ({
         )}
       {sections.map(({ node }) => {
         let name: string = "Invalid Name"
-        if (node.frontmatter[frontMProp]) {
-          name = node.frontmatter[frontMProp].split(",")[0]
+        if (node.frontmatter[listProperty]) {
+          name = node.frontmatter[listProperty].split(",")[0]
         }
         const org: string = node.frontmatter.organization
         // Be sure this is correct org of parent and type of fold element minus plural
         if (
           org === organization &&
-          node.frontmatter.type === frontMProp.replace(/s$/, "")
+          node.frontmatter.type === listProperty.replace(/s$/, "")
         ) {
           if (
             showingItems.filter(item => item.name === name && item.vis).length
