@@ -34,15 +34,18 @@ interface showObj {
   roles: string
   projects: string
   info: string
+  skillslearned: string
 }
 
 const BlogIndex = ({ data }: PageProps<Data>) => {
-  const infoOptions: Array<string> = ["summary", "details", "none"]
-  const listFoldOptions: Array<string> = ["summary", "show all", "none"]
+  const infoOptions: Array<string> = ["summary", "details", "hide"]
+  const listFoldOptions: Array<string> = ["summary", "show all", "hide"]
+  const skillsOptions: Array<string> = ["hide", "summary", "show all"]
   const [shown, setShown] = useState<showObj>({
     roles: listFoldOptions[0],
     projects: listFoldOptions[0],
     info: infoOptions[0],
+    skillslearned: skillsOptions[0],
   })
 
   const posts: Array<any> = data.allMarkdownRemark.edges // short cut edges
@@ -60,21 +63,25 @@ const BlogIndex = ({ data }: PageProps<Data>) => {
       <span>Options |</span>
       <small>
         <Dropdown
-          options={listFoldOptions}
-          name="roles"
-          onChange={makeChangeShownFunc}
-        />
-        <Dropdown
-          options={listFoldOptions}
-          name="projects"
-          onChange={makeChangeShownFunc}
-        />
-        <Dropdown
           options={infoOptions}
-          name="info"
+          name="Info"
           onChange={makeChangeShownFunc}
         />
-        <label htmlFor="descriptions"> Info</label>
+        <Dropdown
+          options={listFoldOptions}
+          name="Roles"
+          onChange={makeChangeShownFunc}
+        />
+        <Dropdown
+          options={listFoldOptions}
+          name="Projects"
+          onChange={makeChangeShownFunc}
+        />
+        <Dropdown
+          options={skillsOptions}
+          name="Skills Learned"
+          onChange={makeChangeShownFunc}
+        />
       </small>
       {posts.map(({ node }) => {
         const org = node.frontmatter.organization

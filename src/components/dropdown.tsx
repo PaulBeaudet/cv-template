@@ -6,14 +6,15 @@ import React from "react"
 // }
 
 const Dropdown = ({ options, name, onChange }) => {
+  const listProperty: string = name.replace(/\s/g, "").toLowerCase()
   return (
     <small>
-      <label htmlFor={name}>{name}</label>
+      <label htmlFor={name}> {name} </label>
       <select
         id={name}
         name={name}
         defaultValue={options[0]}
-        onChange={onChange(name)}
+        onChange={onChange(listProperty)}
       >
         {options.map((item: string) => {
           return (
