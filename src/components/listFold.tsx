@@ -61,7 +61,6 @@ const ListFold: React.FC<props> = ({
   showObj,
 }) => {
   // make sure list type follows frontmatter name convention, remove spaces / convert to lower case
-  const listProperty: string = listType.replace(/\s/g, "").toLowerCase()
   const [showingItems, setShowingItems] = useState<Array<showingItemType>>(
     list.split(", ").map(
       (item: string): showingItemType => {
@@ -69,7 +68,11 @@ const ListFold: React.FC<props> = ({
       }
     )
   )
-  const [lastShowAll, setLastShowAll] = useState<string>(showObj[listProperty])
+  const listProperty: string = listType.replace(/\s/g, "").toLowerCase()
+  const showState: string = showObj.hasOwnProperty(listProperty)
+    ? showObj[listProperty]
+    : "summary"
+  const [lastShowAll, setLastShowAll] = useState<string>(showState)
   const [linksPainted, setPaintedLinks] = useState<boolean>(false)
   // Action for toggling an item's visibility on button press
   const toggleItem = (targetItem: string): void => {
@@ -84,17 +87,17 @@ const ListFold: React.FC<props> = ({
   }
 
   // Determine if show all state has changed on render
-  if (showObj[listProperty] !== lastShowAll) {
+  if (showState !== lastShowAll) {
     setShowingItems(
       showingItems.map(
         (item: showingItemType): showingItemType => {
           // show all might be dumb to hard code
-          item.vis = showObj[listProperty] === "show all" ? true : false
+          item.vis = showState === "show all" ? true : false
           return item
         }
       )
     )
-    setLastShowAll(showObj[listProperty])
+    setLastShowAll(showState)
   }
   // Determine if list is populated with meaningful data
   const hasItems: boolean =
@@ -168,15 +171,13 @@ const ListFold: React.FC<props> = ({
     setPaintedLinks(true)
   }
   const validShowState: boolean =
-    showObj[listProperty] === "summary" || showObj[listProperty] === "show all"
-      ? true
-      : false
+    showState === "summary" || showState === "show all" ? true : false
   return (
     <div>
       {hasItems && validShowState && (
         <span style={{ marginLeft: ".75rem" }}>{listType}: </span>
       )}
-      {showObj[listProperty] === "summary" &&
+      {showState === "summary" &&
       hasItems && ( // so long as show all is unchecked & meaningful data exist
           <small>
             {showingItems.map(

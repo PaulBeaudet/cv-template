@@ -46,7 +46,6 @@ const BlogIndex = ({ data }: PageProps<Data>) => {
   })
 
   const posts: Array<any> = data.allMarkdownRemark.edges // short cut edges
-  console.log("render ", shown)
   const makeChangeShownFunc = (type: string) => {
     return (event: any): void => {
       const shownC = { ...shown }
