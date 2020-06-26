@@ -1,9 +1,10 @@
 #!/bin/bash
 
+. ./personal.sh # Source personal env vars like CV_MD_SOURCE
 # turns out post type isn't all that nessisary
 posttype="organizations" #default post type
 dest="content"
-[ -z ${CV_POST_DEST+x} ] || dest=$CV_POST_DEST
+[ -z ${CV_MD_SOURCE+x} ] || dest=$CV_MD_SOURCE
 
 lastIFS=$IFS
 IFS=" "
@@ -46,11 +47,13 @@ if [ "$1" ]; then
   echo "orgtype: \"Sole Proprietorship\"" >> $fileToMake
   echo "startdate: \"2013-09-12\"" >> $fileToMake
   echo "enddate: \"\"" >> $fileToMake
+  echo "link: \"\"" >> $fileToMake
   echo "summary: \"\"" >> $fileToMake
   echo "roles: \"$primerole\"" >> $fileToMake
   echo "projects: \"\"" >> $fileToMake
   echo "skillslearned: \"\"" >> $fileToMake
   echo "skillsused: \"\"" >> $fileToMake
+  echo "softskills: \"\"" >> $fileToMake
   echo "---" >> $fileToMake 
   code $dest/$posttype/$postcat/$filepostname.md
 fi
