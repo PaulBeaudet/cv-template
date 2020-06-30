@@ -70,6 +70,7 @@ const ListFold: React.FC<props> = ({
   // Last minute patching of improperly named headings
   let listName: string = listType === "Skills Used" ? "Tech Used" : listType
   listName = listType === "Skills Learned" ? "Tech Learned" : listName
+  listName = listType === "Soft Skills" ? "Skills" : listName
   const showState: string = showObj.hasOwnProperty(listProperty)
     ? showObj[listProperty]
     : "summary"
