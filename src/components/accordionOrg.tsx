@@ -15,6 +15,7 @@ interface props {
     projects: string
     skillslearned: string
     skillsused: string
+    softskills: string
   }
   html: string
   shown: {
@@ -40,8 +41,10 @@ const AccordionOrg: React.FC<props> = ({
     projects,
     skillslearned,
     skillsused,
+    softskills,
   } = frontmatter
-  const endTxt = enddate === "Invalid date" ? " " : " to " + enddate + " "
+  const endTxt: string =
+    enddate === "Invalid date" ? " " : " to " + enddate + " "
 
   return (
     <article key={slug}>
@@ -81,6 +84,15 @@ const AccordionOrg: React.FC<props> = ({
           list={skillslearned}
           organization={organization}
           listType="Skills Learned"
+          show={shown.info}
+          showObj={shown}
+        />
+      )}
+      {softskills && (
+        <ListFold
+          list={softskills}
+          organization={organization}
+          listType="Soft Skills"
           show={shown.info}
           showObj={shown}
         />

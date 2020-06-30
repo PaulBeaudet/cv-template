@@ -20,6 +20,7 @@ type Data = {
           type: string
           skillsused: string
           skillslearned: string
+          softskills: string
         }
         fields: {
           slug: string
@@ -131,6 +132,7 @@ export const pageQuery = graphql`
             summary
             skillsused
             skillslearned
+            softskills
           }
         }
       }
