@@ -11,7 +11,7 @@ interface props {
     startdate: string
     summary: string
     link: string
-  },
+  }
   html: string
   show: string
 }
@@ -39,55 +39,73 @@ interface githubQuery {
   }
 }
 
-const AccordionFold: React.FC<props> = ({title, slug, frontmatter, html, show}) => {
-  const {enddate, startdate, summary, link} = frontmatter;
+const AccordionFold: React.FC<props> = ({
+  title,
+  slug,
+  frontmatter,
+  html,
+  show,
+}) => {
+  const { enddate, startdate, summary, link } = frontmatter
   const endTxt = enddate === "Invalid date" ? " " : " to " + enddate + " "
 
   const data: githubQuery = useStaticQuery(graphql`
-      query {
-        github {
-          viewer {
-            repositoriesContributedTo(last: 70){
-              edges {
-                node {
-                  name
-                  url
-                }
+    query {
+      github {
+        viewer {
+          repositoriesContributedTo(last: 70) {
+            edges {
+              node {
+                name
+                url
               }
             }
-            repositories(last: 70){
-              edges {
-                node {
-                  name
-                  url
-                }
+          }
+          repositories(last: 70) {
+            edges {
+              node {
+                name
+                url
               }
             }
           }
         }
       }
-    `
-  )
+    }
+  `)
   let hasRepos: boolean = false
   let projectLinks: Array<string> = link.split(", ")
-  projectLinks = projectLinks.filter( url => url ) // make sure each url is more than an empty string
-  if(!projectLinks.length){
-    const repos: Array<any> = data.github.viewer.repositoriesContributedTo.edges.concat(data.github.viewer.repositories.edges)
-    
-    const repoMatch: any = repos.filter(node =>
-      node.node.name.toLowerCase().replace(/_/g, ' ') === title.toLowerCase()
-    )[0]
-    hasRepos = typeof repoMatch !== "undefined" && repoMatch.node.url ? true : false
-    if(hasRepos){projectLinks.push(repoMatch.node.url)}
-  } else {hasRepos = true}
+  projectLinks = projectLinks.filter(url => url) // make sure each url is more than an empty string
+  if (!projectLinks.length) {
+    const repos: Array<any> = data.github.viewer.repositoriesContributedTo.edges.concat(
+      data.github.viewer.repositories.edges
+    )
 
-  const createLink = (url:string ):React.DetailedHTMLProps<any, any> => {
-    // maybe decern whether this is another type of link in future, they all github are now
-    return (<small key={url} style={{display: `inline`}}><span>: </span><a href={url}>github</a></small>)
+    const repoMatch: any = repos.filter(
+      node =>
+        node.node.name.toLowerCase().replace(/_/g, " ") === title.toLowerCase()
+    )[0]
+    hasRepos =
+      typeof repoMatch !== "undefined" && repoMatch.node.url ? true : false
+    if (hasRepos) {
+      projectLinks.push(repoMatch.node.url)
+    }
+  } else {
+    hasRepos = true
   }
-  
-  return ( 
-    <article style={{marginLeft: "1.5rem",}} key={slug}>
+
+  const createLink = (url: string): React.DetailedHTMLProps<any, any> => {
+    // maybe decern whether this is another type of link in future, they all github are now
+    return (
+      <small key={url} style={{ display: `inline` }}>
+        <span>: </span>
+        <a href={url}>github</a>
+      </small>
+    )
+  }
+
+  return (
+    <article style={{ marginLeft: "1.5rem" }} key={slug}>
       <header>
         <div>
           <h5
@@ -95,15 +113,16 @@ const AccordionFold: React.FC<props> = ({title, slug, frontmatter, html, show}) 
               marginTop: ".2rem",
               marginRight: ".2rem",
               marginBottom: 0,
-              display: `inline`
+              display: `inline`,
             }}
           >
-            <Link style={{ boxShadow: `none` }} to={slug}>{title}</Link>
-          </h5> 
+            {/* <Link style={{ boxShadow: `none` }} to={slug}>{title}</Link> */}
+            {title}
+          </h5>
           {hasRepos && projectLinks.map(createLink)}
         </div>
         <small>{startdate + endTxt}</small>
-        <Trifold html={html} summary={summary} show={show}/>
+        <Trifold html={html} summary={summary} show={show} />
       </header>
     </article>
   )
