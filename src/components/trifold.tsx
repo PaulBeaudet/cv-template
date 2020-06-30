@@ -9,7 +9,7 @@ interface props {
 const Trifold: React.FC<props> = ({ html, summary, show }) => {
   let globFold: number = 0 // Global fold type representation
   // convert fold name to number type
-  if (show !== "none") {
+  if (show !== "hide") {
     globFold = show === "summary" ? 1 : 2
   }
   // Which type state for this fold

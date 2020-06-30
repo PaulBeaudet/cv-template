@@ -74,6 +74,7 @@ const ListFold: React.FC<props> = ({
     : "summary"
   const [lastShowAll, setLastShowAll] = useState<string>(showState)
   const [linksPainted, setPaintedLinks] = useState<boolean>(false)
+  const [numberOfLinks, setNumberOfLinks] = useState<number>(0)
   // Action for toggling an item's visibility on button press
   const toggleItem = (targetItem: string): void => {
     setShowingItems(
@@ -168,8 +169,11 @@ const ListFold: React.FC<props> = ({
       correctNames.push(name)
     })
     showColorLink(correctNames)
+    setNumberOfLinks(correctNames.length)
     setPaintedLinks(true)
   }
+  const showCapability: string =
+    showState === "show all" && !numberOfLinks ? "summary" : showState
   const validShowState: boolean =
     showState === "summary" || showState === "show all" ? true : false
   return (
@@ -177,7 +181,7 @@ const ListFold: React.FC<props> = ({
       {hasItems && validShowState && (
         <span style={{ marginLeft: ".75rem" }}>{listType}: </span>
       )}
-      {showState === "summary" &&
+      {showCapability === "summary" &&
       hasItems && ( // so long as show all is unchecked & meaningful data exist
           <small>
             {showingItems.map(
