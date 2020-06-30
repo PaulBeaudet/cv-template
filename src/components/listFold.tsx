@@ -69,6 +69,9 @@ const ListFold: React.FC<props> = ({
     )
   )
   const listProperty: string = listType.replace(/\s/g, "").toLowerCase()
+  // Last minute patching of improperly named headings
+  let listName: string = listType === "Skills Used" ? "Tech Used" : listType
+  listName = listType === "Skills Learned" ? "Tech Learned" : listName
   const showState: string = showObj.hasOwnProperty(listProperty)
     ? showObj[listProperty]
     : "summary"
@@ -179,7 +182,7 @@ const ListFold: React.FC<props> = ({
   return (
     <div>
       {hasItems && validShowState && (
-        <span style={{ marginLeft: ".75rem" }}>{listType}: </span>
+        <span style={{ marginLeft: ".75rem" }}>{listName}: </span>
       )}
       {showCapability === "summary" &&
       hasItems && ( // so long as show all is unchecked & meaningful data exist

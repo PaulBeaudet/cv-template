@@ -65,21 +65,25 @@ const BlogIndex = ({ data }: PageProps<Data>) => {
         <Dropdown
           options={infoOptions}
           name="Info"
+          label="Display"
           onChange={makeChangeShownFunc}
         />
         <Dropdown
           options={listFoldOptions}
           name="Roles"
+          label="Roles"
           onChange={makeChangeShownFunc}
         />
         <Dropdown
           options={listFoldOptions}
           name="Projects"
+          label="Projects"
           onChange={makeChangeShownFunc}
         />
         <Dropdown
           options={skillsOptions}
           name="Skills Learned"
+          label="Tech Learned"
           onChange={makeChangeShownFunc}
         />
       </small>

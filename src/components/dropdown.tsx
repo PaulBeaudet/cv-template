@@ -5,11 +5,11 @@ import React from "react"
 //   onChange:(e: any):void =>{}
 // }
 
-const Dropdown = ({ options, name, onChange }) => {
+const Dropdown = ({ options, name, label, onChange }) => {
   const listProperty: string = name.replace(/\s/g, "").toLowerCase()
   return (
     <small>
-      <label htmlFor={name}> {name} </label>
+      <label htmlFor={name}> {label} </label>
       <select
         id={name}
         name={name}
