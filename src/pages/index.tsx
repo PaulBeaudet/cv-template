@@ -66,7 +66,7 @@ const BlogIndex = ({ data }: PageProps<Data>) => {
         <Dropdown
           options={infoOptions}
           name="Info"
-          label="Display"
+          label="Text"
           onChange={makeChangeShownFunc}
         />
         <Dropdown

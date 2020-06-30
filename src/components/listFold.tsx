@@ -7,7 +7,6 @@ interface props {
   list: string
   organization: string
   listType: string
-  show: string
   showObj: {
     projects: string
     roles: string
@@ -57,7 +56,6 @@ const ListFold: React.FC<props> = ({
   list,
   organization,
   listType,
-  show,
   showObj,
 }) => {
   // make sure list type follows frontmatter name convention, remove spaces / convert to lower case
@@ -236,7 +234,7 @@ const ListFold: React.FC<props> = ({
                 slug={node.fields.slug}
                 frontmatter={node.frontmatter}
                 html={node.html}
-                show={show}
+                show={showObj.info}
               />
             )
           }

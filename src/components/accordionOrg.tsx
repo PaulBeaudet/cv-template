@@ -60,14 +60,12 @@ const AccordionOrg: React.FC<props> = ({
         list={roles}
         organization={organization}
         listType="Roles"
-        show={shown.info}
         showObj={shown}
       />
       <ListFold
         list={projects}
         organization={organization}
         listType="Projects"
-        show={shown.info}
         showObj={shown}
       />
       {skillsused && (
@@ -75,7 +73,6 @@ const AccordionOrg: React.FC<props> = ({
           list={skillsused}
           organization={organization}
           listType="Skills Used"
-          show={shown.info}
           showObj={shown}
         />
       )}
@@ -84,7 +81,6 @@ const AccordionOrg: React.FC<props> = ({
           list={skillslearned}
           organization={organization}
           listType="Skills Learned"
-          show={shown.info}
           showObj={shown}
         />
       )}
@@ -93,7 +89,6 @@ const AccordionOrg: React.FC<props> = ({
           list={softskills}
           organization={organization}
           listType="Soft Skills"
-          show={shown.info}
           showObj={shown}
         />
       )}
