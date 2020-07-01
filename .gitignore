@@ -70,5 +70,7 @@ yarn-error.log
 
 # Personal env vars
 personal.sh
-myTemplate.sh
+
+# other unneeded additions to git
 .vscode
+bucket_policy.json
