@@ -1,32 +1,37 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { PageProps, graphql } from "gatsby"
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import AccordionOrg from "../components/accordionOrg"
 import Dropdown from "../components/dropdown"
+import FilterCheckbox from "../components/filterCheckBox"
+
+interface frontmatter {
+  projects: string
+  organization: string
+  startdate: string
+  enddate: string
+  summary: string
+  roles: string
+  type: string
+  skillsused: string
+  skillslearned: string
+  softskills: string
+}
+
+interface node {
+  frontmatter: frontmatter
+  fields: {
+    slug: string
+  }
+  html: string
+}
 
 type Data = {
   allMarkdownRemark: {
     edges: {
-      node: {
-        frontmatter: {
-          projects: string
-          organization: string
-          startdate: string
-          enddate: string
-          summary: string
-          roles: string
-          type: string
-          skillsused: string
-          skillslearned: string
-          softskills: string
-        }
-        fields: {
-          slug: string
-        }
-        html: string
-      }
+      node: node
     }[]
   }
 }
@@ -48,8 +53,13 @@ const BlogIndex = ({ data }: PageProps<Data>) => {
     info: infoOptions[0],
     skillslearned: skillsOptions[0],
   })
+  const [techFilter, setTechFilter] = useState<Array<string>>([])
+  const [techArray, setTechArray] = useState<Array<string>>([])
+  const [toggleAllSkills, setToggleAllSkills] = useState<number>(0)
+  const [toggleButton, setToggleButton] = useState<boolean>(false)
+  const [skillsFilterShown, setSkillsFilterShown] = useState<boolean>(false)
 
-  const posts: Array<any> = data.allMarkdownRemark.edges // short cut edges
+  const posts: { node: node }[] = data.allMarkdownRemark.edges // short cut edges
   const makeChangeShownFunc = (type: string) => {
     return (event: any): void => {
       const shownC = { ...shown }
@@ -57,6 +67,37 @@ const BlogIndex = ({ data }: PageProps<Data>) => {
       setShown(shownC)
     }
   }
+  const toggleFilter = (itemName: string): void => {
+    const nextState = [...techFilter]
+    const index = techFilter.indexOf(itemName)
+    if (index > -1) {
+      nextState.splice(index, 1)
+      setTechFilter(nextState)
+    } else {
+      nextState.push(itemName)
+      setTechFilter(nextState)
+    }
+    setToggleAllSkills(0)
+  }
+
+  useEffect(() => {
+    const nextArray = []
+    posts.map(({ node }) => {
+      let techItems = node.frontmatter.skillsused.split(", ")
+      techItems = techItems.concat(node.frontmatter.skillslearned.split(", "))
+      techItems = techItems.concat(node.frontmatter.softskills.split(", "))
+      techItems.map((item) => {
+        if (item && !nextArray.includes(item)) {
+          nextArray.push(item)
+        }
+      })
+    })
+    setTechArray(nextArray)
+    setTechFilter(nextArray)
+  }, [])
+
+
+  console.log(techFilter)
 
   return (
     <Layout>
@@ -87,11 +128,37 @@ const BlogIndex = ({ data }: PageProps<Data>) => {
           label="Tech Learned"
           onChange={makeChangeShownFunc}
         />
+        <button style={{ display: "inline-block", textAlign: "right" }} onClick={() => {
+          setSkillsFilterShown(!skillsFilterShown)
+        }}>{skillsFilterShown ? "Hide Filter" : "Show Skills Filter"}</button>
+        {skillsFilterShown && <div>
+          <button onClick={() => {
+            setToggleAllSkills(toggleButton ? 1 : 2)
+            setTechFilter(toggleButton ? techArray : [])
+            setToggleButton(!toggleButton)
+          }}>{toggleButton ? "Select All" : "Clear All"}</button>
+          {techArray.map((itemName) => {
+            return (
+              <FilterCheckbox itemName={itemName} key={itemName} onChange={(itemName) => { toggleFilter(itemName) }} checkState={toggleAllSkills} />
+            )
+          })}
+        </div>}
       </small>
       {posts.map(({ node }) => {
         const org = node.frontmatter.organization
         const postType = node.frontmatter.type || "organization"
-        if (postType === "organization") {
+        let skillArray = node.frontmatter.skillsused.split(", ")
+        skillArray = skillArray.concat(node.frontmatter.skillslearned.split(", "))
+        skillArray = skillArray.concat(node.frontmatter.softskills.split(", "))
+        let filtered = true
+        for (let item in skillArray) {
+          console.log(skillArray[item])
+          if (techFilter.includes(skillArray[item])) {
+            filtered = false
+            break
+          }
+        }
+        if (postType === "organization" && !filtered) {
           return (
             <AccordionOrg
               key={node.fields.slug}

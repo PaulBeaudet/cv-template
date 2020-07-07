@@ -8,7 +8,7 @@ import React from "react"
 const Dropdown = ({ options, name, label, onChange }) => {
   const listProperty: string = name.replace(/\s/g, "").toLowerCase()
   return (
-    <small>
+    <>
       <label htmlFor={name}> {label} </label>
       <select
         id={name}
@@ -24,7 +24,7 @@ const Dropdown = ({ options, name, label, onChange }) => {
           )
         })}
       </select>
-    </small>
+    </>
   )
 }
 
