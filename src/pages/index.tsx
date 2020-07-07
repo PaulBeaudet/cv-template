@@ -61,7 +61,7 @@ const BlogIndex = ({ data }: PageProps<Data>) => {
   return (
     <Layout>
       <SEO title="All posts" />
-      <span>Options |</span>
+      <span>Filter |</span>
       <small>
         <Dropdown
           options={infoOptions}

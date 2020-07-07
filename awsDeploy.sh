@@ -19,7 +19,7 @@
 
 #-------------deployment----------------
 echo "starting website build from scratch"
-gastby clean   # Seems like old files stick around otherwise?
+gatsby clean   # Seems like old files stick around otherwise?
 echo "building website"
 gatsby build
 

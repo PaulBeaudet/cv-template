@@ -8,6 +8,7 @@ module.exports = {
       contactLink: `https://contactpaul.deabute.com`,
     },
     description: `${process.env.DESCRIPTION_AUTHOR}`,
+    siteUrl: `${process.env.SITE_URL}`,
     social: {
       contact: ``
     }
@@ -74,13 +75,7 @@ module.exports = {
         url: "https://api.github.com/graphql",
         headers: {
           Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
-        },
-        // headers: async () => {
-        //   return {
-        //     Authorization: await getAuthorizationToken(),
-        //   }
-        // },
-        // fetchOptions: {},
+        }
       }
     }
   ]
