@@ -129,8 +129,17 @@ const BlogIndex = ({ data }: PageProps<Data>) => {
           onChange={makeChangeShownFunc}
         />
         <button style={{ display: "inline-block", textAlign: "right" }} onClick={() => {
+          if (skillsFilterShown) {
+            setTechFilter(techArray)
+            setToggleAllSkills(2)
+            setToggleButton(true)
+          } else {
+            setTechFilter([])
+            setToggleAllSkills(2)
+            setToggleButton(true)
+          }
           setSkillsFilterShown(!skillsFilterShown)
-        }}>{skillsFilterShown ? "Hide Filter" : "Show Skills Filter"}</button>
+        }}>{skillsFilterShown ? "Remove Filter" : "Add Skills Filter"}</button>
         {skillsFilterShown && <div>
           <button onClick={() => {
             setToggleAllSkills(toggleButton ? 1 : 2)
