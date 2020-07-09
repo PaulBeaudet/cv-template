@@ -1,7 +1,9 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { graphql, useStaticQuery } from "gatsby"
 
 import AccordionFold from "./accordionFold"
+import { Data, Node } from "./markdownTypes"
+import { filterProp, filteredIn } from "./skillFilter"
 
 interface props {
   list: string
@@ -12,6 +14,7 @@ interface props {
     roles: string
     info: string
   }
+  filter?: filterProp
 }
 
 interface showingItemType {
@@ -21,42 +24,16 @@ interface showingItemType {
 }
 
 type showArray = showingItemType[]
-
-interface data {
-  allMarkdownRemark: {
-    edges: {
-      node: {
-        fields: {
-          slug: string
-        }
-        html: string
-        frontmatter: {
-          type: string
-          organization: string
-          role: string
-          projects: string
-          startdate: string
-          enddate: string
-          link: string
-          summary: string
-        }
-      }
-    }[]
-  }
-}
-
 type nameFunc = (name: string) => void
-{
-}
 type voidFuncFunc = (func: nameFunc) => void
-{
-}
+
 
 const ListFold: React.FC<props> = ({
   list,
   organization,
   listType,
   showObj,
+  filter,
 }) => {
   // make sure list type follows frontmatter name convention, remove spaces / convert to lower case
   const [showingItems, setShowingItems] = useState<Array<showingItemType>>(
@@ -107,7 +84,7 @@ const ListFold: React.FC<props> = ({
     showingItems.length && showingItems[0].name ? true : false
   // query everything markdown opposed to just what is needed
   // this is a static site generated on build not dynamically at run time
-  const data: data = useStaticQuery(graphql`
+  const data: Data = useStaticQuery(graphql`
     query {
       allMarkdownRemark(
         sort: { fields: [frontmatter___startdate], order: DESC }
@@ -125,6 +102,9 @@ const ListFold: React.FC<props> = ({
               projects
               startdate(formatString: "MMMM DD, YYYY")
               enddate(formatString: "MMMM DD, YYYY")
+              skillsused
+              skillslearned
+              softskills
               link
               summary
             }
@@ -133,7 +113,13 @@ const ListFold: React.FC<props> = ({
       }
     }
   `)
-  const sections = data.allMarkdownRemark.edges // shorthand edges
+  const sections: { node: Node }[] = data.allMarkdownRemark.edges // shorthand edges
+  if (filter) {
+    useEffect(() => {
+      // console.log(filter.array)
+      // filter.builder(sections)
+    }, [])
+  }
 
   const findCorrectSections: voidFuncFunc = (
     onCorrectSection: nameFunc
@@ -184,7 +170,7 @@ const ListFold: React.FC<props> = ({
         <span style={{ marginLeft: ".75rem" }}>{listName}: </span>
       )}
       {showCapability === "summary" &&
-      hasItems && ( // so long as show all is unchecked & meaningful data exist
+        hasItems && ( // so long as show all is unchecked & meaningful data exist
           <small>
             {showingItems.map(
               (item: showingItemType): React.DetailedHTMLProps<any, any> => {
@@ -205,11 +191,11 @@ const ListFold: React.FC<props> = ({
                     <span style={{ marginRight: "0.5rem" }}> {item.name} </span>
                   </button>
                 ) : (
-                  <span key={item.name} style={{ marginRight: "0.5rem" }}>
-                    {" "}
-                    {item.name}{" "}
-                  </span>
-                )
+                    <span key={item.name} style={{ marginRight: "0.5rem" }}>
+                      {" "}
+                      {item.name}{" "}
+                    </span>
+                  )
               }
             )}
           </small>

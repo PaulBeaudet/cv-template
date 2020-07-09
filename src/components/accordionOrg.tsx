@@ -2,27 +2,20 @@ import React from "react"
 import { Link } from "gatsby"
 import Trifold from "./trifold"
 import ListFold from "./listFold"
+import { frontmatter, Node } from "./markdownTypes"
+import { filterProp } from "./skillFilter"
 
 interface props {
   title: string
   slug: string
-  frontmatter: {
-    enddate: string
-    roles: string
-    startdate: string
-    summary: string
-    organization: string
-    projects: string
-    skillslearned: string
-    skillsused: string
-    softskills: string
-  }
+  frontmatter: frontmatter
   html: string
   shown: {
     roles: string
     projects: string
     info: string
   }
+  filter: filterProp
 }
 
 const AccordionOrg: React.FC<props> = ({
@@ -31,6 +24,7 @@ const AccordionOrg: React.FC<props> = ({
   frontmatter,
   html,
   shown,
+  filter,
 }) => {
   const {
     enddate,
@@ -61,12 +55,14 @@ const AccordionOrg: React.FC<props> = ({
         organization={organization}
         listType="Roles"
         showObj={shown}
+        filter={filter}
       />
       <ListFold
         list={projects}
         organization={organization}
         listType="Projects"
         showObj={shown}
+        filter={filter}
       />
       {skillsused && (
         <ListFold

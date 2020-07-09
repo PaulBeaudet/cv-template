@@ -11,9 +11,10 @@ export interface frontmatter {
   skillsused: string
   skillslearned: string
   softskills: string
+  link: string
 }
 
-export interface node {
+export interface Node {
   frontmatter: frontmatter
   fields: {
     slug: string
@@ -24,7 +25,7 @@ export interface node {
 export type Data = {
   allMarkdownRemark: {
     edges: {
-      node: node
+      node: Node
     }[]
   }
 }

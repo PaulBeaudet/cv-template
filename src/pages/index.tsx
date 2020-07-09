@@ -5,9 +5,8 @@ import Layout from "../components/layout"
 import SEO from "../components/seo"
 import AccordionOrg from "../components/accordionOrg"
 import Dropdown from "../components/dropdown"
-import FilterCheckbox from "../components/filterCheckBox"
-import { node, Data } from "../components/markdownTypes"
-import FilteredIn from "../components/filteredIn"
+import { Data, Node } from "../components/markdownTypes"
+import SkillFilter, { filteredIn, addToFilter } from "../components/skillFilter"
 
 interface showObj {
   roles: string
@@ -27,17 +26,10 @@ const BlogIndex = ({ data }: PageProps<Data>) => {
     skillslearned: skillsOptions[0],
   })
   // Items th are being filtered
-  const [techFilter, setTechFilter] = useState<Array<string>>([])
+  const [skillFilter, setSkillFilter] = useState<Array<string>>([])
   // Reference of items that can be filtered
-  const [techArray, setTechArray] = useState<Array<string>>([])
-  // state of if skills are being toggled, default, all skills checked, no skills checked 
-  const [toggleAllSkills, setToggleAllSkills] = useState<number>(0)
-  // State to track dialog of all on or off for filters
-  const [toggleButton, setToggleButton] = useState<boolean>(false)
-  // whether skills dialog is being shown or not
-  const [skillsFilterShown, setSkillsFilterShown] = useState<boolean>(false)
+  const [skillReference, setSkillReference] = useState<Array<string>>([])
 
-  const posts: { node: node }[] = data.allMarkdownRemark.edges // short cut edges
   const makeChangeShownFunc = (type: string) => {
     return (event: any): void => {
       const shownC = { ...shown }
@@ -45,37 +37,15 @@ const BlogIndex = ({ data }: PageProps<Data>) => {
       setShown(shownC)
     }
   }
-  const toggleFilter = (itemName: string): void => {
-    const nextState = [...techFilter]
-    const index = techFilter.indexOf(itemName)
-    if (index > -1) {
-      nextState.splice(index, 1)
-      setTechFilter(nextState)
-    } else {
-      nextState.push(itemName)
-      setTechFilter(nextState)
-    }
-    setToggleAllSkills(0)
-  }
 
-  const addToFilter = (sections) => {
-    const nextArray: Array<string> = techArray
-    sections.map(({ node }) => {
-      let techItems = node.frontmatter.skillsused.split(", ")
-      techItems = techItems.concat(node.frontmatter.skillslearned.split(", "))
-      techItems = techItems.concat(node.frontmatter.softskills.split(", "))
-      techItems.map((item) => {
-        if (item && !nextArray.includes(item)) {
-          nextArray.push(item)
-        }
-      })
-    })
-    setTechArray(nextArray)
-    setTechFilter(nextArray)
+  const posts = data.allMarkdownRemark.edges // short cut edges
+  const filterBuilder = (sections: { node: Node }[]): void => {
+    const filterBuild: Array<string> = addToFilter(sections, skillReference)
+    setSkillReference(filterBuild)
+    setSkillFilter(filterBuild)
   }
-
   useEffect(() => {
-    addToFilter(posts)
+    filterBuilder(posts)
   }, [])
 
   return (
@@ -107,33 +77,10 @@ const BlogIndex = ({ data }: PageProps<Data>) => {
           label="Tech Learned"
           onChange={makeChangeShownFunc}
         />
-        <button style={{ display: "inline-block", textAlign: "right" }} onClick={() => {
-          if (skillsFilterShown) {
-            setTechFilter(techArray)
-            setToggleAllSkills(2)
-            setToggleButton(true)
-          } else {
-            setTechFilter([])
-            setToggleAllSkills(2)
-            setToggleButton(true)
-          }
-          setSkillsFilterShown(!skillsFilterShown)
-        }}>{skillsFilterShown ? "Remove Filter" : "Add Skills Filter"}</button>
-        {skillsFilterShown && <div>
-          <button onClick={() => {
-            setToggleAllSkills(toggleButton ? 1 : 2)
-            setTechFilter(toggleButton ? techArray : [])
-            setToggleButton(!toggleButton)
-          }}>{toggleButton ? "Select All" : "Clear All"}</button>
-          {techArray.map((itemName) => {
-            return (
-              <FilterCheckbox itemName={itemName} key={itemName} onChange={(itemName) => { toggleFilter(itemName) }} checkState={toggleAllSkills} />
-            )
-          })}
-        </div>}
+        <SkillFilter skillFilter={skillFilter} refArray={skillReference} setSkillFilter={setSkillFilter} />
       </small>
       {posts.map(({ node }) => {
-        if (FilteredIn(techFilter, node.frontmatter)) {
+        if (filteredIn(skillFilter, node.frontmatter)) {
           return (
             <AccordionOrg
               key={node.fields.slug}
@@ -142,6 +89,10 @@ const BlogIndex = ({ data }: PageProps<Data>) => {
               frontmatter={node.frontmatter}
               html={node.html}
               shown={shown}
+              filter={{
+                array: skillFilter,
+                builder: filterBuilder,
+              }}
             />
           )
         }
