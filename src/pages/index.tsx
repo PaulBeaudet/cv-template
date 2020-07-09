@@ -74,11 +74,12 @@ const BlogIndex = ({ data }: PageProps<Data>) => {
         <SkillFilter skillFilter={skillFilter} refArray={skillReference} setSkillFilter={setSkillFilter} />
       </small>
       {posts.map(({ node }) => {
-        if (filteredIn(skillFilter, node.frontmatter)) {
+        const { organization, type } = node.frontmatter
+        if (type === "organization" && filteredIn(skillFilter, node.frontmatter)) {
           return (
             <div key={node.fields.slug}>
               <AccordionOrg
-                title={node.frontmatter.organization}
+                title={organization}
                 slug={node.fields.slug}
                 frontmatter={node.frontmatter}
                 html={node.html}
@@ -102,7 +103,6 @@ export default BlogIndex
 export const pageQuery = graphql`
   query {
     allMarkdownRemark(
-      filter: { frontmatter: { type: { eq: "organization" } } }
       sort: { fields: [frontmatter___enddate], order: DESC }
     ) {
       edges {
@@ -122,6 +122,7 @@ export const pageQuery = graphql`
             skillsused
             skillslearned
             softskills
+            link
           }
         }
       }

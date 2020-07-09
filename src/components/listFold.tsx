@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import { graphql, useStaticQuery } from "gatsby"
 
 import AccordionFold from "./accordionFold"
-import { Data, Node } from "./markdownTypes"
+import { Node } from "./markdownTypes"
 import { filterProp, filteredIn } from "./skillFilter"
 import { showObj } from "./dropdown"
 
@@ -11,6 +11,9 @@ interface props {
   organization: string
   listType: string
   showObj: showObj
+  sections: {
+    node: Node
+  }[]
   filter?: filterProp
 }
 
@@ -30,6 +33,7 @@ const ListFold: React.FC<props> = ({
   organization,
   listType,
   showObj,
+  sections,
   filter,
 }) => {
   // make sure list type follows frontmatter name convention, remove spaces / convert to lower case
@@ -81,36 +85,6 @@ const ListFold: React.FC<props> = ({
     showingItems.length && showingItems[0].name ? true : false
   // query everything markdown opposed to just what is needed
   // this is a static site generated on build not dynamically at run time
-  const data: Data = useStaticQuery(graphql`
-    query {
-      allMarkdownRemark(
-        sort: { fields: [frontmatter___startdate], order: DESC }
-      ) {
-        edges {
-          node {
-            fields {
-              slug
-            }
-            html
-            frontmatter {
-              type
-              organization
-              roles
-              projects
-              startdate(formatString: "MMMM DD, YYYY")
-              enddate(formatString: "MMMM DD, YYYY")
-              skillsused
-              skillslearned
-              softskills
-              link
-              summary
-            }
-          }
-        }
-      }
-    }
-  `)
-  const sections: { node: Node }[] = data.allMarkdownRemark.edges // shorthand edges
   if (filter) {
     useEffect(() => {
       // console.log(filter.array)

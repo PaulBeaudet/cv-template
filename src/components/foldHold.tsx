@@ -25,7 +25,9 @@ const FoldHold: React.FC<props> = ({ orgFrontmatter, allSections, showObj }) => 
             organization={organization}
             list={orgFrontmatter[foldProp]}
             listType={foldType}
-            showObj={showObj} />
+            showObj={showObj}
+            sections={allSections}
+          />
         )
       })}
     </>
