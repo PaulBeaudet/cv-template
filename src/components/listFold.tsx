@@ -4,16 +4,13 @@ import { graphql, useStaticQuery } from "gatsby"
 import AccordionFold from "./accordionFold"
 import { Data, Node } from "./markdownTypes"
 import { filterProp, filteredIn } from "./skillFilter"
+import { showObj } from "./dropdown"
 
 interface props {
   list: string
   organization: string
   listType: string
-  showObj: {
-    projects: string
-    roles: string
-    info: string
-  }
+  showObj: showObj
   filter?: filterProp
 }
 

@@ -1,9 +1,7 @@
 import React from "react"
 import { Link } from "gatsby"
 import Trifold from "./trifold"
-import ListFold from "./listFold"
 import { frontmatter, Node } from "./markdownTypes"
-import { filterProp } from "./skillFilter"
 
 interface props {
   title: string
@@ -15,7 +13,6 @@ interface props {
     projects: string
     info: string
   }
-  filter: filterProp
 }
 
 const AccordionOrg: React.FC<props> = ({
@@ -24,18 +21,11 @@ const AccordionOrg: React.FC<props> = ({
   frontmatter,
   html,
   shown,
-  filter,
 }) => {
   const {
     enddate,
-    roles,
     startdate,
     summary,
-    organization,
-    projects,
-    skillslearned,
-    skillsused,
-    softskills,
   } = frontmatter
   const endTxt: string =
     enddate === "Invalid date" ? " " : " to " + enddate + " "
@@ -50,44 +40,6 @@ const AccordionOrg: React.FC<props> = ({
       </h5>
       <small style={{ marginLeft: 0 }}>{startdate + endTxt} </small>
       <Trifold html={html} summary={summary} show={shown.info} />
-      <ListFold
-        list={roles}
-        organization={organization}
-        listType="Roles"
-        showObj={shown}
-        filter={filter}
-      />
-      <ListFold
-        list={projects}
-        organization={organization}
-        listType="Projects"
-        showObj={shown}
-        filter={filter}
-      />
-      {skillsused && (
-        <ListFold
-          list={skillsused}
-          organization={organization}
-          listType="Skills Used"
-          showObj={shown}
-        />
-      )}
-      {skillslearned && (
-        <ListFold
-          list={skillslearned}
-          organization={organization}
-          listType="Skills Learned"
-          showObj={shown}
-        />
-      )}
-      {softskills && (
-        <ListFold
-          list={softskills}
-          organization={organization}
-          listType="Soft Skills"
-          showObj={shown}
-        />
-      )}
     </article>
   )
 }

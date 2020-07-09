@@ -1,11 +1,13 @@
 import React from "react"
 
-// interface props {
-//   options: Array<string>
-//   onChange:(e: any):void =>{}
-// }
+interface props {
+  options: Array<string>
+  name: string
+  label: string
+  onChange: any //(event: any)=>void
+}
 
-const Dropdown = ({ options, name, label, onChange }) => {
+const Dropdown: React.FC<props> = ({ options, name, label, onChange }) => {
   const listProperty: string = name.replace(/\s/g, "").toLowerCase()
   return (
     <>
@@ -26,6 +28,12 @@ const Dropdown = ({ options, name, label, onChange }) => {
       </select>
     </>
   )
+}
+export interface showObj {
+  roles: string
+  projects: string
+  info: string
+  skillslearned: string
 }
 
 export default Dropdown

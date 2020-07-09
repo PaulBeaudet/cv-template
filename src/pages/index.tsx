@@ -4,16 +4,10 @@ import { PageProps, graphql } from "gatsby"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import AccordionOrg from "../components/accordionOrg"
-import Dropdown from "../components/dropdown"
+import Dropdown, { showObj } from "../components/dropdown"
 import { Data, Node } from "../components/markdownTypes"
 import SkillFilter, { filteredIn, addToFilter } from "../components/skillFilter"
-
-interface showObj {
-  roles: string
-  projects: string
-  info: string
-  skillslearned: string
-}
+import FoldHold from "../components/foldHold"
 
 const BlogIndex = ({ data }: PageProps<Data>) => {
   const infoOptions: Array<string> = ["summary", "details", "hide"]
@@ -82,18 +76,20 @@ const BlogIndex = ({ data }: PageProps<Data>) => {
       {posts.map(({ node }) => {
         if (filteredIn(skillFilter, node.frontmatter)) {
           return (
-            <AccordionOrg
-              key={node.fields.slug}
-              title={node.frontmatter.organization}
-              slug={node.fields.slug}
-              frontmatter={node.frontmatter}
-              html={node.html}
-              shown={shown}
-              filter={{
-                array: skillFilter,
-                builder: filterBuilder,
-              }}
-            />
+            <div key={node.fields.slug}>
+              <AccordionOrg
+                title={node.frontmatter.organization}
+                slug={node.fields.slug}
+                frontmatter={node.frontmatter}
+                html={node.html}
+                shown={shown}
+              />
+              <FoldHold
+                orgFrontmatter={node.frontmatter}
+                allSections={posts}
+                showObj={shown}
+              />
+            </div>
           )
         }
       })}
