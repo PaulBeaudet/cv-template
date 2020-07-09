@@ -6,7 +6,7 @@ import SEO from "../components/seo"
 import AccordionOrg from "../components/accordionOrg"
 import Dropdown, { showObj } from "../components/dropdown"
 import { Data, Node } from "../components/markdownTypes"
-import SkillFilter, { filteredIn, addToFilter } from "../components/skillFilter"
+import SkillFilter, { filteredIn, addToFilter, inChildOrOrg } from "../components/skillFilter"
 import FoldHold from "../components/foldHold"
 
 const BlogIndex = ({ data }: PageProps<Data>) => {
@@ -75,7 +75,7 @@ const BlogIndex = ({ data }: PageProps<Data>) => {
       </small>
       {posts.map(({ node }) => {
         const { organization, type } = node.frontmatter
-        if (type === "organization" && filteredIn(skillFilter, node.frontmatter)) {
+        if (type === "organization" && inChildOrOrg(skillFilter, node.frontmatter, posts)) {
           return (
             <div key={node.fields.slug}>
               <AccordionOrg

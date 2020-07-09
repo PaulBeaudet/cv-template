@@ -87,6 +87,23 @@ export const filteredIn = (comparisonArray: Array<string>, frontmatter: frontmat
   return false
 }
 
+export const inChildOrOrg = (comparisonArray: Array<string>, frontmatter: frontmatter, sections: { node: Node }[]): boolean => {
+  // first if parent has this attribute just return true
+  if (filteredIn(comparisonArray, frontmatter)) {
+    return true
+  }
+  // check if children have one of the filter attributes
+  for (let node in sections) {
+    const { type, organization } = sections[node].node.frontmatter
+    if (type !== "organization" && organization === frontmatter.organization) {
+      if (filteredIn(comparisonArray, sections[node].node.frontmatter)) {
+        return true
+      }
+    }
+  }
+  return false
+}
+
 export interface filterProp {
   array: Array<string>
   builder: (sections: { node: Node }[]) => void
