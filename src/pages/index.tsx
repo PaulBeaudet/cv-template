@@ -6,35 +6,8 @@ import SEO from "../components/seo"
 import AccordionOrg from "../components/accordionOrg"
 import Dropdown from "../components/dropdown"
 import FilterCheckbox from "../components/filterCheckBox"
-
-interface frontmatter {
-  projects: string
-  organization: string
-  startdate: string
-  enddate: string
-  summary: string
-  roles: string
-  type: string
-  skillsused: string
-  skillslearned: string
-  softskills: string
-}
-
-interface node {
-  frontmatter: frontmatter
-  fields: {
-    slug: string
-  }
-  html: string
-}
-
-type Data = {
-  allMarkdownRemark: {
-    edges: {
-      node: node
-    }[]
-  }
-}
+import { node, Data } from "../components/markdownTypes"
+import FilteredIn from "../components/filteredIn"
 
 interface showObj {
   roles: string
@@ -53,10 +26,15 @@ const BlogIndex = ({ data }: PageProps<Data>) => {
     info: infoOptions[0],
     skillslearned: skillsOptions[0],
   })
+  // Items th are being filtered
   const [techFilter, setTechFilter] = useState<Array<string>>([])
+  // Reference of items that can be filtered
   const [techArray, setTechArray] = useState<Array<string>>([])
+  // state of if skills are being toggled, default, all skills checked, no skills checked 
   const [toggleAllSkills, setToggleAllSkills] = useState<number>(0)
+  // State to track dialog of all on or off for filters
   const [toggleButton, setToggleButton] = useState<boolean>(false)
+  // whether skills dialog is being shown or not
   const [skillsFilterShown, setSkillsFilterShown] = useState<boolean>(false)
 
   const posts: { node: node }[] = data.allMarkdownRemark.edges // short cut edges
@@ -80,9 +58,9 @@ const BlogIndex = ({ data }: PageProps<Data>) => {
     setToggleAllSkills(0)
   }
 
-  useEffect(() => {
-    const nextArray = []
-    posts.map(({ node }) => {
+  const addToFilter = (sections) => {
+    const nextArray: Array<string> = techArray
+    sections.map(({ node }) => {
       let techItems = node.frontmatter.skillsused.split(", ")
       techItems = techItems.concat(node.frontmatter.skillslearned.split(", "))
       techItems = techItems.concat(node.frontmatter.softskills.split(", "))
@@ -94,10 +72,11 @@ const BlogIndex = ({ data }: PageProps<Data>) => {
     })
     setTechArray(nextArray)
     setTechFilter(nextArray)
+  }
+
+  useEffect(() => {
+    addToFilter(posts)
   }, [])
-
-
-  console.log(techFilter)
 
   return (
     <Layout>
@@ -154,20 +133,7 @@ const BlogIndex = ({ data }: PageProps<Data>) => {
         </div>}
       </small>
       {posts.map(({ node }) => {
-        const org = node.frontmatter.organization
-        const postType = node.frontmatter.type || "organization"
-        let skillArray = node.frontmatter.skillsused.split(", ")
-        skillArray = skillArray.concat(node.frontmatter.skillslearned.split(", "))
-        skillArray = skillArray.concat(node.frontmatter.softskills.split(", "))
-        let filtered = true
-        for (let item in skillArray) {
-          console.log(skillArray[item])
-          if (techFilter.includes(skillArray[item])) {
-            filtered = false
-            break
-          }
-        }
-        if (postType === "organization" && !filtered) {
+        if (FilteredIn(techFilter, node.frontmatter)) {
           return (
             <AccordionOrg
               key={node.fields.slug}
