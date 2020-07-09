@@ -22,9 +22,10 @@ interface props {
   skillFilter: Array<string>
   refArray: Array<string>
   setSkillFilter: (newSelection: Array<string>) => void
+  toggleShow: (show: boolean) => void
 }
 
-const SkillFilter: React.FC<props> = ({ skillFilter, refArray, setSkillFilter }) => {
+const SkillFilter: React.FC<props> = ({ skillFilter, refArray, setSkillFilter, toggleShow }) => {
   // state of if skills are being toggled, default, all skills checked, no skills checked 
   const [toggleAllSkills, setToggleAllSkills] = useState<number>(0)
   // State to track dialog of all on or off for filters
@@ -51,10 +52,12 @@ const SkillFilter: React.FC<props> = ({ skillFilter, refArray, setSkillFilter })
           setSkillFilter(refArray)
           setToggleAllSkills(2)
           setToggleButton(true)
+          toggleShow(false)
         } else {
           setSkillFilter([])
           setToggleAllSkills(2)
           setToggleButton(true)
+          toggleShow(true)
         }
         setSkillsFilterShown(!skillsFilterShown)
       }}>{skillsFilterShown ? "Remove Filter" : "Add Skills Filter"}</button>

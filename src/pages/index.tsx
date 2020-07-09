@@ -6,7 +6,7 @@ import SEO from "../components/seo"
 import AccordionOrg from "../components/accordionOrg"
 import Dropdown, { showObj } from "../components/dropdown"
 import { Data, Node } from "../components/markdownTypes"
-import SkillFilter, { filteredIn, addToFilter, inChildOrOrg } from "../components/skillFilter"
+import SkillFilter, { addToFilter, inChildOrOrg } from "../components/skillFilter"
 import FoldHold from "../components/foldHold"
 
 const BlogIndex = ({ data }: PageProps<Data>) => {
@@ -30,6 +30,14 @@ const BlogIndex = ({ data }: PageProps<Data>) => {
       shownC[type] = event.target.value
       setShown(shownC)
     }
+  }
+
+  const toggleShowAll = (show: boolean): void => {
+    const indexToSelect = show ? 1 : 0
+    const shownC = { ...shown }
+    shownC.roles = listFoldOptions[indexToSelect]
+    shownC.projects = listFoldOptions[indexToSelect]
+    setShown(shownC)
   }
 
   const posts = data.allMarkdownRemark.edges // short cut edges
@@ -71,7 +79,12 @@ const BlogIndex = ({ data }: PageProps<Data>) => {
           label="Tech Learned"
           onChange={makeChangeShownFunc}
         />
-        <SkillFilter skillFilter={skillFilter} refArray={skillReference} setSkillFilter={setSkillFilter} />
+        <SkillFilter
+          skillFilter={skillFilter}
+          refArray={skillReference}
+          setSkillFilter={setSkillFilter}
+          toggleShow={toggleShowAll}
+        />
       </small>
       {posts.map(({ node }) => {
         const { organization, type } = node.frontmatter
