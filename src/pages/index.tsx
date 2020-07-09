@@ -89,6 +89,7 @@ const BlogIndex = ({ data }: PageProps<Data>) => {
                 orgFrontmatter={node.frontmatter}
                 allSections={posts}
                 showObj={shown}
+                skillsFilter={skillFilter}
               />
             </div>
           )

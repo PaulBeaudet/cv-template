@@ -3,7 +3,7 @@ import { graphql, useStaticQuery } from "gatsby"
 
 import AccordionFold from "./accordionFold"
 import { Node } from "./markdownTypes"
-import { filterProp, filteredIn } from "./skillFilter"
+import { filteredIn } from "./skillFilter"
 import { showObj } from "./dropdown"
 
 interface props {
@@ -14,7 +14,7 @@ interface props {
   sections: {
     node: Node
   }[]
-  filter?: filterProp
+  skillsFilter: Array<string>
 }
 
 interface showingItemType {
@@ -34,7 +34,7 @@ const ListFold: React.FC<props> = ({
   listType,
   showObj,
   sections,
-  filter,
+  skillsFilter,
 }) => {
   // make sure list type follows frontmatter name convention, remove spaces / convert to lower case
   const [showingItems, setShowingItems] = useState<Array<showingItemType>>(
@@ -85,12 +85,6 @@ const ListFold: React.FC<props> = ({
     showingItems.length && showingItems[0].name ? true : false
   // query everything markdown opposed to just what is needed
   // this is a static site generated on build not dynamically at run time
-  if (filter) {
-    useEffect(() => {
-      // console.log(filter.array)
-      // filter.builder(sections)
-    }, [])
-  }
 
   const findCorrectSections: voidFuncFunc = (
     onCorrectSection: nameFunc
@@ -183,7 +177,8 @@ const ListFold: React.FC<props> = ({
           node.frontmatter.type === listProperty.replace(/s$/, "")
         ) {
           if (
-            showingItems.filter(item => item.name === name && item.vis).length
+            showingItems.filter(item => item.name === name && item.vis).length &&
+            filteredIn(skillsFilter, node.frontmatter)
           ) {
             return (
               <AccordionFold

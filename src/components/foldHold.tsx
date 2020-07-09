@@ -9,9 +9,10 @@ interface props {
     node: Node
   }[]
   showObj: showObj
+  skillsFilter: Array<string>
 }
 
-const FoldHold: React.FC<props> = ({ orgFrontmatter, allSections, showObj }) => {
+const FoldHold: React.FC<props> = ({ orgFrontmatter, allSections, showObj, skillsFilter }) => {
   const foldTypes: Array<string> = ["Roles", "Projects", "Skills Used", "Skills Learned", "Soft Skills"]
   const { organization } = orgFrontmatter
 
@@ -27,6 +28,7 @@ const FoldHold: React.FC<props> = ({ orgFrontmatter, allSections, showObj }) => 
             listType={foldType}
             showObj={showObj}
             sections={allSections}
+            skillsFilter={skillsFilter}
           />
         )
       })}
