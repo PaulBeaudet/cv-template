@@ -2,12 +2,13 @@ import React from "react"
 
 interface props {
   options: Array<string>
+  stateValue: string
   name: string
   label: string
   onChange: any //(event: any)=>void
 }
 
-const Dropdown: React.FC<props> = ({ options, name, label, onChange }) => {
+const Dropdown: React.FC<props> = ({ options, stateValue, name, label, onChange }) => {
   const listProperty: string = name.replace(/\s/g, "").toLowerCase()
   return (
     <>
@@ -15,7 +16,7 @@ const Dropdown: React.FC<props> = ({ options, name, label, onChange }) => {
       <select
         id={name}
         name={name}
-        defaultValue={options[0]}
+        value={stateValue}
         onChange={onChange(listProperty)}
       >
         {options.map((item: string) => {
