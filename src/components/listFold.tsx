@@ -44,6 +44,7 @@ const ListFold: React.FC<props> = ({
     )
   )
   const listProperty: string = listType.replace(/\s/g, "").toLowerCase()
+  const nonPluralType: string = listProperty.replace(/s$/, "")
   // Last minute patching of improperly named headings
   let listName: string = listType === "Skills Used" ? "Tech Used" : listType
   listName = listType === "Skills Learned" ? "Tech Learned" : listName
@@ -96,7 +97,7 @@ const ListFold: React.FC<props> = ({
       // Be sure this is correct org of parent and type of fold element minus plural
       if (
         org === organization &&
-        node.frontmatter.type === listProperty.replace(/s$/, "")
+        node.frontmatter.type === nonPluralType
       ) {
         onCorrectSection(name)
       }
@@ -129,7 +130,7 @@ const ListFold: React.FC<props> = ({
     showState === "summary" || showState === "show all" ? true : false
   return (
     <div>
-      {hasItems && validShowState && (
+      {hasItems && validShowState && showCapability === "summary" && (
         <span style={{ marginLeft: ".75rem" }}>{listName}: </span>
       )}
       {showCapability === "summary" &&
@@ -172,7 +173,7 @@ const ListFold: React.FC<props> = ({
         // Be sure this is correct org of parent and type of fold element minus plural
         if (
           org === organization &&
-          node.frontmatter.type === listProperty.replace(/s$/, "")
+          node.frontmatter.type === nonPluralType
         ) {
           if (
             showingItems.filter(item => item.name === name && item.vis).length &&
@@ -186,6 +187,7 @@ const ListFold: React.FC<props> = ({
                 frontmatter={node.frontmatter}
                 html={node.html}
                 show={showObj.info}
+                type={listType.replace(/s$/, "")}
               />
             )
           }

@@ -2,18 +2,15 @@ import React from "react"
 import { Link, useStaticQuery, graphql } from "gatsby"
 
 import Trifold from "./trifold"
+import { frontmatter } from "./markdownTypes"
 
 interface props {
   title: string
   slug: string
-  frontmatter: {
-    enddate: string
-    startdate: string
-    summary: string
-    link: string
-  }
+  frontmatter: frontmatter
   html: string
   show: string
+  type: string
 }
 
 interface githubQuery {
@@ -45,6 +42,7 @@ const AccordionFold: React.FC<props> = ({
   frontmatter,
   html,
   show,
+  type,
 }) => {
   const { enddate, startdate, summary, link } = frontmatter
   const endTxt = enddate === "Invalid date" ? " " : " to " + enddate + " "
@@ -98,7 +96,7 @@ const AccordionFold: React.FC<props> = ({
     // maybe decern whether this is another type of link in future, they all github are now
     return (
       <small key={url} style={{ display: `inline` }}>
-        <span>: </span>
+        <span> </span>
         <a href={url}>github</a>
       </small>
     )
@@ -118,6 +116,7 @@ const AccordionFold: React.FC<props> = ({
           >
             {/* <Link style={{ boxShadow: `none` }} to={slug}>{title}</Link> */}
             {title}
+            <small><i> ({type})</i></small>
           </h5>
           {hasRepos && projectLinks.map(createLink)}
         </div>
