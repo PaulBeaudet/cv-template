@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react"
-import { graphql, useStaticQuery } from "gatsby"
 
 import AccordionFold from "./accordionFold"
 import { Node } from "./markdownTypes"
@@ -51,8 +50,7 @@ const ListFold: React.FC<props> = ({
   listName = listType === "Soft Skills" ? "Skills" : listName
   const showState: string = showObj.hasOwnProperty(listProperty)
     ? showObj[listProperty]
-    : "summary"
-  const [lastShowAll, setLastShowAll] = useState<string>(showState)
+    : "summary"  // assume summary if no parent state
   const [linksPainted, setPaintedLinks] = useState<boolean>(false)
   const [numberOfLinks, setNumberOfLinks] = useState<number>(0)
   // Action for toggling an item's visibility on button press
@@ -68,7 +66,7 @@ const ListFold: React.FC<props> = ({
   }
 
   // Determine if show all state has changed on render
-  if (showState !== lastShowAll) {
+  useEffect(() => {
     setShowingItems(
       showingItems.map(
         (item: showingItemType): showingItemType => {
@@ -78,8 +76,8 @@ const ListFold: React.FC<props> = ({
         }
       )
     )
-    setLastShowAll(showState)
-  }
+  }, [showObj, skillsFilter])
+
   // Determine if list is populated with meaningful data
   const hasItems: boolean =
     showingItems.length && showingItems[0].name ? true : false

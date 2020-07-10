@@ -44,32 +44,41 @@ const SkillFilter: React.FC<props> = ({ skillFilter, refArray, setSkillFilter, t
     }
     setToggleAllSkills(0)
   }
+  const toggleShowAll = (): void => {
+    setToggleAllSkills(toggleButton ? 1 : 2)
+    setSkillFilter(toggleButton ? refArray : [])
+    setToggleButton(!toggleButton)
+  }
+  const hideOrShowFilter = (): void => {
+    if (skillsFilterShown) {
+      setSkillFilter(refArray)
+      setToggleAllSkills(2)
+      setToggleButton(true)
+      toggleShow(false)
+    } else {
+      setSkillFilter([])
+      setToggleAllSkills(2)
+      setToggleButton(true)
+      toggleShow(true)
+    }
+    setSkillsFilterShown(!skillsFilterShown)
+  }
 
   return (
     <>
-      <button style={{ display: "inline-block", textAlign: "right" }} onClick={() => {
-        if (skillsFilterShown) {
-          setSkillFilter(refArray)
-          setToggleAllSkills(2)
-          setToggleButton(true)
-          toggleShow(false)
-        } else {
-          setSkillFilter([])
-          setToggleAllSkills(2)
-          setToggleButton(true)
-          toggleShow(true)
-        }
-        setSkillsFilterShown(!skillsFilterShown)
-      }}>{skillsFilterShown ? "Remove Filter" : "Add Skills Filter"}</button>
+      <button style={{ display: "inline-block", textAlign: "right" }} onClick={hideOrShowFilter}>
+        {skillsFilterShown ? "Remove Filter" : "Add Skills Filter"}
+      </button>
       {skillsFilterShown && <div>
-        <button onClick={() => {
-          setToggleAllSkills(toggleButton ? 1 : 2)
-          setSkillFilter(toggleButton ? refArray : [])
-          setToggleButton(!toggleButton)
-        }}>{toggleButton ? "Select All" : "Clear All"}</button>
+        <button onClick={toggleShowAll}>{toggleButton ? "Select All" : "Clear All"}</button>
         {refArray.map((itemName) => {
           return (
-            <FilterCheckbox itemName={itemName} key={itemName} onChange={(itemName) => { toggleFilter(itemName) }} checkState={toggleAllSkills} />
+            <FilterCheckbox
+              itemName={itemName}
+              key={itemName}
+              onChange={toggleFilter}
+              checkState={toggleAllSkills}
+            />
           )
         })}
       </div>}
