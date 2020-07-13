@@ -18,6 +18,10 @@
 #------------Set up process----------------
 
 #-------------deployment----------------
+echo "stopping any development stuff that is going on"
+processid=`ps aux | grep "gatsby develop" | grep "node" | awk '{print $2}'`
+[ "$processid" ] && kill -9 $processid
+# Want to avoid throwing a bunch of erros while we blow away the cache that dev is using
 echo "starting website build from scratch"
 gatsby clean   # Seems like old files stick around otherwise?
 echo "building website"
