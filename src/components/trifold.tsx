@@ -4,9 +4,10 @@ interface props {
   html: string
   summary: string
   show: string
+  children?: any
 }
 
-const Trifold: React.FC<props> = ({ html, summary, show }) => {
+const Trifold: React.FC<props> = ({ html, summary, show, children }) => {
   let globFold: number = 0 // Global fold type representation
   // convert fold name to number type
   if (show !== "hide") {
@@ -72,6 +73,8 @@ const Trifold: React.FC<props> = ({ html, summary, show }) => {
           {foldType(folded)}
         </button>
       </small>
+      <br></br>
+      {children}
       {foldContents(folded)}
     </>
   )

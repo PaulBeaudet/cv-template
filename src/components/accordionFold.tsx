@@ -95,33 +95,29 @@ const AccordionFold: React.FC<props> = ({
   const createLink = (url: string): React.DetailedHTMLProps<any, any> => {
     // maybe decern whether this is another type of link in future, they all github are now
     return (
-      <small key={url} style={{ display: `inline` }}>
-        <span> </span>
-        <a href={url}>github</a>
-      </small>
+      <small key={url}> <a href={url}>github</a></small>
     )
   }
 
   return (
     <article style={{ marginLeft: "1.5rem" }} key={slug}>
       <header>
-        <div>
-          <h5
-            style={{
-              marginTop: ".2rem",
-              marginRight: ".2rem",
-              marginBottom: 0,
-              display: `inline`,
-            }}
-          >
-            {/* <Link style={{ boxShadow: `none` }} to={slug}>{title}</Link> */}
-            {title}
-            <small><i> ({type})</i></small>
-          </h5>
+        <h5
+          style={{
+            marginTop: ".2rem",
+            marginRight: ".2rem",
+            marginBottom: 0,
+            display: "inline-block",
+          }}
+        >
+          {/* <Link style={{ boxShadow: `none` }} to={slug}>{title}</Link> */}
+          {title}
+          <small><i> ({type}) </i></small>
+        </h5>
+        <Trifold html={html} summary={summary} show={show}>
+          <small>{startdate + endTxt}</small>
           {hasRepos && projectLinks.map(createLink)}
-        </div>
-        <small>{startdate + endTxt}</small>
-        <Trifold html={html} summary={summary} show={show} />
+        </Trifold>
       </header>
     </article>
   )

@@ -32,14 +32,16 @@ const AccordionOrg: React.FC<props> = ({
 
   return (
     <article key={slug}>
-      <h5 style={{ marginTop: "0.5rem", marginBottom: 0 }}>
+      <h5 style={{ marginTop: "0.5rem", marginBottom: 0, display: "inline-block" }}>
         {/* <Link style={{ boxShadow: `none` }} to={slug}>
           {title}
         </Link> */}
         {title}
       </h5>
-      <small style={{ marginLeft: 0 }}>{startdate + endTxt} </small>
-      <Trifold html={html} summary={summary} show={shown.info} />
+      <span> </span>
+      <Trifold html={html} summary={summary} show={shown.info}>
+        <small style={{ marginLeft: 0 }}>{startdate + endTxt} </small>
+      </Trifold>
     </article>
   )
 }
