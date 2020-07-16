@@ -4,10 +4,11 @@ import { PageProps, graphql } from "gatsby"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import AccordionOrg from "../components/accordionOrg"
-import Dropdown, { showObj } from "../components/dropdown"
+import { showObj } from "../components/dropdown"
 import { Data, Node } from "../components/markdownTypes"
-import SkillFilter, { addToFilter, inChildOrOrg } from "../components/skillFilter"
+import { addToFilter, inChildOrOrg } from "../components/skillFilter"
 import FoldHold from "../components/foldHold"
+import FilterBar from "../components/filterBar"
 
 const BlogIndex = ({ data }: PageProps<Data>) => {
   const infoOptions: Array<string> = ["summary", "details", "hide"]
@@ -53,43 +54,17 @@ const BlogIndex = ({ data }: PageProps<Data>) => {
   return (
     <Layout>
       <SEO title="All posts" />
-      <span>Filter |</span>
-      <small>
-        <Dropdown
-          options={infoOptions}
-          stateValue={shown.info}
-          name="Info"
-          label="Text"
-          onChange={makeChangeShownFunc}
-        />
-        <Dropdown
-          options={listFoldOptions}
-          stateValue={shown.roles}
-          name="Roles"
-          label="Roles"
-          onChange={makeChangeShownFunc}
-        />
-        <Dropdown
-          options={listFoldOptions}
-          stateValue={shown.projects}
-          name="Projects"
-          label="Projects"
-          onChange={makeChangeShownFunc}
-        />
-        <Dropdown
-          options={skillsOptions}
-          stateValue={shown.skillslearned}
-          name="Skills Learned"
-          label="Tech Learned"
-          onChange={makeChangeShownFunc}
-        />
-        <SkillFilter
-          skillFilter={skillFilter}
-          refArray={skillReference}
-          setSkillFilter={setSkillFilter}
-          toggleShow={toggleShowAll}
-        />
-      </small>
+      <FilterBar
+        shown={shown}
+        setShown={makeChangeShownFunc}
+        infoOptions={infoOptions}
+        listFoldOptions={listFoldOptions}
+        skillsOptions={skillsOptions}
+        skillFilter={skillFilter}
+        skillReference={skillReference}
+        setSkillFilter={setSkillFilter}
+        toggleShowAll={toggleShowAll}
+      />
       {posts.map(({ node }) => {
         const { organization, type } = node.frontmatter
         if (type === "organization" && inChildOrOrg(skillFilter, node.frontmatter, posts)) {
