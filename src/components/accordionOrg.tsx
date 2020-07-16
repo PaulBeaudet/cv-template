@@ -28,7 +28,7 @@ const AccordionOrg: React.FC<props> = ({
     summary,
   } = frontmatter
   const endTxt: string =
-    enddate === "Invalid date" ? " " : " to " + enddate + " "
+    enddate === "Invalid date" ? " to current " : " to " + enddate + " "
 
   return (
     <article key={slug}>

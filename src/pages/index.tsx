@@ -121,7 +121,7 @@ export default BlogIndex
 export const pageQuery = graphql`
   query {
     allMarkdownRemark(
-      sort: { fields: [frontmatter___enddate], order: DESC }
+      sort: { fields: [frontmatter___startdate], order: DESC }
     ) {
       edges {
         node {

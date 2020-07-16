@@ -45,7 +45,7 @@ const AccordionFold: React.FC<props> = ({
   type,
 }) => {
   const { enddate, startdate, summary, link } = frontmatter
-  const endTxt = enddate === "Invalid date" ? " " : " to " + enddate + " "
+  const endTxt = enddate === "Invalid date" ? " to current" : " to " + enddate + " "
 
   const data: githubQuery = useStaticQuery(graphql`
     query {
