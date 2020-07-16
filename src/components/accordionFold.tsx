@@ -3,13 +3,14 @@ import { Link, useStaticQuery, graphql } from "gatsby"
 
 import Trifold from "./trifold"
 import { frontmatter } from "./markdownTypes"
+import { showObj } from "./dropdown"
 
 interface props {
   title: string
   slug: string
   frontmatter: frontmatter
   html: string
-  show: string
+  showObj: showObj
   type: string
 }
 
@@ -41,7 +42,7 @@ const AccordionFold: React.FC<props> = ({
   slug,
   frontmatter,
   html,
-  show,
+  showObj,
   type,
 }) => {
   const { enddate, startdate, summary, link } = frontmatter
@@ -114,8 +115,8 @@ const AccordionFold: React.FC<props> = ({
           {title}
           <small><i> ({type}) </i></small>
         </h5>
-        <Trifold html={html} summary={summary} show={show}>
-          <small>{startdate + endTxt}</small>
+        <Trifold html={html} summary={summary} show={showObj.info}>
+          {showObj.dates && <small>{startdate + endTxt}</small>}
           {hasRepos && projectLinks.map(createLink)}
         </Trifold>
       </header>

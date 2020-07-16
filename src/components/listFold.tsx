@@ -186,7 +186,7 @@ const ListFold: React.FC<props> = ({
                 slug={node.fields.slug}
                 frontmatter={node.frontmatter}
                 html={node.html}
-                show={showObj.info}
+                showObj={showObj}
                 type={listType.replace(/s$/, "")}
               />
             )

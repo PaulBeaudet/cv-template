@@ -1,18 +1,15 @@
 import React from "react"
 import { Link } from "gatsby"
 import Trifold from "./trifold"
-import { frontmatter, Node } from "./markdownTypes"
+import { frontmatter } from "./markdownTypes"
+import { showObj } from "./dropdown"
 
 interface props {
   title: string
   slug: string
   frontmatter: frontmatter
   html: string
-  shown: {
-    roles: string
-    projects: string
-    info: string
-  }
+  shown: showObj
 }
 
 const AccordionOrg: React.FC<props> = ({
@@ -40,7 +37,7 @@ const AccordionOrg: React.FC<props> = ({
       </h5>
       <span> </span>
       <Trifold html={html} summary={summary} show={shown.info}>
-        <small style={{ marginLeft: 0 }}>{startdate + endTxt} </small>
+        {shown.dates && <small style={{ marginLeft: 0 }}>{startdate + endTxt} </small>}
       </Trifold>
     </article>
   )

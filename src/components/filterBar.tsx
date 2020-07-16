@@ -2,10 +2,11 @@ import React from "react"
 
 import Dropdown, { showObj } from "./dropdown"
 import SkillFilter from "./skillFilter"
+import FilterCheckbox from "./filterCheckBox"
 
 interface props {
   shown: showObj,
-  setShown: (type: string) => {}
+  setShown: any
   infoOptions: Array<string>
   listFoldOptions: Array<string>
   skillsOptions: Array<string>
@@ -63,6 +64,17 @@ const FilterBar: React.FC<props> = ({
         refArray={skillReference}
         setSkillFilter={setSkillFilter}
         toggleShow={toggleShowAll}
+      />
+      <FilterCheckbox
+        itemName="Show Dates"
+        onChange={(itemName) => {
+          setShown("dates")({
+            target: {
+              value: !shown.dates
+            }
+          })
+        }}
+        checkState={1}
       />
     </small>
   )

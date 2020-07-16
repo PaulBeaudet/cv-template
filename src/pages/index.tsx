@@ -19,6 +19,7 @@ const BlogIndex = ({ data }: PageProps<Data>) => {
     projects: listFoldOptions[0],
     info: infoOptions[0],
     skillslearned: skillsOptions[0],
+    dates: true
   })
   // Items th are being filtered
   const [skillFilter, setSkillFilter] = useState<Array<string>>([])

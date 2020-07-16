@@ -35,6 +35,7 @@ export interface showObj {
   projects: string
   info: string
   skillslearned: string
+  dates: boolean
 }
 
 export default Dropdown
