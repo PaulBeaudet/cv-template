@@ -74,7 +74,7 @@ const FilterBar: React.FC<props> = ({
             }
           })
         }}
-        checkState={1}
+        checkState={shown.dates ? 1 : 2}
       />
     </small>
   )

@@ -1,44 +1,34 @@
 import React from "react"
 import { Link } from "gatsby"
 import Trifold from "./trifold"
-import { frontmatter } from "./markdownTypes"
-import { showObj } from "./dropdown"
+import { Node } from "./markdownTypes"
 
 interface props {
-  title: string
-  slug: string
-  frontmatter: frontmatter
-  html: string
-  shown: showObj
+  node: Node
+  children?: any
 }
 
 const AccordionOrg: React.FC<props> = ({
-  title,
-  slug,
-  frontmatter,
-  html,
-  shown,
+  node,
+  children,
 }) => {
   const {
     enddate,
-    startdate,
-    summary,
-  } = frontmatter
+    organization,
+  } = node.frontmatter
   const endTxt: string =
     enddate === "Invalid date" ? " to current " : " to " + enddate + " "
 
   return (
-    <article key={slug}>
+    <article key={node.fields.slug}>
       <h5 style={{ marginTop: "0.5rem", marginBottom: 0, display: "inline-block" }}>
         {/* <Link style={{ boxShadow: `none` }} to={slug}>
           {title}
         </Link> */}
-        {title}
+        {organization}
       </h5>
       <span> </span>
-      <Trifold html={html} summary={summary} show={shown.info}>
-        {shown.dates && <small style={{ marginLeft: 0 }}>{startdate + endTxt} </small>}
-      </Trifold>
+      {children}
     </article>
   )
 }

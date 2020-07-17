@@ -29,3 +29,7 @@ export type Data = {
     }[]
   }
 }
+
+export const convertEndDate = (enddate: string): string => {
+  return enddate === "Invalid date" ? " to current " : " to " + enddate + " "
+}

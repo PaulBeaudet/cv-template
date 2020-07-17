@@ -5,10 +5,11 @@ import Layout from "../components/layout"
 import SEO from "../components/seo"
 import AccordionOrg from "../components/accordionOrg"
 import { showObj } from "../components/dropdown"
-import { Data, Node } from "../components/markdownTypes"
+import { Data, Node, convertEndDate } from "../components/markdownTypes"
 import { addToFilter, inChildOrOrg } from "../components/skillFilter"
 import FoldHold from "../components/foldHold"
 import FilterBar from "../components/filterBar"
+import Trifold from "../components/trifold"
 
 const BlogIndex = ({ data }: PageProps<Data>) => {
   const infoOptions: Array<string> = ["summary", "details", "hide"]
@@ -19,7 +20,7 @@ const BlogIndex = ({ data }: PageProps<Data>) => {
     projects: listFoldOptions[0],
     info: infoOptions[0],
     skillslearned: skillsOptions[0],
-    dates: true
+    dates: false
   })
   // Items th are being filtered
   const [skillFilter, setSkillFilter] = useState<Array<string>>([])
@@ -51,6 +52,15 @@ const BlogIndex = ({ data }: PageProps<Data>) => {
   useEffect(() => {
     filterBuilder(posts)
   }, [])
+  let summarySection = null
+  // This is a more efficient way to pick of one item that should be first in list than filter
+  for (let index in posts) {
+    let { node } = posts[index]
+    if (node.frontmatter.type === "summary") {
+      summarySection = node
+      break
+    }
+  }
 
   return (
     <Layout>
@@ -66,18 +76,23 @@ const BlogIndex = ({ data }: PageProps<Data>) => {
         setSkillFilter={setSkillFilter}
         toggleShowAll={toggleShowAll}
       />
+      {summarySection && <AccordionOrg node={summarySection}>
+        <Trifold
+          html={summarySection.html}
+          summary={summarySection.frontmatter.summary}
+          show={shown.info}
+        />
+      </AccordionOrg>}
       {posts.map(({ node }) => {
-        const { organization, type } = node.frontmatter
+        const { startdate, enddate, type, summary } = node.frontmatter
         if (type === "organization" && inChildOrOrg(skillFilter, node.frontmatter, posts)) {
           return (
             <div key={node.fields.slug}>
-              <AccordionOrg
-                title={organization}
-                slug={node.fields.slug}
-                frontmatter={node.frontmatter}
-                html={node.html}
-                shown={shown}
-              />
+              <AccordionOrg node={node}>
+                <Trifold html={node.html} summary={summary} show={shown.info}>
+                  {shown.dates && <small style={{ marginLeft: 0 }}>{startdate + convertEndDate(enddate)} </small>}
+                </Trifold>
+              </AccordionOrg>
               <FoldHold
                 orgFrontmatter={node.frontmatter}
                 allSections={posts}
