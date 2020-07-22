@@ -5,6 +5,7 @@ import { Node, MetaQuery } from "./graphQlTypes"
 import { filteredIn } from "./skillFilter"
 import { showObj } from "./dropdown"
 import { useStaticQuery, graphql } from "gatsby"
+import { visKey } from "./graphQlTypes"
 
 interface props {
   list: string
@@ -46,11 +47,7 @@ const ListFold: React.FC<props> = ({
     }
   `)
   const { foldOptions } = site.siteMetadata
-  const visKey = {
-    summary: 0,
-    showAll: 1,
-    hide: 2,
-  }
+
   // make sure list type follows frontmatter name convention, remove spaces / convert to lower case
   const [showingItems, setShowingItems] = useState<Array<showingItemType>>(
     list.split(", ").map(
