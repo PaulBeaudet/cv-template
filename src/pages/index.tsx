@@ -12,12 +12,12 @@ import FilterBar from "../components/filterBar"
 import Trifold from "../components/trifold"
 
 const BlogIndex = ({ data }: PageProps<IndexData>) => {
-  const foldOptions: Array<string> = data.site.siteMetadata.foldOptions
+  const { foldOptions, foldDefaults, foldDropdowns } = data.site.siteMetadata
   const [shown, setShown] = useState<showObj>({
-    roles: foldOptions[0],
-    projects: foldOptions[0],
-    info: foldOptions[0],
-    skillslearned: foldOptions[2],
+    info: foldOptions[foldDefaults[0]],
+    roles: foldOptions[foldDefaults[1]],
+    projects: foldOptions[foldDefaults[2]],
+    skillslearned: foldOptions[foldDefaults[3]],
     dates: false
   })
   // Items th are being filtered
