@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react"
 
 import AccordionFold from "./accordionFold"
-import { Node } from "./graphQlTypes"
+import { Node, MetaQuery } from "./graphQlTypes"
 import { filteredIn } from "./skillFilter"
 import { showObj } from "./dropdown"
+import { useStaticQuery, graphql } from "gatsby"
 
 interface props {
   list: string
@@ -35,6 +36,21 @@ const ListFold: React.FC<props> = ({
   sections,
   skillsFilter,
 }) => {
+  const { site }: MetaQuery = useStaticQuery(graphql`
+    query {
+      site {
+        siteMetadata {
+          foldOptions
+        }
+      }
+    }
+  `)
+  const { foldOptions } = site.siteMetadata
+  const visKey = {
+    summary: 0,
+    showAll: 1,
+    hide: 2,
+  }
   // make sure list type follows frontmatter name convention, remove spaces / convert to lower case
   const [showingItems, setShowingItems] = useState<Array<showingItemType>>(
     list.split(", ").map(
@@ -46,12 +62,12 @@ const ListFold: React.FC<props> = ({
   const listProperty: string = listType.replace(/\s/g, "").toLowerCase()
   const nonPluralType: string = listProperty.replace(/s$/, "")
   // Last minute patching of improperly named headings
-  let listName: string = listType === "Skills Used" ? "Tech Used" : listType
-  listName = listType === "Skills Learned" ? "Tech Learned" : listName
-  listName = listType === "Soft Skills" ? "Skills" : listName
+  let listName: string = listType === "Skills Used" ? "Tech Used" : listType // FIX
+  listName = listType === "Skills Learned" ? "Tech Learned" : listName // FIX 
+  listName = listType === "Soft Skills" ? "Skills" : listName // FIX
   const showState: string = showObj.hasOwnProperty(listProperty)
     ? showObj[listProperty]
-    : "summary"  // assume summary if no parent state
+    : foldOptions[visKey.summary]  // assume first option if no parent state 
   const [linksPainted, setPaintedLinks] = useState<boolean>(false)
   const [numberOfLinks, setNumberOfLinks] = useState<number>(0)
   // Action for toggling an item's visibility on button press
@@ -72,7 +88,7 @@ const ListFold: React.FC<props> = ({
       showingItems.map(
         (item: showingItemType): showingItemType => {
           // show all might be dumb to hard code
-          item.vis = showState === "show all" ? true : false
+          item.vis = showState === foldOptions[visKey.showAll] ? true : false
           return item
         }
       )
@@ -82,8 +98,6 @@ const ListFold: React.FC<props> = ({
   // Determine if list is populated with meaningful data
   const hasItems: boolean =
     showingItems.length && showingItems[0].name ? true : false
-  // query everything markdown opposed to just what is needed
-  // this is a static site generated on build not dynamically at run time
 
   const findCorrectSections: voidFuncFunc = (
     onCorrectSection: nameFunc
@@ -103,7 +117,7 @@ const ListFold: React.FC<props> = ({
       }
     })
   }
-  if (!linksPainted) {
+  if (!linksPainted) { // FIX useEffect(()=>{},[])
     const showColorLink = (nameArray: Array<string>) => {
       const newShowingItems: showArray = showingItems.map(
         (item: showingItemType): showingItemType => {
@@ -125,15 +139,15 @@ const ListFold: React.FC<props> = ({
     setPaintedLinks(true)
   }
   const showCapability: string =
-    showState === "show all" && !numberOfLinks ? "summary" : showState
+    showState === foldOptions[visKey.showAll] && !numberOfLinks ? foldOptions[visKey.summary] : showState
   const validShowState: boolean =
-    showState === "summary" || showState === "show all" ? true : false
+    showState === foldOptions[visKey.summary] || showState === foldOptions[visKey.showAll] ? true : false
   return (
     <div>
-      {hasItems && validShowState && showCapability === "summary" && (
+      {hasItems && validShowState && showCapability === foldOptions[visKey.summary] && (
         <span style={{ marginLeft: ".75rem" }}>{listName}: </span>
       )}
-      {showCapability === "summary" &&
+      {showCapability === foldOptions[visKey.summary] &&
         hasItems && ( // so long as show all is unchecked & meaningful data exist
           <small>
             {showingItems.map(

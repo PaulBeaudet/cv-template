@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react"
+import { MetaQuery, visKey } from "./graphQlTypes"
+import { useStaticQuery, graphql } from "gatsby"
 
 interface props {
   html: string
@@ -8,10 +10,20 @@ interface props {
 }
 
 const Trifold: React.FC<props> = ({ html, summary, show, children }) => {
+  const { site }: MetaQuery = useStaticQuery(graphql`
+    query {
+      site {
+        siteMetadata {
+          foldOptions
+        }
+      }
+    }
+  `)
+  const { foldOptions } = site.siteMetadata
   let globFold: number = 0 // Global fold type representation
   // convert fold name to number type
-  if (show !== "hide") {
-    globFold = show === "summary" ? 1 : 2
+  if (show !== foldOptions[visKey.hide]) {
+    globFold = show === foldOptions[visKey.summary] ? 1 : 2
   }
   // Which type state for this fold
   let [folded, setFold] = useState<number>(globFold)

@@ -1,6 +1,6 @@
 import React from "react"
 import { useStaticQuery, graphql } from "gatsby"
-import { siteMetadata } from "./graphQlTypes"
+import { MetaQuery } from "./graphQlTypes"
 
 interface props {
   stateValue: string
@@ -9,13 +9,9 @@ interface props {
   onChange: any //(event: any)=>void
 }
 
-type data = {
-  site: siteMetadata
-}
-
 const FoldDropdown: React.FC<props> = ({ stateValue, name, label, onChange }) => {
   const listProperty: string = name.replace(/\s/g, "").toLowerCase()
-  const { site }: data = useStaticQuery(graphql`
+  const { site }: MetaQuery = useStaticQuery(graphql`
     query {
       site {
         siteMetadata {

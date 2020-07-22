@@ -93,6 +93,16 @@ export type ConfigData = {
   plugins: Array<any>
 }
 
+export type MetaQuery = {
+  site: siteMetadata
+}
+
+export const visKey = {
+  summary: 0,
+  showAll: 1,
+  hide: 2,
+}
+
 export const convertEndDate = (enddate: string): string => {
   return enddate === "Invalid date" ? " to current " : " to " + enddate + " "
 }
