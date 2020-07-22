@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 
 import AccordionFold from "./accordionFold"
-import { Node } from "./markdownTypes"
+import { Node } from "./graphQlTypes"
 import { filteredIn } from "./skillFilter"
 import { showObj } from "./dropdown"
 

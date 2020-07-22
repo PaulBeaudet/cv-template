@@ -1,7 +1,6 @@
 import React from "react"
 import { Link } from "gatsby"
-import Trifold from "./trifold"
-import { Node } from "./markdownTypes"
+import { Node } from "./graphQlTypes"
 
 interface props {
   node: Node

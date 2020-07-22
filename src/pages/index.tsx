@@ -5,21 +5,19 @@ import Layout from "../components/layout"
 import SEO from "../components/seo"
 import AccordionOrg from "../components/accordionOrg"
 import { showObj } from "../components/dropdown"
-import { Data, Node, convertEndDate } from "../components/markdownTypes"
+import { IndexData, Node, convertEndDate } from "../components/graphQlTypes"
 import { addToFilter, inChildOrOrg } from "../components/skillFilter"
 import FoldHold from "../components/foldHold"
 import FilterBar from "../components/filterBar"
 import Trifold from "../components/trifold"
 
-const BlogIndex = ({ data }: PageProps<Data>) => {
-  const infoOptions: Array<string> = ["summary", "details", "hide"]
-  const listFoldOptions: Array<string> = ["summary", "show all", "hide"]
-  const skillsOptions: Array<string> = ["hide", "summary", "show all"]
+const BlogIndex = ({ data }: PageProps<IndexData>) => {
+  const foldOptions: Array<string> = data.site.siteMetadata.foldOptions
   const [shown, setShown] = useState<showObj>({
-    roles: listFoldOptions[0],
-    projects: listFoldOptions[0],
-    info: infoOptions[0],
-    skillslearned: skillsOptions[0],
+    roles: foldOptions[0],
+    projects: foldOptions[0],
+    info: foldOptions[0],
+    skillslearned: foldOptions[2],
     dates: false
   })
   // Items th are being filtered
@@ -38,8 +36,8 @@ const BlogIndex = ({ data }: PageProps<Data>) => {
   const toggleShowAll = (show: boolean): void => {
     const indexToSelect = show ? 1 : 0
     const shownC = { ...shown }
-    shownC.roles = listFoldOptions[indexToSelect]
-    shownC.projects = listFoldOptions[indexToSelect]
+    shownC.roles = foldOptions[indexToSelect]
+    shownC.projects = foldOptions[indexToSelect]
     setShown(shownC)
   }
 
@@ -68,9 +66,6 @@ const BlogIndex = ({ data }: PageProps<Data>) => {
       <FilterBar
         shown={shown}
         setShown={makeChangeShownFunc}
-        infoOptions={infoOptions}
-        listFoldOptions={listFoldOptions}
-        skillsOptions={skillsOptions}
         skillFilter={skillFilter}
         skillReference={skillReference}
         setSkillFilter={setSkillFilter}
@@ -134,6 +129,13 @@ export const pageQuery = graphql`
             link
           }
         }
+      }
+    }
+    site {
+      siteMetadata {
+        foldOptions
+        foldDropdowns
+        foldDefaults
       }
     }
   }

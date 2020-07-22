@@ -1,15 +1,12 @@
 import React from "react"
 
-import Dropdown, { showObj } from "./dropdown"
+import FoldDropdown, { showObj } from "./dropdown"
 import SkillFilter from "./skillFilter"
 import FilterCheckbox from "./filterCheckBox"
 
 interface props {
   shown: showObj,
   setShown: any
-  infoOptions: Array<string>
-  listFoldOptions: Array<string>
-  skillsOptions: Array<string>
   skillFilter: Array<string>
   skillReference: Array<string>
   setSkillFilter: any
@@ -20,9 +17,6 @@ interface props {
 const FilterBar: React.FC<props> = ({
   shown,
   setShown,
-  infoOptions,
-  listFoldOptions,
-  skillsOptions,
   skillFilter,
   skillReference,
   setSkillFilter,
@@ -31,29 +25,25 @@ const FilterBar: React.FC<props> = ({
   return (
     <small>
       <span>Filter |</span>
-      <Dropdown
-        options={infoOptions}
+      <FoldDropdown
         stateValue={shown.info}
         name="Info"
         label="Text"
         onChange={setShown}
       />
-      <Dropdown
-        options={listFoldOptions}
+      <FoldDropdown
         stateValue={shown.roles}
         name="Roles"
         label="Roles"
         onChange={setShown}
       />
-      <Dropdown
-        options={listFoldOptions}
+      <FoldDropdown
         stateValue={shown.projects}
         name="Projects"
         label="Projects"
         onChange={setShown}
       />
-      <Dropdown
-        options={skillsOptions}
+      <FoldDropdown
         stateValue={shown.skillslearned}
         name="Skills Learned"
         label="Tech Learned"

@@ -1,6 +1,6 @@
 import React from "react"
 import ListFold from "./listFold"
-import { Node, frontmatter } from "./markdownTypes"
+import { Node, frontmatter } from "./graphQlTypes"
 import { showObj } from "./dropdown"
 
 interface props {

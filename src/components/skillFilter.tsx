@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { frontmatter, Node } from "./markdownTypes"
+import { frontmatter, Node } from "./graphQlTypes"
 import FilterCheckbox from "./filterCheckBox"
 
 

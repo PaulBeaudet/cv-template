@@ -11,7 +11,10 @@ module.exports = {
     siteUrl: `${process.env.SITE_URL}`,
     social: {
       contact: ``
-    }
+    },
+    foldOptions: process.env.FOLD_OPTIONS || ["summary", "show all", "hide"],
+    foldDropdowns: process.env.FOLD_DROPDOWNS || ["info", "roles", "projects", "skillslearned"],
+    foldDefaults: process.env.FOLD_DEFAULTS || [0, 0, 0, 2],
   },
   plugins: [
     {

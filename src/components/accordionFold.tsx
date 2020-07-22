@@ -2,7 +2,7 @@ import React from "react"
 import { Link, useStaticQuery, graphql } from "gatsby"
 
 import Trifold from "./trifold"
-import { frontmatter } from "./markdownTypes"
+import { frontmatter, githubQuery } from "./graphQlTypes"
 import { showObj } from "./dropdown"
 
 interface props {
@@ -14,28 +14,6 @@ interface props {
   type: string
 }
 
-interface githubQuery {
-  readonly github: {
-    viewer: {
-      repositoriesContributedTo: {
-        edges: {
-          node: {
-            name: string
-            url: string
-          }
-        }[]
-      }
-      repositories: {
-        edges: {
-          node: {
-            name: string
-            url: string
-          }
-        }[]
-      }
-    }
-  }
-}
 
 const AccordionFold: React.FC<props> = ({
   title,
