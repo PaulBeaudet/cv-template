@@ -1,70 +1,47 @@
 import React from "react"
-
-import FoldDropdown, { showObj } from "./dropdown"
+import FoldDropdown from "./dropdown"
 import SkillFilter from "./skillFilter"
 import FilterCheckbox from "./filterCheckBox"
+import { FilterState } from "./graphQlTypes"
 
 interface props {
-  shown: showObj,
-  setShown: any
-  skillFilter: Array<string>
-  skillReference: Array<string>
-  setSkillFilter: any
   toggleShowAll: any
-
+  filterOptions: FilterState
+  changeDropdownState: any
+  toggleDates: () => void
+  toggleSkill: (skillName: string, all?: boolean) => void
 }
 
 const FilterBar: React.FC<props> = ({
-  shown,
-  setShown,
-  skillFilter,
-  skillReference,
-  setSkillFilter,
-  toggleShowAll
+  toggleShowAll,
+  filterOptions,
+  changeDropdownState,
+  toggleDates,
+  toggleSkill,
 }) => {
   return (
     <small>
       <span>Filter |</span>
-      <FoldDropdown
-        stateValue={shown.info}
-        name="Info"
-        label="Text"
-        onChange={setShown}
-      />
-      <FoldDropdown
-        stateValue={shown.roles}
-        name="Roles"
-        label="Roles"
-        onChange={setShown}
-      />
-      <FoldDropdown
-        stateValue={shown.projects}
-        name="Projects"
-        label="Projects"
-        onChange={setShown}
-      />
-      <FoldDropdown
-        stateValue={shown.skillslearned}
-        name="Skills Learned"
-        label="Tech Learned"
-        onChange={setShown}
-      />
+      {
+        filterOptions.dropdowns.map((dropdown) => {
+          return (
+            <FoldDropdown
+              key={dropdown.name}
+              dropdown={dropdown}
+              onChange={changeDropdownState}
+            />
+          )
+        })
+      }
       <SkillFilter
-        skillFilter={skillFilter}
-        refArray={skillReference}
-        setSkillFilter={setSkillFilter}
         toggleShow={toggleShowAll}
+        filterOptions={filterOptions}
+        toggleSkill={toggleSkill}
       />
       <FilterCheckbox
         itemName="Show Dates"
-        onChange={(itemName) => {
-          setShown("dates")({
-            target: {
-              value: !shown.dates
-            }
-          })
-        }}
-        checkState={shown.dates ? 1 : 2}
+        onChange={toggleDates}
+        checkState={filterOptions.dates ? 1 : 2}
       />
     </small>
   )

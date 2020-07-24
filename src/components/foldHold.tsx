@@ -1,36 +1,32 @@
 import React from "react"
 import ListFold from "./listFold"
-import { Node, frontmatter } from "./graphQlTypes"
-import { showObj } from "./dropdown"
-
+import { Node, frontmatter, FilterState } from "./graphQlTypes"
 interface props {
   orgFrontmatter: frontmatter
   allSections: {
     node: Node
   }[]
-  showObj: showObj
-  skillsFilter: Array<string>
+  filterOptions: FilterState
 }
 
-const FoldHold: React.FC<props> = ({ orgFrontmatter, allSections, showObj, skillsFilter }) => {
-  const foldTypes: Array<string> = ["Roles", "Projects", "Skills Used", "Skills Learned", "Soft Skills"]
+const FoldHold: React.FC<props> = ({ orgFrontmatter, allSections, filterOptions }) => {
   const { organization } = orgFrontmatter
-
   return (
     <>
-      {foldTypes.map((foldType) => {
-        const foldProp: string = foldType.replace(/\s/g, "").toLowerCase()
-        return (
-          <ListFold
-            key={organization + foldProp}
-            organization={organization}
-            list={orgFrontmatter[foldProp]}
-            listType={foldType}
-            showObj={showObj}
-            sections={allSections}
-            skillsFilter={skillsFilter}
-          />
-        )
+      {filterOptions.dropdowns.map((dropdown, index) => {
+        if (index) { // zeroth item is not frontmatter
+          return (
+            <ListFold
+              key={organization + dropdown.name}
+              organization={organization}
+              list={orgFrontmatter[dropdown.name]}
+              listType={dropdown.label}
+              sections={allSections}
+              filterOptions={filterOptions}
+              showState={dropdown.state}
+            />
+          )
+        }
       })}
     </>
   )

@@ -5,7 +5,7 @@ import { useStaticQuery, graphql } from "gatsby"
 interface props {
   html: string
   summary: string
-  show: string
+  show: number
   children?: any
 }
 
@@ -22,8 +22,8 @@ const Trifold: React.FC<props> = ({ html, summary, show, children }) => {
   const { foldOptions } = site.siteMetadata
   let globFold: number = 0 // Global fold type representation
   // convert fold name to number type
-  if (show !== foldOptions[visKey.hide]) {
-    globFold = show === foldOptions[visKey.summary] ? 1 : 2
+  if (show !== visKey.hide) {
+    globFold = show === visKey.summary ? 1 : 2
   }
   // Which type state for this fold
   let [folded, setFold] = useState<number>(globFold)
