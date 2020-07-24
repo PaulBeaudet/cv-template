@@ -1,62 +1,58 @@
 import React, { useState } from "react"
-import { frontmatter, Node } from "./graphQlTypes"
+import { frontmatter, Node, SkillObj, DropdownObj, FilterState } from "./graphQlTypes"
 import FilterCheckbox from "./filterCheckBox"
 
-
-export const addToFilter = (sections: { node: Node }[], referenceArray: Array<string>): Array<string> => {
-  const nextArray: Array<string> = referenceArray
-  sections.map(({ node }) => {
-    let techItems = node.frontmatter.skillsused.split(", ")
-    techItems = techItems.concat(node.frontmatter.skillslearned.split(", "))
-    techItems = techItems.concat(node.frontmatter.softskills.split(", "))
-    techItems.map((item) => {
-      if (item && !nextArray.includes(item)) {
-        nextArray.push(item)
+export const createSkillsArray = (sections: { node: Node }[], ddOptions: Array<DropdownObj>): Array<SkillObj> => {
+  const allSkills: Array<string> = []
+  sections.forEach(({ node }) => {
+    const { frontmatter } = node
+    let potentialSkills: Array<string> = []
+    ddOptions.forEach((dd: DropdownObj, index: number) => {
+      // skills are included from index 3 on, make sure frontmatter exist with valid data
+      if (index > 2 && frontmatter.hasOwnProperty(dd.name) && frontmatter[dd.name]) {
+        potentialSkills = frontmatter[dd.name].split(", ")
+        potentialSkills.forEach((skill: string) => {
+          if (skill && !allSkills.includes(skill)) {
+            allSkills.push(skill)
+          }
+        })
       }
     })
   })
-  return nextArray
+  return allSkills.map((skill: string): SkillObj => {
+    return {
+      name: skill,
+      showing: true,
+    }
+  })
 }
 
 interface props {
-  skillFilter: Array<string>
-  refArray: Array<string>
-  setSkillFilter: (newSelection: Array<string>) => void
   toggleShow: (show: boolean) => void
+  filterOptions: FilterState
+  toggleSkill: (skillName: string, all?: boolean) => void
 }
 
-const SkillFilter: React.FC<props> = ({ skillFilter, refArray, setSkillFilter, toggleShow }) => {
+const SkillFilter: React.FC<props> = ({ toggleShow, filterOptions, toggleSkill }) => {
   // state of if skills are being toggled, default, all skills checked, no skills checked 
   const [toggleAllSkills, setToggleAllSkills] = useState<number>(0)
   // State to track dialog of all on or off for filters
   const [toggleButton, setToggleButton] = useState<boolean>(false)
   // whether skills dialog is being shown or not
   const [skillsFilterShown, setSkillsFilterShown] = useState<boolean>(false)
-  const toggleFilter = (itemName: string): void => {
-    const nextState = [...skillFilter]
-    const index = skillFilter.indexOf(itemName)
-    if (index > -1) { //Remove item case
-      nextState.splice(index, 1)
-      setSkillFilter(nextState)
-    } else {          // add item case
-      nextState.push(itemName)
-      setSkillFilter(nextState)
-    }
-    setToggleAllSkills(0)
-  }
   const toggleShowAll = (): void => {
     setToggleAllSkills(toggleButton ? 1 : 2)
-    setSkillFilter(toggleButton ? refArray : [])
+    toggleSkill(toggleButton ? "show" : "", true)
     setToggleButton(!toggleButton)
   }
   const hideOrShowFilter = (): void => {
     if (skillsFilterShown) {
-      setSkillFilter(refArray)
+      toggleSkill("show", true)
       setToggleAllSkills(2)
       setToggleButton(true)
       toggleShow(false)
     } else {
-      setSkillFilter([])
+      toggleSkill("", true)
       setToggleAllSkills(2)
       setToggleButton(true)
       toggleShow(true)
@@ -71,12 +67,12 @@ const SkillFilter: React.FC<props> = ({ skillFilter, refArray, setSkillFilter, t
       </button>
       {skillsFilterShown && <div>
         <button onClick={toggleShowAll}>{toggleButton ? "Select All" : "Clear All"}</button>
-        {refArray.map((itemName) => {
+        {filterOptions.skills.map((skill: SkillObj) => {
           return (
             <FilterCheckbox
-              itemName={itemName}
-              key={itemName}
-              onChange={toggleFilter}
+              itemName={skill.name}
+              key={skill.name}
+              onChange={toggleSkill}
               checkState={toggleAllSkills}
             />
           )
@@ -86,29 +82,30 @@ const SkillFilter: React.FC<props> = ({ skillFilter, refArray, setSkillFilter, t
   )
 }
 
-// Answers question: Is this item filtered into view?
-export const filteredIn = (comparisonArray: Array<string>, frontmatter: frontmatter): boolean => {
-  let skillArray = frontmatter.skillsused.split(", ")
-  skillArray = skillArray.concat(frontmatter.skillslearned.split(", "))
-  skillArray = skillArray.concat(frontmatter.softskills.split(", "))
-  for (let item in skillArray) {
-    if (comparisonArray.includes(skillArray[item])) {
+export const sectionHasSkill = (filterOptions: FilterState, frontmatter: frontmatter): boolean => {
+  let skillArray: Array<string> = []
+  filterOptions.dropdowns.forEach((dd, index) => {
+    if (index > 2 && frontmatter.hasOwnProperty(dd.name) && frontmatter[dd.name]) {
+      skillArray = skillArray.concat(frontmatter[dd.name].split(", "))
+    }
+  })
+  for (let item in filterOptions.skills) {
+    if (filterOptions.skills[item].showing && skillArray.includes(filterOptions.skills[item].name)) {
       return true
     }
   }
   return false
 }
 
-export const inChildOrOrg = (comparisonArray: Array<string>, frontmatter: frontmatter, sections: { node: Node }[]): boolean => {
-  // first if parent has this attribute just return true
-  if (filteredIn(comparisonArray, frontmatter)) {
-    return true
-  }
-  // check if children have one of the filter attributes
+// returns true if skill is in org
+export const skillInOrg = (filterOptions: FilterState, frontmatter: frontmatter, sections: { node: Node }[]): boolean => {
+  // if org has this skill return true
+  if (sectionHasSkill(filterOptions, frontmatter)) { return true }
+  // if a child of org has this skill
   for (let node in sections) {
     const { type, organization } = sections[node].node.frontmatter
     if (type !== "organization" && organization === frontmatter.organization) {
-      if (filteredIn(comparisonArray, sections[node].node.frontmatter)) {
+      if (sectionHasSkill(filterOptions, sections[node].node.frontmatter)) {
         return true
       }
     }

@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from "react"
 
 import AccordionFold from "./accordionFold"
-import { Node, MetaQuery } from "./graphQlTypes"
-import { filteredIn } from "./skillFilter"
-import { showObj } from "./dropdown"
-import { useStaticQuery, graphql } from "gatsby"
+import { Node, FilterState } from "./graphQlTypes"
+import { sectionHasSkill } from "./skillFilter"
 import { visKey } from "./graphQlTypes"
 
 interface props {
   list: string
   organization: string
   listType: string
-  showObj: showObj
   sections: {
     node: Node
   }[]
-  skillsFilter: Array<string>
+  filterOptions: FilterState
+  showState: number
 }
 
 interface showingItemType {
@@ -24,30 +22,14 @@ interface showingItemType {
   link: boolean
 }
 
-type showArray = showingItemType[]
-type nameFunc = (name: string) => void
-type voidFuncFunc = (func: nameFunc) => void
-
-
 const ListFold: React.FC<props> = ({
   list,
   organization,
   listType,
-  showObj,
   sections,
-  skillsFilter,
+  filterOptions,
+  showState,
 }) => {
-  const { site }: MetaQuery = useStaticQuery(graphql`
-    query {
-      site {
-        siteMetadata {
-          foldOptions
-        }
-      }
-    }
-  `)
-  const { foldOptions } = site.siteMetadata
-
   // make sure list type follows frontmatter name convention, remove spaces / convert to lower case
   const [showingItems, setShowingItems] = useState<Array<showingItemType>>(
     list.split(", ").map(
@@ -58,13 +40,6 @@ const ListFold: React.FC<props> = ({
   )
   const listProperty: string = listType.replace(/\s/g, "").toLowerCase()
   const nonPluralType: string = listProperty.replace(/s$/, "")
-  // Last minute patching of improperly named headings
-  let listName: string = listType === "Skills Used" ? "Tech Used" : listType // FIX
-  listName = listType === "Skills Learned" ? "Tech Learned" : listName // FIX 
-  listName = listType === "Soft Skills" ? "Skills" : listName // FIX
-  const showState: string = showObj.hasOwnProperty(listProperty)
-    ? showObj[listProperty]
-    : foldOptions[visKey.summary]  // assume first option if no parent state 
   const [linksPainted, setPaintedLinks] = useState<boolean>(false)
   const [numberOfLinks, setNumberOfLinks] = useState<number>(0)
   // Action for toggling an item's visibility on button press
@@ -84,20 +59,19 @@ const ListFold: React.FC<props> = ({
     setShowingItems(
       showingItems.map(
         (item: showingItemType): showingItemType => {
-          // show all might be dumb to hard code
-          item.vis = showState === foldOptions[visKey.showAll] ? true : false
+          item.vis = showState === visKey.showAll ? true : false
           return item
         }
       )
     )
-  }, [showObj, skillsFilter])
+  }, [showState, filterOptions.skills])
 
   // Determine if list is populated with meaningful data
   const hasItems: boolean =
     showingItems.length && showingItems[0].name ? true : false
 
-  const findCorrectSections: voidFuncFunc = (
-    onCorrectSection: nameFunc
+  const findCorrectSections: (func: (name: string) => void) => void = (
+    onCorrectSection: (name: string) => void
   ): void => {
     sections.map(({ node }): void => {
       let name: string = "Invalid Name"
@@ -116,7 +90,7 @@ const ListFold: React.FC<props> = ({
   }
   if (!linksPainted) { // FIX useEffect(()=>{},[])
     const showColorLink = (nameArray: Array<string>) => {
-      const newShowingItems: showArray = showingItems.map(
+      const newShowingItems: showingItemType[] = showingItems.map(
         (item: showingItemType): showingItemType => {
           const available = nameArray.filter(name => name === item.name)
           if (available.length) {
@@ -135,16 +109,15 @@ const ListFold: React.FC<props> = ({
     setNumberOfLinks(correctNames.length)
     setPaintedLinks(true)
   }
-  const showCapability: string =
-    showState === foldOptions[visKey.showAll] && !numberOfLinks ? foldOptions[visKey.summary] : showState
-  const validShowState: boolean =
-    showState === foldOptions[visKey.summary] || showState === foldOptions[visKey.showAll] ? true : false
+  const showCapability: number =
+    showState === visKey.showAll && !numberOfLinks ? visKey.summary : showState
+  const validShowState: boolean = showState === visKey.hide ? false : true
   return (
     <div>
-      {hasItems && validShowState && showCapability === foldOptions[visKey.summary] && (
-        <span style={{ marginLeft: ".75rem" }}>{listName}: </span>
+      {hasItems && validShowState && showCapability === visKey.summary && (
+        <span style={{ marginLeft: ".75rem" }}>{listType}: </span>
       )}
-      {showCapability === foldOptions[visKey.summary] &&
+      {showCapability === visKey.summary &&
         hasItems && ( // so long as show all is unchecked & meaningful data exist
           <small>
             {showingItems.map(
@@ -188,7 +161,7 @@ const ListFold: React.FC<props> = ({
         ) {
           if (
             showingItems.filter(item => item.name === name && item.vis).length &&
-            filteredIn(skillsFilter, node.frontmatter)
+            sectionHasSkill(filterOptions, node.frontmatter)
           ) {
             return (
               <AccordionFold
@@ -197,8 +170,8 @@ const ListFold: React.FC<props> = ({
                 slug={node.fields.slug}
                 frontmatter={node.frontmatter}
                 html={node.html}
-                showObj={showObj}
                 type={listType.replace(/s$/, "")}
+                filterOptions={filterOptions}
               />
             )
           }

@@ -63,7 +63,7 @@ export interface siteMetadata {
       contactLink: string
     }
     foldOptions: Array<string>
-    foldDropdowns: Array<string>
+    foldDropdowns: Array<DropdownObj>
     foldDefaults: Array<number>
   }
 }
@@ -95,6 +95,24 @@ export type ConfigData = {
 
 export type MetaQuery = {
   site: siteMetadata
+}
+
+export interface DropdownObj {
+  name: string
+  state: number
+  sticky: boolean
+  label: string
+}
+
+export interface SkillObj {
+  name: string
+  showing: boolean
+}
+
+export interface FilterState {
+  dropdowns: Array<DropdownObj>
+  dates: boolean
+  skills: Array<SkillObj>
 }
 
 export const visKey = {

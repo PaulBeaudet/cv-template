@@ -2,16 +2,15 @@ import React from "react"
 import { Link, useStaticQuery, graphql } from "gatsby"
 
 import Trifold from "./trifold"
-import { frontmatter, githubQuery } from "./graphQlTypes"
-import { showObj } from "./dropdown"
+import { frontmatter, githubQuery, FilterState } from "./graphQlTypes"
 
 interface props {
   title: string
   slug: string
   frontmatter: frontmatter
   html: string
-  showObj: showObj
   type: string
+  filterOptions: FilterState
 }
 
 
@@ -20,8 +19,8 @@ const AccordionFold: React.FC<props> = ({
   slug,
   frontmatter,
   html,
-  showObj,
   type,
+  filterOptions,
 }) => {
   const { enddate, startdate, summary, link } = frontmatter
   const endTxt = enddate === "Invalid date" ? " to current" : " to " + enddate + " "
@@ -93,8 +92,8 @@ const AccordionFold: React.FC<props> = ({
           {title}
           <small><i> ({type}) </i></small>
         </h5>
-        <Trifold html={html} summary={summary} show={showObj.info}>
-          {showObj.dates && <small>{startdate + endTxt}</small>}
+        <Trifold html={html} summary={summary} show={filterOptions.dropdowns[0].state}>
+          {filterOptions.dates && <small>{startdate + endTxt}</small>}
           {hasRepos && projectLinks.map(createLink)}
         </Trifold>
       </header>

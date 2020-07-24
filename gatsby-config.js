@@ -1,3 +1,11 @@
+const visKey = {
+  summary: 0,
+  showAll: 1,
+  hide: 2,
+}
+
+
+
 module.exports = {
   siteMetadata: {
     title: `${process.env.AUTHOR}`,
@@ -13,7 +21,17 @@ module.exports = {
       contact: ``
     },
     foldOptions: process.env.FOLD_OPTIONS || ["summary", "show all", "hide"],
-    foldDropdowns: process.env.FOLD_DROPDOWNS || ["info", "roles", "projects", "skillslearned"],
+    foldDropdowns: process.env.FOLD_DROPDOWNS || [
+      // note that this first item is not frontmatter, the rest are assumed to be
+      { name: "info", state: visKey.summary, sticky: true, label: "Text" },
+      // name needs to me exactly the same a frontmatter it refers to
+      { name: "roles", state: visKey.summary, sticky: false, label: "Roles" },
+      // label should be how you want it to be titled visually
+      { name: "projects", state: visKey.summary, sticky: false, label: "Projects" },
+      // Stick defines if something will change while filtering
+      { name: "skillslearned", state: visKey.hide, sticky: true, label: "Tech Learned" },
+      { name: "softskills", state: visKey.summary, sticky: true, label: "Skills" },
+    ],
     foldDefaults: process.env.FOLD_DEFAULTS || [0, 0, 0, 2],
   },
   plugins: [

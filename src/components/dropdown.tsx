@@ -1,16 +1,14 @@
-import React from "react"
+import React, { ChangeEvent } from "react"
 import { useStaticQuery, graphql } from "gatsby"
-import { MetaQuery } from "./graphQlTypes"
+import { MetaQuery, DropdownObj } from "./graphQlTypes"
 
 interface props {
-  stateValue: string
-  name: string
-  label: string
-  onChange: any //(event: any)=>void
+  dropdown: DropdownObj
+  onChange: (type: string) => (event: ChangeEvent<HTMLSelectElement>) => void
 }
 
-const FoldDropdown: React.FC<props> = ({ stateValue, name, label, onChange }) => {
-  const listProperty: string = name.replace(/\s/g, "").toLowerCase()
+const FoldDropdown: React.FC<props> = ({ dropdown, onChange }) => {
+  const { name, label, state } = dropdown
   const { site }: MetaQuery = useStaticQuery(graphql`
     query {
       site {
@@ -27,12 +25,12 @@ const FoldDropdown: React.FC<props> = ({ stateValue, name, label, onChange }) =>
       <select
         id={name}
         name={name}
-        value={stateValue}
-        onChange={onChange(listProperty)}
+        value={state}
+        onChange={onChange(name)}
       >
-        {options.map((item: string) => {
+        {options.map((item: string, index: number) => {
           return (
-            <option value={item} key={item + name}>
+            <option value={index} key={item + name}>
               {item}
             </option>
           )
@@ -40,13 +38,6 @@ const FoldDropdown: React.FC<props> = ({ stateValue, name, label, onChange }) =>
       </select>
     </>
   )
-}
-export interface showObj {
-  roles: string
-  projects: string
-  info: string
-  skillslearned: string
-  dates: boolean
 }
 
 export default FoldDropdown
