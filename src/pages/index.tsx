@@ -15,6 +15,7 @@ const BlogIndex = ({ data }: PageProps<IndexData>) => {
   const [filterOptions, setFilterOptions] = useState<FilterState>({
     dropdowns: foldDropdowns,
     dates: false,
+    toggleSkills: false,
     skills: []
   })
 
@@ -31,9 +32,9 @@ const BlogIndex = ({ data }: PageProps<IndexData>) => {
     }
   }
 
-  const toggleDates = (): void => {
+  const toggleFilterProps = (prop: string): void => {
     const filterStateCopy = { ...filterOptions }
-    filterStateCopy.dates = !filterStateCopy.dates
+    filterStateCopy[prop] = !filterStateCopy[prop]
     setFilterOptions(filterStateCopy)
   }
 
@@ -90,7 +91,7 @@ const BlogIndex = ({ data }: PageProps<IndexData>) => {
         toggleShowAll={changeOnFilterToggle}
         filterOptions={filterOptions}
         changeDropdownState={changeDropdownState}
-        toggleDates={toggleDates}
+        toggleFilterProps={toggleFilterProps}
         toggleSkill={toggleSkill}
       />
       {summarySection && <AccordionOrg node={summarySection}>

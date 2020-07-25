@@ -28,56 +28,29 @@ export const createSkillsArray = (sections: { node: Node }[], ddOptions: Array<D
 }
 
 interface props {
-  toggleShow: (show: boolean) => void
   filterOptions: FilterState
   toggleSkill: (skillName: string, all?: boolean) => void
+  toggleSkillButton: () => void
 }
 
-const SkillFilter: React.FC<props> = ({ toggleShow, filterOptions, toggleSkill }) => {
-  // state of if skills are being toggled, default, all skills checked, no skills checked 
-  const [toggleAllSkills, setToggleAllSkills] = useState<number>(0)
-  // State to track dialog of all on or off for filters
-  const [toggleButton, setToggleButton] = useState<boolean>(false)
-  // whether skills dialog is being shown or not
-  const [skillsFilterShown, setSkillsFilterShown] = useState<boolean>(false)
-  const toggleShowAll = (): void => {
-    setToggleAllSkills(toggleButton ? 1 : 2)
-    toggleSkill(toggleButton ? "show" : "", true)
-    setToggleButton(!toggleButton)
-  }
-  const hideOrShowFilter = (): void => {
-    if (skillsFilterShown) {
-      toggleSkill("show", true)
-      setToggleAllSkills(2)
-      setToggleButton(true)
-      toggleShow(false)
-    } else {
-      toggleSkill("", true)
-      setToggleAllSkills(2)
-      setToggleButton(true)
-      toggleShow(true)
-    }
-    setSkillsFilterShown(!skillsFilterShown)
-  }
-
+const SkillFilter: React.FC<props> = ({
+  filterOptions,
+  toggleSkill,
+  toggleSkillButton
+}) => {
   return (
     <>
-      <button style={{ display: "inline-block", textAlign: "right" }} onClick={hideOrShowFilter}>
-        {skillsFilterShown ? "Remove Filter" : "Add Skills Filter"}
-      </button>
-      {skillsFilterShown && <div>
-        <button onClick={toggleShowAll}>{toggleButton ? "Select All" : "Clear All"}</button>
-        {filterOptions.skills.map((skill: SkillObj) => {
-          return (
-            <FilterCheckbox
-              itemName={skill.name}
-              key={skill.name}
-              onChange={toggleSkill}
-              checkState={toggleAllSkills}
-            />
-          )
-        })}
-      </div>}
+      <button onClick={toggleSkillButton}>{filterOptions.toggleSkills ? "Select All Skills" : "Clear All Skills"}</button>
+      {filterOptions.skills.map((skill: SkillObj) => {
+        return (
+          <FilterCheckbox
+            itemName={skill.name}
+            key={skill.name}
+            onChange={toggleSkill}
+            checkState={skill.showing}
+          />
+        )
+      })}
     </>
   )
 }

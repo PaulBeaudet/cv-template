@@ -5,7 +5,7 @@ interface props {
   onChange: {
     (name: string): void
   }
-  checkState?: number
+  checkState?: boolean
 }
 
 const FilterCheckbox: React.FC<props> = ({
@@ -15,9 +15,7 @@ const FilterCheckbox: React.FC<props> = ({
 }) => {
   const [checked, setChecked] = useState<boolean>(true)
   useEffect(() => {
-    if (checkState) {
-      setChecked(checkState === 2 ? false : true)
-    }
+    setChecked(checkState)
   }, [checkState])
   return (
     <>

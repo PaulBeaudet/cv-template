@@ -1,14 +1,14 @@
-import React from "react"
+import React, { useState, ChangeEvent } from "react"
 import FoldDropdown from "./dropdown"
 import SkillFilter from "./skillFilter"
 import FilterCheckbox from "./filterCheckBox"
 import { FilterState } from "./graphQlTypes"
 
 interface props {
-  toggleShowAll: any
+  toggleShowAll: any // fix this
   filterOptions: FilterState
   changeDropdownState: any
-  toggleDates: () => void
+  toggleFilterProps: (prop: string) => void
   toggleSkill: (skillName: string, all?: boolean) => void
 }
 
@@ -16,33 +16,49 @@ const FilterBar: React.FC<props> = ({
   toggleShowAll,
   filterOptions,
   changeDropdownState,
-  toggleDates,
+  toggleFilterProps,
   toggleSkill,
 }) => {
+  const [filterShown, setFilterShown] = useState<boolean>(false)
+  const toggleFilterBar = (): void => {
+    setFilterShown(!filterShown)
+  }
   return (
     <small>
-      <span>Filter |</span>
-      {
-        filterOptions.dropdowns.map((dropdown) => {
-          return (
-            <FoldDropdown
-              key={dropdown.name}
-              dropdown={dropdown}
-              onChange={changeDropdownState}
-            />
-          )
-        })
-      }
-      <SkillFilter
-        toggleShow={toggleShowAll}
-        filterOptions={filterOptions}
-        toggleSkill={toggleSkill}
-      />
-      <FilterCheckbox
-        itemName="Show Dates"
-        onChange={toggleDates}
-        checkState={filterOptions.dates ? 1 : 2}
-      />
+      <button onClick={toggleFilterBar}>
+        {filterShown ? "Hide Filter" : "Show Filter"}
+      </button>
+      {filterShown && <div>
+        {
+          filterOptions.dropdowns.map((dropdown) => {
+            return (
+              <FoldDropdown
+                key={dropdown.name}
+                dropdown={dropdown}
+                onChange={changeDropdownState}
+              />
+            )
+          })
+        }
+        <div>
+          <SkillFilter
+            filterOptions={filterOptions}
+            toggleSkill={toggleSkill}
+            toggleSkillButton={() => {
+              toggleSkill(filterOptions.toggleSkills ? "show" : "", true)
+              toggleShowAll(!filterOptions.toggleSkills)
+              toggleFilterProps("toggleSkills")
+            }}
+          />
+        </div>
+        <div>
+          <FilterCheckbox
+            itemName="Show Dates"
+            onChange={() => { toggleFilterProps("dates") }}
+            checkState={filterOptions.dates}
+          />
+        </div>
+      </div>}
     </small>
   )
 }
