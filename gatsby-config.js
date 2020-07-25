@@ -29,6 +29,7 @@ module.exports = {
       // label should be how you want it to be titled visually
       { name: "projects", state: visKey.summary, sticky: false, label: "Projects" },
       // Stick defines if something will change while filtering
+      { name: "skillsused", state: visKey.summary, sticky: true, label: "Tech Used" },
       { name: "skillslearned", state: visKey.hide, sticky: true, label: "Tech Learned" },
       { name: "softskills", state: visKey.summary, sticky: true, label: "Skills" },
     ],

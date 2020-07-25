@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react"
 
 import AccordionFold from "./accordionFold"
-import { Node, FilterState } from "./graphQlTypes"
+import { Node, FilterState, visKey } from "./graphQlTypes"
 import { sectionHasSkill } from "./skillFilter"
-import { visKey } from "./graphQlTypes"
 
 interface props {
   list: string
