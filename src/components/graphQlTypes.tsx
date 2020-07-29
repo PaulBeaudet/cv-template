@@ -112,6 +112,7 @@ export interface SkillObj {
 export interface FilterState {
   dropdowns: Array<DropdownObj>
   dates: boolean
+  toggleSkills: boolean
   skills: Array<SkillObj>
 }
 

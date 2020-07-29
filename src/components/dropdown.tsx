@@ -20,7 +20,7 @@ const FoldDropdown: React.FC<props> = ({ dropdown, onChange }) => {
   `)
   const options = site.siteMetadata.foldOptions
   return (
-    <>
+    <div>
       <label htmlFor={label}> {label} </label>
       <select
         id={name}
@@ -36,7 +36,7 @@ const FoldDropdown: React.FC<props> = ({ dropdown, onChange }) => {
           )
         })}
       </select>
-    </>
+    </div>
   )
 }
 

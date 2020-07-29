@@ -41,16 +41,18 @@ const SkillFilter: React.FC<props> = ({
   return (
     <>
       <button onClick={toggleSkillButton}>{filterOptions.toggleSkills ? "Select All Skills" : "Clear All Skills"}</button>
-      {filterOptions.skills.map((skill: SkillObj) => {
-        return (
-          <FilterCheckbox
-            itemName={skill.name}
-            key={skill.name}
-            onChange={toggleSkill}
-            checkState={skill.showing}
-          />
-        )
-      })}
+      <div className="skill-filter">
+        {filterOptions.skills.map((skill: SkillObj) => {
+          return (
+            <FilterCheckbox
+              itemName={skill.name}
+              key={skill.name}
+              onChange={toggleSkill}
+              checkState={skill.showing}
+            />
+          )
+        })}
+      </div>
     </>
   )
 }

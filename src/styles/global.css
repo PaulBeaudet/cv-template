@@ -1,3 +1,19 @@
 html {
   background-color: white;
 }
+
+.skill-filter {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+}
+
+.filter-bar {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto auto auto;
+  grid-template-rows: auto auto;
+}
+
+.filter-bar-skill-filter {
+  grid-column-start: 1;
+  grid-column-end: 8;
+}

@@ -25,10 +25,12 @@ const FilterBar: React.FC<props> = ({
   }
   return (
     <small>
-      <button onClick={toggleFilterBar}>
-        {filterShown ? "Hide Filter" : "Show Filter"}
-      </button>
-      {filterShown && <div>
+      <div>
+        <button onClick={toggleFilterBar}>
+          {filterShown ? "Hide Filter" : "Show Filter"}
+        </button>
+      </div>
+      {filterShown && <div className="filter-bar">
         {
           filterOptions.dropdowns.map((dropdown) => {
             return (
@@ -41,6 +43,13 @@ const FilterBar: React.FC<props> = ({
           })
         }
         <div>
+          <FilterCheckbox
+            itemName="Dates"
+            onChange={() => { toggleFilterProps("dates") }}
+            checkState={filterOptions.dates}
+          />
+        </div>
+        <div className="filter-bar-skill-filter">
           <SkillFilter
             filterOptions={filterOptions}
             toggleSkill={toggleSkill}
@@ -49,13 +58,6 @@ const FilterBar: React.FC<props> = ({
               toggleShowAll(!filterOptions.toggleSkills)
               toggleFilterProps("toggleSkills")
             }}
-          />
-        </div>
-        <div>
-          <FilterCheckbox
-            itemName="Show Dates"
-            onChange={() => { toggleFilterProps("dates") }}
-            checkState={filterOptions.dates}
           />
         </div>
       </div>}

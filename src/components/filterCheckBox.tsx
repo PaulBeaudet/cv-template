@@ -18,13 +18,13 @@ const FilterCheckbox: React.FC<props> = ({
     setChecked(checkState)
   }, [checkState])
   return (
-    <>
+    <div>
       <input type="checkbox" id={itemName} name={itemName} value={itemName} checked={checked} onChange={() => {
         onChange(itemName)
         setChecked(!checked)
       }} />
       <label htmlFor={itemName}>{itemName}</label>
-    </>
+    </div>
   )
 }
 
