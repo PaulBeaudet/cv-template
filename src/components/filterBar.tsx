@@ -30,19 +30,19 @@ const FilterBar: React.FC<props> = ({
           {filterShown ? "Hide Filter" : "Show Filter"}
         </button>
       </div>
-      {filterShown && <div className="filter-bar">
-        {
-          filterOptions.dropdowns.map((dropdown) => {
-            return (
-              <FoldDropdown
-                key={dropdown.name}
-                dropdown={dropdown}
-                onChange={changeDropdownState}
-              />
-            )
-          })
-        }
-        <div>
+      {filterShown && <div>
+        <div className="filter-dropdowns">
+          {
+            filterOptions.dropdowns.map((dropdown) => {
+              return (
+                <FoldDropdown
+                  key={dropdown.name}
+                  dropdown={dropdown}
+                  onChange={changeDropdownState}
+                />
+              )
+            })
+          }
           <FilterCheckbox
             itemName="Dates"
             onChange={() => { toggleFilterProps("dates") }}
