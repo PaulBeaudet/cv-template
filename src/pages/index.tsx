@@ -14,7 +14,7 @@ const BlogIndex = ({ data }: PageProps<IndexData>) => {
   const { foldDropdowns } = data.site.siteMetadata
   const [filterOptions, setFilterOptions] = useState<FilterState>({
     dropdowns: foldDropdowns,
-    dates: false,
+    dates: true,
     toggleSkills: false,
     skills: []
   })

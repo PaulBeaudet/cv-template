@@ -2,9 +2,9 @@ html {
   background-color: white;
 }
 
-body {
-  font-family: Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-}
+/* body {
+  font-family: 'Helvetica Neue', 'Open Sans', Cantarell, sans-serif;
+} */
 
 .page {
   margin-left: auto;

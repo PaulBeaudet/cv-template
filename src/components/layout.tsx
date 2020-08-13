@@ -3,8 +3,6 @@ import { Link, useStaticQuery, graphql } from "gatsby"
 import Image, { FixedObject } from "gatsby-image"
 import { layoutData } from "./graphQlTypes"
 
-
-
 // ...GatsbyImageSharpFixed
 const Layout = ({ children }) => {
   const data: layoutData = useStaticQuery(graphql`
