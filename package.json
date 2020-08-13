@@ -2,7 +2,7 @@
   "name": "cv_template",
   "private": true,
   "description": "template for a cv built with Gatsby",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Paul Beaudet",
   "bugs": {
     "url": "https://contactpaul.deabute.com"
