@@ -98,7 +98,7 @@ const BlogIndex = ({ data }: PageProps<IndexData>) => {
         <Trifold
           html={summarySection.html}
           summary={summarySection.frontmatter.summary}
-          show={filterOptions.dropdowns[0].state}
+          show={visKey.summary}
         />
       </AccordionOrg>}
       {posts.map(({ node }) => {
@@ -142,8 +142,8 @@ export const pageQuery = graphql`
             type
             organization
             roles
-            startdate(formatString: "MMMM DD, YYYY")
-            enddate(formatString: "MMMM DD, YYYY")
+            startdate(formatString: "MMMM YYYY")
+            enddate(formatString: "MMMM YYYY")
             summary
             skillsused
             skillslearned
