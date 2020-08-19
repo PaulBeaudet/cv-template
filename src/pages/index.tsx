@@ -1,3 +1,4 @@
+//index.tsx Copyright 2020 Paul Beaudet MIT License
 import React, { useState, useEffect, ChangeEvent } from "react"
 import { PageProps, graphql } from "gatsby"
 
@@ -108,7 +109,7 @@ const BlogIndex = ({ data }: PageProps<IndexData>) => {
             <div key={node.fields.slug}>
               <AccordionOrg node={node}>
                 <Trifold html={node.html} summary={summary} show={filterOptions.dropdowns[0].state}>
-                  {filterOptions.dates && <small style={{ marginLeft: 0 }}>{startdate + convertEndDate(enddate)} </small>}
+                  {filterOptions.dates && <small>{startdate + convertEndDate(enddate)} </small>}
                 </Trifold>
               </AccordionOrg>
               <FoldHold

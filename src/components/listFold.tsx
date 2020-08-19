@@ -1,3 +1,4 @@
+// listFold.tsx Copyright 2020 Paul Beaudet MIT License
 import React, { useState, useEffect } from "react"
 
 import AccordionFold from "./accordionFold"
@@ -114,7 +115,7 @@ const ListFold: React.FC<props> = ({
   return (
     <div>
       {hasItems && validShowState && showCapability === visKey.summary && (
-        <span style={{ marginLeft: ".75rem" }}>{listType}: </span>
+        <span className="sub-section-listFold">{listType}: </span>
       )}
       {showCapability === visKey.summary &&
         hasItems && ( // so long as show all is unchecked & meaningful data exist
@@ -124,23 +125,14 @@ const ListFold: React.FC<props> = ({
                 return item.link ? ( // Given this is a link show a button vs span
                   <button
                     key={item.name}
-                    onClick={() => {
-                      toggleItem(item.name)
-                    }}
-                    style={{
-                      border: "none",
-                      padding: 0,
-                      background: "none",
-                      color: "#069", // #069 for default
-                      cursor: "pointer",
-                    }}
+                    onClick={() => { toggleItem(item.name) }}
+                    className="text-button"
                   >
-                    <span style={{ marginRight: "0.5rem" }}> {item.name} </span>
+                    {item.name}
                   </button>
                 ) : (
-                    <span key={item.name} style={{ marginRight: "0.5rem" }}>
-                      {" "}
-                      {item.name}{" "}
+                    <span key={item.name} className="text-not-link">
+                      {" "}{item.name}{" "}
                     </span>
                   )
               }

@@ -1,4 +1,4 @@
-
+// graphQlTypes.tsx Copyright 2020 Paul Beaudet MIT License
 
 export interface frontmatter {
   projects: string

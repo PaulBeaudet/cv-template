@@ -4,8 +4,6 @@ const visKey = {
   hide: 2,
 }
 
-
-
 module.exports = {
   siteMetadata: {
     title: `${process.env.AUTHOR}`,

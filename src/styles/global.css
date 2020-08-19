@@ -1,9 +1,20 @@
+/* global.css Copyright 2020 Paul Beaudet */
+
+:root {
+  --link-color: #069; /* Default link color */
+  --background-color: white;
+  --horizontal-borders: 1px solid black;
+  --header-fonts: Helvetica, 'Open Sans', sans-serif;
+  --general-text-fonts: 'Garamond', 'Helvetic Neue', 'Open Sans', sans-serif;
+  --link-button-spacing: 0;
+}
+
 html {
-  background-color: white;
+  background-color: var(--general-text-fonts);
 }
 
 body {
-  font-family: 'Garamond', 'Helvetica Neue', 'Open Sans', sans-serif;
+  font-family: var(--general-text-fonts)
 }
 
 .page {
@@ -16,7 +27,7 @@ body {
 .page-nav {
   display: grid;
   grid-template-columns: 35px 1fr 1fr;
-  border-bottom: 1px solid black;
+  border-bottom: var(--horizontal-borders);
 }
 
 .contact-link {
@@ -36,7 +47,7 @@ body {
 }
 
 .page-footer {
-  border-top: 1px solid black;
+  border-top: var(--horizontal-borders);
   margin-top: 20px;
 }
 
@@ -46,6 +57,7 @@ body {
   text-decoration: none;
 }
 
+/* filter interface */
 .skill-filter {
   display: grid;
   grid-template-columns: repeat(auto-fit, minMax(200px, 1fr));
@@ -69,4 +81,38 @@ body {
 .fold-dropdown {
   display: grid;
   grid-template-rows: repeat(2, auto);
+}
+
+/* Application content */
+.text-button {
+  border: none;
+  padding: none;
+  background: none;
+  color: var(--link-color);
+  cursor: pointer;
+}
+
+.text-not-link {
+  cursor: not-allowed;
+  margin-right: var(--link-button-spacing);
+}
+
+.fold-contents {
+  margin-top: .2rem;
+  margin-bottom: .2rem;
+}
+
+.section-header {
+  font-family: var(--header-fonts);
+  margin-top: .4rem;
+  margin-bottom: 0;
+  display: inline-block;
+}
+
+.sub-section-article {
+  margin-left: 1.5rem;
+}
+
+.sub-section-listFold {
+  margin-left: .75rem;
 }

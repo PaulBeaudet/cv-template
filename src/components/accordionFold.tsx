@@ -1,5 +1,7 @@
+// accordionFold.tsx Copyright 2020 Paul Beaudet MIT License
+
 import React from "react"
-import { Link, useStaticQuery, graphql } from "gatsby"
+import { useStaticQuery, graphql } from "gatsby"
 
 import Trifold from "./trifold"
 import { frontmatter, githubQuery, FilterState } from "./graphQlTypes"
@@ -78,17 +80,9 @@ const AccordionFold: React.FC<props> = ({
   }
 
   return (
-    <article style={{ marginLeft: "1.5rem" }} key={slug}>
+    <article className="sub-section-article" key={slug}>
       <header>
-        <h5
-          style={{
-            marginTop: ".2rem",
-            marginRight: ".2rem",
-            marginBottom: 0,
-            display: "inline-block",
-          }}
-        >
-          {/* <Link style={{ boxShadow: `none` }} to={slug}>{title}</Link> */}
+        <h5 className="section-header">
           {title}
           <small><i> ({type}) </i></small>
         </h5>

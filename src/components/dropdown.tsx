@@ -1,3 +1,4 @@
+// dropdown.tsx Copyright 2020 Paul Beaudet MIT License
 import React, { ChangeEvent } from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import { MetaQuery, DropdownObj } from "./graphQlTypes"

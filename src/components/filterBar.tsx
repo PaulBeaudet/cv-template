@@ -1,3 +1,4 @@
+// filterBar.tsx Copyright 2020 Paul Beaudet 
 import React, { useState, ChangeEvent } from "react"
 import FoldDropdown from "./dropdown"
 import SkillFilter from "./skillFilter"
@@ -5,9 +6,9 @@ import FilterCheckbox from "./filterCheckBox"
 import { FilterState } from "./graphQlTypes"
 
 interface props {
-  toggleShowAll: any // fix this
+  toggleShowAll: (show: boolean) => void
   filterOptions: FilterState
-  changeDropdownState: any
+  changeDropdownState: (type: string) => (event: ChangeEvent<HTMLSelectElement>) => void
   toggleFilterProps: (prop: string) => void
   toggleSkill: (skillName: string, all?: boolean) => void
 }

@@ -1,3 +1,4 @@
+// foldHold.tsx Copyright 2020 Paul Beaudet MIT License 
 import React from "react"
 import ListFold from "./listFold"
 import { Node, frontmatter, FilterState } from "./graphQlTypes"

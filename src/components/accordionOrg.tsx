@@ -1,5 +1,5 @@
+// accordionOrg.tsx Copyright 2020 Paul Beaudet MIT License 
 import React from "react"
-import { Link } from "gatsby"
 import { Node } from "./graphQlTypes"
 
 interface props {
@@ -11,21 +11,11 @@ const AccordionOrg: React.FC<props> = ({
   node,
   children,
 }) => {
-  const {
-    enddate,
-    organization,
-  } = node.frontmatter
-  const endTxt: string =
-    enddate === "Invalid date" ? " to current " : " to " + enddate + " "
+  const { organization } = node.frontmatter
 
   return (
     <article key={node.fields.slug}>
-      <h5 style={{ marginTop: "0.5rem", marginBottom: 0, display: "inline-block" }}>
-        {/* <Link style={{ boxShadow: `none` }} to={slug}>
-          {title}
-        </Link> */}
-        {organization}
-      </h5>
+      <h5 className="section-header">{organization}</h5>
       <span> </span>
       {children}
     </article>

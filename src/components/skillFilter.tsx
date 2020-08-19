@@ -1,4 +1,5 @@
-import React, { useState } from "react"
+// skillFilter.tsx Copyright 2020 Paul Beaudet MIT License
+import React from "react"
 import { frontmatter, Node, SkillObj, DropdownObj, FilterState } from "./graphQlTypes"
 import FilterCheckbox from "./filterCheckBox"
 

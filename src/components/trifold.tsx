@@ -1,6 +1,6 @@
+// trifold.tsx Copyright 2020 Paul Beaudet MIT License
 import React, { useState, useEffect } from "react"
-import { MetaQuery, visKey } from "./graphQlTypes"
-import { useStaticQuery, graphql } from "gatsby"
+import { visKey } from "./graphQlTypes"
 
 interface props {
   html: string
@@ -10,16 +10,6 @@ interface props {
 }
 
 const Trifold: React.FC<props> = ({ html, summary, show, children }) => {
-  const { site }: MetaQuery = useStaticQuery(graphql`
-    query {
-      site {
-        siteMetadata {
-          foldOptions
-        }
-      }
-    }
-  `)
-  const { foldOptions } = site.siteMetadata
   let globFold: number = 0 // Global fold type representation
   // convert fold name to number type
   if (show !== visKey.hide) {
@@ -54,7 +44,7 @@ const Trifold: React.FC<props> = ({ html, summary, show, children }) => {
     if (foldNumber) {
       return (
         <p
-          style={{ marginTop: ".2rem", marginBottom: ".2rem" }}
+          className="fold-contents"
           dangerouslySetInnerHTML={{
             __html: foldNumber === 2 ? html : summary,
           }}
@@ -69,18 +59,8 @@ const Trifold: React.FC<props> = ({ html, summary, show, children }) => {
     <>
       <small>
         <button
-          onClick={() => {
-            nextFold()
-          }}
-          style={{
-            border: "none",
-            padding: 0,
-            background: "none",
-            color: "#069",
-            textAlign: "right",
-            cursor: "pointer",
-            display: "inline-block",
-          }}
+          onClick={() => { nextFold() }}
+          className="text-button"
         >
           {foldType(folded)}
         </button>

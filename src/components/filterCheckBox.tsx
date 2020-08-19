@@ -1,3 +1,4 @@
+// filterCheckBox.tsx Copyright 2020 Paul Beaudet MIT License
 import React, { useState, useEffect } from "react"
 
 interface props {
