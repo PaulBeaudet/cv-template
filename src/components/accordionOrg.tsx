@@ -16,7 +16,6 @@ const AccordionOrg: React.FC<props> = ({
   return (
     <article key={node.fields.slug}>
       <h5 className="section-header">{organization}</h5>
-      <span> </span>
       {children}
     </article>
   )

@@ -84,7 +84,7 @@ const AccordionFold: React.FC<props> = ({
       <header>
         <h5 className="section-header">
           {title}
-          <small><i> ({type}) </i></small>
+          <small><i> ({type})</i></small>
         </h5>
         <Trifold html={html} summary={summary} show={filterOptions.dropdowns[0].state}>
           {filterOptions.dates && <small>{startdate + endTxt}</small>}

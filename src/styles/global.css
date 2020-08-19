@@ -6,7 +6,9 @@
   --horizontal-borders: 1px solid black;
   --header-fonts: Helvetica, 'Open Sans', sans-serif;
   --general-text-fonts: 'Garamond', 'Helvetic Neue', 'Open Sans', sans-serif;
-  --link-button-spacing: 0;
+  --link-button-spacing: .5rem;
+  --list-indent: .75rem;
+  --sub-section-indent: 1.5rem; 
 }
 
 html {
@@ -85,16 +87,17 @@ body {
 
 /* Application content */
 .text-button {
-  border: none;
-  padding: none;
-  background: none;
+  all: unset;
   color: var(--link-color);
   cursor: pointer;
+  margin-left: var(--link-button-spacing);
 }
 
-.text-not-link {
+.no-action-text-button {
+  all: unset;
+  color: black;
   cursor: not-allowed;
-  margin-right: var(--link-button-spacing);
+  margin-left: var(--link-button-spacing);
 }
 
 .fold-contents {
@@ -110,9 +113,9 @@ body {
 }
 
 .sub-section-article {
-  margin-left: 1.5rem;
+  margin-left: var(--sub-section-indent);
 }
 
 .sub-section-listFold {
-  margin-left: .75rem;
+  margin-left: var(--list-indent);
 }

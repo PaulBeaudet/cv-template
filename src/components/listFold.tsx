@@ -115,26 +115,18 @@ const ListFold: React.FC<props> = ({
   return (
     <div>
       {hasItems && validShowState && showCapability === visKey.summary && (
-        <span className="sub-section-listFold">{listType}: </span>
+        <span className="sub-section-listFold">{listType}:</span>
       )}
       {showCapability === visKey.summary &&
         hasItems && ( // so long as show all is unchecked & meaningful data exist
           <small>
             {showingItems.map(
               (item: showingItemType): React.DetailedHTMLProps<any, any> => {
-                return item.link ? ( // Given this is a link show a button vs span
-                  <button
-                    key={item.name}
-                    onClick={() => { toggleItem(item.name) }}
-                    className="text-button"
-                  >
-                    {item.name}
-                  </button>
-                ) : (
-                    <span key={item.name} className="text-not-link">
-                      {" "}{item.name}{" "}
-                    </span>
-                  )
+                return (<button
+                  key={item.name}
+                  onClick={item.link ? () => { toggleItem(item.name) } : () => { }}
+                  className={item.link ? "text-button" : "no-action-text-button"}
+                >{item.name}</button>)
               }
             )}
           </small>
