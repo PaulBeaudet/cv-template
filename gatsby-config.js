@@ -6,18 +6,9 @@ const visKey = {
 
 module.exports = {
   siteMetadata: {
-    title: `${process.env.AUTHOR}`,
-    author: {
-      name: `${process.env.AUTHOR}`,
-      summary: `${process.env.SUMMARY_AUTHOR}`,
-      repo: `https://github.com/PaulBeaudet/cv-template`,
-      contactLink: `https://contactpaul.deabute.com`,
-    },
-    description: `${process.env.DESCRIPTION_AUTHOR}`,
-    siteUrl: `${process.env.SITE_URL}`,
-    social: {
-      contact: ``
-    },
+    title: process.env.GATSBY_AUTHOR,
+    description: process.env.GATSBY_SITE_DESCRIPTION, 
+    siteUrl: process.env.GATSBY_SITE_URL,
     foldOptions: process.env.FOLD_OPTIONS || ["summary", "show all", "hide"],
     foldDropdowns: process.env.FOLD_DROPDOWNS || [
       // note that this first item is not frontmatter, the rest are assumed to be
@@ -73,11 +64,10 @@ module.exports = {
     },
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
-    `gatsby-plugin-feed`,
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `${process.env.AUTHOR}`,
+        name: `${process.env.GATSBY_AUTHOR}`,
         short_name: `GatsbyJS`,
         start_url: `/`,
         background_color: `#ffffff`,
@@ -86,7 +76,6 @@ module.exports = {
         icon: `${process.env.PROFILE_PIC_LOCATION}`
       }
     },
-    `gatsby-plugin-react-helmet`,
     {
       resolve: "gatsby-source-graphql",
       options: {

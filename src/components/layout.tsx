@@ -13,26 +13,15 @@ const Layout = ({ children }) => {
           }
         }
       }
-      site {
-        siteMetadata {
-          title
-          author {
-            name
-            repo
-            contactLink
-          }
-        }
-      }
     }
   `)
-  const { author, title } = data.site.siteMetadata
   const header: React.DetailedHTMLProps<any, any> = (
     <nav className="page-nav">
       <div className="logo">
         <Link className="nav-link" to={`/`}>
           <Image
             fixed={data.avatar.childImageSharp.fixed}
-            alt={author.name}
+            alt={process.env.GATSBY_AUTHOR}
             imgStyle={{
               borderRadius: `50%`,
             }}
@@ -41,11 +30,11 @@ const Layout = ({ children }) => {
       </div>
       <h1 className="site-title">
         <Link className="nav-link" to={`/`}>
-          {title}
+          {process.env.GATSBY_AUTHOR}
         </Link>
       </h1>
       <h1 className="contact-link">
-        <a className="nav-link" href={author.contactLink}>Contact</a>
+        <a className="nav-link" href={process.env.GATSBY_CONTACT_LINK}>Contact</a>
       </h1>
     </nav>
   )
@@ -55,7 +44,7 @@ const Layout = ({ children }) => {
       <header>{header}</header>
       <main>{children}</main>
       <footer className="page-footer">
-        © {new Date().getFullYear()} {author.name} | <a href={author.repo}>Site</a><span> built with Gatsby</span>
+        © {new Date().getFullYear()} {process.env.GATSBY_AUTHOR} | See <a href={process.env.GATSBY_SITE_REPO}>Site</a><span> for site source</span>
       </footer>
     </div>
   )

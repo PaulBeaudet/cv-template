@@ -3,7 +3,6 @@ import React, { useState, useEffect, ChangeEvent } from "react"
 import { PageProps, graphql } from "gatsby"
 
 import Layout from "../components/layout"
-import SEO from "../components/seo"
 import AccordionOrg from "../components/accordionOrg"
 import { IndexData, convertEndDate, FilterState, DropdownObj, visKey, SkillObj } from "../components/graphQlTypes"
 import { createSkillsArray, skillInOrg } from "../components/skillFilter"
@@ -87,7 +86,6 @@ const BlogIndex = ({ data }: PageProps<IndexData>) => {
 
   return (
     <Layout>
-      <SEO title="All posts" />
       <FilterBar
         toggleShowAll={changeOnFilterToggle}
         filterOptions={filterOptions}

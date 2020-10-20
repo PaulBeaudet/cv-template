@@ -56,12 +56,6 @@ export interface githubQuery {
 
 export interface siteMetadata {
   siteMetadata: {
-    title: string
-    author: {
-      name: string
-      repo: string
-      contactLink: string
-    }
     foldOptions: Array<string>
     foldDropdowns: Array<DropdownObj>
     foldDefaults: Array<number>

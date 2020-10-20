@@ -2,11 +2,10 @@
 import React from "react"
 
 import Layout from "../components/layout"
-import SEO from "../components/seo"
 import { convertEndDate } from "../components/graphQlTypes"
 
 const BlogPostTemplate = ({ data, pageContext }) => {
-  const { organization, summary, startdate, enddate, roles, type, projects } = data.markdownRemark.frontmatter
+  const { organization, startdate, enddate, roles, type, projects } = data.markdownRemark.frontmatter
   let pageTitle = type === 'role' ? roles.split(', ')[0] : organization
   pageTitle = type === 'project' ? projects.split(', ')[0] : pageTitle
   const { html } = data.markdownRemark
@@ -14,10 +13,6 @@ const BlogPostTemplate = ({ data, pageContext }) => {
 
   return (
     <Layout>
-      <SEO
-        title={pageTitle}
-        description={summary}
-      />
       <article>
         <header>
           <h3 className="section-header">
