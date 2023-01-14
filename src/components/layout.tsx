@@ -33,9 +33,9 @@ const Layout = ({ children }) => {
           {process.env.GATSBY_AUTHOR}
         </Link>
       </h1>
-      <h1 className="contact-link">
+      {/* <h1 className="contact-link">
         <a className="nav-link" href={process.env.GATSBY_CONTACT_LINK}>Contact</a>
-      </h1>
+      </h1> */}
     </nav>
   )
 
@@ -44,7 +44,9 @@ const Layout = ({ children }) => {
       <header>{header}</header>
       <main>{children}</main>
       <footer className="page-footer">
-        © {new Date().getFullYear()} {process.env.GATSBY_AUTHOR} | See <a href={process.env.GATSBY_SITE_REPO}>Site</a><span> for site source</span>
+        © {new Date().getFullYear()} {process.env.GATSBY_AUTHOR} | See{" "}
+        <a href={process.env.GATSBY_SITE_REPO}>Site</a>
+        <span> for site source</span>
       </footer>
     </div>
   )
