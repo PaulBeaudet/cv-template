@@ -27,6 +27,6 @@ gatsby clean   # Seems like old files stick around otherwise?
 echo "building website"
 gatsby build
 
-echo "syncing website to $BUCKET_NAME"
-aws s3 sync public/ "s3://${BUCKET_NAME}/" --delete --exclude "*.sh"
-echo "done syncing"
+# echo "syncing website to $BUCKET_NAME"
+# aws s3 sync public/ "s3://${BUCKET_NAME}/" --delete --exclude "*.sh"
+# echo "done syncing"
